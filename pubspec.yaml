@@ -1,0 +1,19 @@
+name: zxcvbnm
+description: >
+  A password strength estimator inspired by password crackers. This is a dart rewrite of zxcvbn-ts,
+  which is a rewrite and further evolution of zxcvbn by Dropbox.
+topics:
+  - security
+  - password
+  - password-policy
+  - password-strength
+  - password-validation
+version: 1.0.0
+repository: https://github.com/zeezooz/zxcvbnm
+
+environment:
+  sdk: '>=2.12.0 <4.0.0'
+
+dev_dependencies:
+  lints: ^2.0.0
+  test: ^1.21.0
