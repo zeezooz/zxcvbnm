@@ -1,4 +1,6 @@
-const Map<String, Map<String, String>> translationKeys =
+import '../types.dart';
+
+const TranslationKeys translationKeys =
     <String, Map<String, String>>{
   'warnings': <String, String>{
     'straightRow': 'straightRow',

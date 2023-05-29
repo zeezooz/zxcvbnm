@@ -1,4 +1,6 @@
-const Map<String, List<String>> l33tTableDefault = <String, List<String>>{
+import '../types.dart';
+
+const L33tTableDefault l33tTableDefault = <String, List<String>>{
   'a': <String>['4', '@'],
   'b': <String>['8'],
   'c': <String>['(', '{', '[', '<'],
