@@ -170,3 +170,18 @@ class SeparatorMatch extends Match {
     required super.token,
   }) : super._(pattern: Pattern.separator);
 }
+
+class FeedbackType {
+  FeedbackType({
+    this.warning,
+    required this.suggestions,
+  });
+
+  String? warning;
+  List<String> suggestions;
+}
+
+typedef DefaultFeedbackFunction = FeedbackType? Function({
+  required Match match,
+  required bool isSoleMatch,
+});
