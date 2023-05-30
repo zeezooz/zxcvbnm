@@ -1,4 +1,4 @@
-import 'matcher/dictionary/variants/matching/unmunger/getCleanPasswords.dart';
+import 'matcher/dictionary/variants/matching/unmunger/get_clean_passwords.dart';
 
 typedef TranslationKeys = Map<String, Map<String, String>>;
 typedef L33tTableDefault = Map<String, List<String>>;
@@ -24,7 +24,7 @@ enum DictionaryNames {
 }
 
 class Match {
-  Match._({
+  const Match._({
     required this.pattern,
     required this.i,
     required this.j,
@@ -45,16 +45,16 @@ class Match {
 }
 
 class DictionaryMatch extends Match {
-  DictionaryMatch({
-    required super.i,
-    required super.j,
-    required super.token,
+  const DictionaryMatch({
+    required int i,
+    required int j,
+    required String token,
     required this.matchedWord,
     required this.rank,
     required this.dictionaryName,
     required this.reversed,
     required this.l33t,
-  }) : super._(pattern: Pattern.dictionary);
+  }) : super._(pattern: Pattern.dictionary, i: i, j: j, token: token);
 
   final String matchedWord;
   final int rank;
@@ -64,31 +64,40 @@ class DictionaryMatch extends Match {
 }
 
 class L33tMatch extends DictionaryMatch {
-  L33tMatch({
-    required super.i,
-    required super.j,
-    required super.token,
-    required super.matchedWord,
-    required super.rank,
-    required super.dictionaryName,
-    required super.reversed,
+  const L33tMatch({
+    required int i,
+    required int j,
+    required String token,
+    required String matchedWord,
+    required int rank,
+    required DictionaryNames dictionaryName,
+    required bool reversed,
     required this.subs,
     required this.subDisplay,
-  }) : super(l33t: true);
+  }) : super(
+          i: i,
+          j: j,
+          token: token,
+          matchedWord: matchedWord,
+          rank: rank,
+          dictionaryName: dictionaryName,
+          reversed: reversed,
+          l33t: true,
+        );
 
   final List<PasswordChanges> subs;
   final String subDisplay;
 }
 
 class SpatialMatch extends Match {
-  SpatialMatch({
-    required super.i,
-    required super.j,
-    required super.token,
+  const SpatialMatch({
+    required int i,
+    required int j,
+    required String token,
     required this.graph,
     required this.turns,
     required this.shiftedCount,
-  }) : super._(pattern: Pattern.spatial);
+  }) : super._(pattern: Pattern.spatial, i: i, j: j, token: token);
 
   final String graph;
   final int turns;
@@ -96,14 +105,14 @@ class SpatialMatch extends Match {
 }
 
 class RepeatMatch extends Match {
-  RepeatMatch({
-    required super.i,
-    required super.j,
-    required super.token,
+  const RepeatMatch({
+    required int i,
+    required int j,
+    required String token,
     required this.baseToken,
     required this.baseGuesses,
     required this.repeatCount,
-  }) : super._(pattern: Pattern.repeat);
+  }) : super._(pattern: Pattern.repeat, i: i, j: j, token: token);
 
   final String baseToken;
   final int baseGuesses;
@@ -111,14 +120,14 @@ class RepeatMatch extends Match {
 }
 
 class SequenceMatch extends Match {
-  SequenceMatch({
-    required super.i,
-    required super.j,
-    required super.token,
+  const SequenceMatch({
+    required int i,
+    required int j,
+    required String token,
     required this.sequenceName,
     required this.sequenceSpace,
     required this.ascending,
-  }) : super._(pattern: Pattern.sequence);
+  }) : super._(pattern: Pattern.sequence, i: i, j: j, token: token);
 
   final String sequenceName;
   final int sequenceSpace;
@@ -126,28 +135,28 @@ class SequenceMatch extends Match {
 }
 
 class RegexMatch extends Match {
-  RegexMatch({
-    required super.i,
-    required super.j,
-    required super.token,
+  const RegexMatch({
+    required int i,
+    required int j,
+    required String token,
     required this.regexName,
     required this.regexMatch,
-  }) : super._(pattern: Pattern.regex);
+  }) : super._(pattern: Pattern.regex, i: i, j: j, token: token);
 
   final String regexName;
   final List<String> regexMatch;
 }
 
 class DateMatch extends Match {
-  DateMatch({
-    required super.i,
-    required super.j,
-    required super.token,
+  const DateMatch({
+    required int i,
+    required int j,
+    required String token,
     required this.separator,
     required this.year,
     required this.month,
     required this.day,
-  }) : super._(pattern: Pattern.date);
+  }) : super._(pattern: Pattern.date, i: i, j: j, token: token);
 
   final String separator;
   final int year;
@@ -156,19 +165,19 @@ class DateMatch extends Match {
 }
 
 class BruteForceMatch extends Match {
-  BruteForceMatch({
-    required super.i,
-    required super.j,
-    required super.token,
-  }) : super._(pattern: Pattern.bruteforce);
+  const BruteForceMatch({
+    required int i,
+    required int j,
+    required String token,
+  }) : super._(pattern: Pattern.bruteforce, i: i, j: j, token: token);
 }
 
 class SeparatorMatch extends Match {
-  SeparatorMatch({
-    required super.i,
-    required super.j,
-    required super.token,
-  }) : super._(pattern: Pattern.separator);
+  const SeparatorMatch({
+    required int i,
+    required int j,
+    required String token,
+  }) : super._(pattern: Pattern.separator, i: i, j: j, token: token);
 }
 
 class FeedbackType {

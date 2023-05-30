@@ -1,5 +1,5 @@
 class PasswordChanges {
-  PasswordChanges({
+  const PasswordChanges({
     required this.letter,
     required this.substitution,
   });
