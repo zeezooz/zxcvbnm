@@ -22,7 +22,7 @@ final int referenceYear = DateTime.now().year;
 final Map<String, RegExp> regexen = <String, RegExp>{
   'recentYear': RegExp(r'19\d\d|200\d|201\d|202\d'),
 };
-/* Separators */
+// Separators
 const List<String> separatorChars = <String>[
   ' ',
   ',',

@@ -2,7 +2,7 @@ import '../../types.dart';
 
 FeedbackType? bruteforceFeedback({
   required Match match,
-  required bool isSoleMatch,
+  bool? isSoleMatch,
 }) {
   return null;
 }

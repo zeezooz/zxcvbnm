@@ -31,16 +31,16 @@ class Match {
     required this.token,
   });
 
-  /// The name of the matcher
+  /// The name of the matcher.
   final Pattern pattern;
 
-  /// The start index of the token found in the password
+  /// The start index of the token found in the password.
   final int i;
 
-  /// The end index of the token found in the password
+  /// The end index of the token found in the password.
   final int j;
 
-  /// The token found in the password
+  /// The token found in the password.
   final String token;
 }
 
@@ -192,5 +192,5 @@ class FeedbackType {
 
 typedef DefaultFeedbackFunction = FeedbackType? Function({
   required Match match,
-  required bool isSoleMatch,
+  bool? isSoleMatch,
 });

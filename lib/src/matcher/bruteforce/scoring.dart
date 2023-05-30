@@ -3,15 +3,15 @@ import 'dart:math';
 import '../../data/const.dart';
 import '../../types.dart';
 
-num bruteforceScoring(Match match) {
+double bruteforceScoring(Match match) {
   final String token = match.token;
-  num guesses = pow(bruteforceCardinality.toDouble(), token.length);
-  if (guesses == double.infinity) {
-    guesses = double.maxFinite;
-  }
-  num minGuesses;
-  // small detail: make bruteforce matches at minimum one guess bigger than smallest allowed
-  // submatch guesses, such that non-bruteforce submatches over the same [i..j] take precedence.
+  double guesses =
+      pow(bruteforceCardinality.toDouble(), token.length).toDouble();
+  if (guesses == double.infinity) guesses = double.maxFinite;
+  double minGuesses;
+  // Small detail: make bruteforce matches at minimum one guess bigger than
+  // smallest allowed submatch guesses, such that non-bruteforce submatches
+  // over the same [i..j] take precedence.
   if (token.length == 1) {
     minGuesses = minSubmatchGuessesSingleChar + 1;
   } else {
