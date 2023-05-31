@@ -412,6 +412,324 @@ class SeparatorMatch extends Match {
   }) : super._(pattern: Pattern.separator, i: i, j: j, token: token);
 }
 
+class MatchEstimated extends Match {
+  const MatchEstimated._({
+    required Pattern pattern,
+    required int i,
+    required int j,
+    required String token,
+    required this.guesses,
+    required this.guessesLog10,
+    this.baseGuesses,
+    this.uppercaseVariations,
+    this.l33tVariations,
+  }) : super._(
+          pattern: pattern,
+          i: i,
+          j: j,
+          token: token,
+        );
+
+  final double guesses;
+  final double guessesLog10;
+  final int? baseGuesses;
+  final int? uppercaseVariations;
+  final int? l33tVariations;
+}
+
+class DictionaryMatchEstimated extends DictionaryMatch
+    implements MatchEstimated {
+  const DictionaryMatchEstimated({
+    required int i,
+    required int j,
+    required String token,
+    required String matchedWord,
+    required int rank,
+    required DictionaryNames dictionaryName,
+    required bool reversed,
+    required bool l33t,
+    required this.guesses,
+    required this.guessesLog10,
+    this.baseGuesses,
+    this.uppercaseVariations,
+    this.l33tVariations,
+  }) : super(
+          i: i,
+          j: j,
+          token: token,
+          matchedWord: matchedWord,
+          rank: rank,
+          dictionaryName: dictionaryName,
+          reversed: reversed,
+          l33t: l33t,
+        );
+
+  @override
+  final double guesses;
+  @override
+  final double guessesLog10;
+  @override
+  final int? baseGuesses;
+  @override
+  final int? uppercaseVariations;
+  @override
+  final int? l33tVariations;
+}
+
+class L33tMatchEstimated extends L33tMatch implements MatchEstimated {
+  const L33tMatchEstimated({
+    required int i,
+    required int j,
+    required String token,
+    required String matchedWord,
+    required int rank,
+    required DictionaryNames dictionaryName,
+    required bool reversed,
+    required List<PasswordChanges> subs,
+    required String subDisplay,
+    required this.guesses,
+    required this.guessesLog10,
+    this.baseGuesses,
+    this.uppercaseVariations,
+    this.l33tVariations,
+  }) : super(
+          i: i,
+          j: j,
+          token: token,
+          matchedWord: matchedWord,
+          rank: rank,
+          dictionaryName: dictionaryName,
+          reversed: reversed,
+          subs: subs,
+          subDisplay: subDisplay,
+        );
+
+  @override
+  final double guesses;
+  @override
+  final double guessesLog10;
+  @override
+  final int? baseGuesses;
+  @override
+  final int? uppercaseVariations;
+  @override
+  final int? l33tVariations;
+}
+
+class SpatialMatchEstimated extends SpatialMatch implements MatchEstimated {
+  const SpatialMatchEstimated({
+    required int i,
+    required int j,
+    required String token,
+    required String graph,
+    required int turns,
+    required int shiftedCount,
+    required this.guesses,
+    required this.guessesLog10,
+    this.baseGuesses,
+    this.uppercaseVariations,
+    this.l33tVariations,
+  }) : super(
+          i: i,
+          j: j,
+          token: token,
+          graph: graph,
+          turns: turns,
+          shiftedCount: shiftedCount,
+        );
+
+  @override
+  final double guesses;
+  @override
+  final double guessesLog10;
+  @override
+  final int? baseGuesses;
+  @override
+  final int? uppercaseVariations;
+  @override
+  final int? l33tVariations;
+}
+
+class RepeatMatchEstimated extends RepeatMatch implements MatchEstimated {
+  const RepeatMatchEstimated({
+    required int i,
+    required int j,
+    required String token,
+    required String baseToken,
+    required int baseGuesses,
+    required int repeatCount,
+    required this.guesses,
+    required this.guessesLog10,
+    this.uppercaseVariations,
+    this.l33tVariations,
+  }) : super(
+          i: i,
+          j: j,
+          token: token,
+          baseToken: baseToken,
+          baseGuesses: baseGuesses,
+          repeatCount: repeatCount,
+        );
+
+  @override
+  final double guesses;
+  @override
+  final double guessesLog10;
+  @override
+  final int? uppercaseVariations;
+  @override
+  final int? l33tVariations;
+}
+
+class SequenceMatchEstimated extends SequenceMatch implements MatchEstimated {
+  const SequenceMatchEstimated({
+    required int i,
+    required int j,
+    required String token,
+    required String sequenceName,
+    required int sequenceSpace,
+    required bool ascending,
+    required this.guesses,
+    required this.guessesLog10,
+    this.baseGuesses,
+    this.uppercaseVariations,
+    this.l33tVariations,
+  }) : super(
+          i: i,
+          j: j,
+          token: token,
+          sequenceName: sequenceName,
+          sequenceSpace: sequenceSpace,
+          ascending: ascending,
+        );
+
+  @override
+  final double guesses;
+  @override
+  final double guessesLog10;
+  @override
+  final int? baseGuesses;
+  @override
+  final int? uppercaseVariations;
+  @override
+  final int? l33tVariations;
+}
+
+class RegexMatchEstimated extends RegexMatch implements MatchEstimated {
+  const RegexMatchEstimated({
+    required int i,
+    required int j,
+    required String token,
+    required String regexName,
+    required List<String> regexMatch,
+    required this.guesses,
+    required this.guessesLog10,
+    this.baseGuesses,
+    this.uppercaseVariations,
+    this.l33tVariations,
+  }) : super(
+          i: i,
+          j: j,
+          token: token,
+          regexName: regexName,
+          regexMatch: regexMatch,
+        );
+
+  @override
+  final double guesses;
+  @override
+  final double guessesLog10;
+  @override
+  final int? baseGuesses;
+  @override
+  final int? uppercaseVariations;
+  @override
+  final int? l33tVariations;
+}
+
+class DateMatchEstimated extends DateMatch implements MatchEstimated {
+  const DateMatchEstimated({
+    required int i,
+    required int j,
+    required String token,
+    required String separator,
+    required int year,
+    required int month,
+    required int day,
+    required this.guesses,
+    required this.guessesLog10,
+    this.baseGuesses,
+    this.uppercaseVariations,
+    this.l33tVariations,
+  }) : super(
+          i: i,
+          j: j,
+          token: token,
+          separator: separator,
+          year: year,
+          month: month,
+          day: day,
+        );
+
+  @override
+  final double guesses;
+  @override
+  final double guessesLog10;
+  @override
+  final int? baseGuesses;
+  @override
+  final int? uppercaseVariations;
+  @override
+  final int? l33tVariations;
+}
+
+class BruteForceMatchEstimated extends MatchEstimated
+    implements BruteForceMatch {
+  const BruteForceMatchEstimated({
+    required int i,
+    required int j,
+    required String token,
+    required double guesses,
+    required double guessesLog10,
+    int? baseGuesses,
+    int? uppercaseVariations,
+    int? l33tVariations,
+  }) : super._(
+          pattern: Pattern.bruteforce,
+          i: i,
+          j: j,
+          token: token,
+          guesses: guesses,
+          guessesLog10: guessesLog10,
+          baseGuesses: baseGuesses,
+          uppercaseVariations: uppercaseVariations,
+          l33tVariations: l33tVariations,
+        );
+}
+
+class SeparatorMatchEstimated extends MatchEstimated implements SeparatorMatch {
+  const SeparatorMatchEstimated({
+    required int i,
+    required int j,
+    required String token,
+    required double guesses,
+    required double guessesLog10,
+    int? baseGuesses,
+    int? uppercaseVariations,
+    int? l33tVariations,
+  }) : super._(
+          pattern: Pattern.separator,
+          i: i,
+          j: j,
+          token: token,
+          guesses: guesses,
+          guessesLog10: guessesLog10,
+          baseGuesses: baseGuesses,
+          uppercaseVariations: uppercaseVariations,
+          l33tVariations: l33tVariations,
+        );
+}
+
 class FeedbackType {
   FeedbackType({
     this.warning,
@@ -421,6 +739,8 @@ class FeedbackType {
   String? warning;
   List<String> suggestions;
 }
+
+typedef OptionsL33tTable = L33tTableDefault;
 
 class OptionsType {
   const OptionsType({
@@ -435,6 +755,6 @@ class OptionsType {
 }
 
 typedef DefaultFeedbackFunction = FeedbackType? Function({
-  required Match match,
+  required MatchEstimated match,
   bool? isSoleMatch,
 });

@@ -2,7 +2,7 @@ import '../../options.dart';
 import '../../types.dart';
 
 FeedbackType? bruteforceFeedback({
-  required Match match,
+  required MatchEstimated match,
   bool? isSoleMatch,
 }) {
   return FeedbackType(
