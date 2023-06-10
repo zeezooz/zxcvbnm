@@ -1,7 +1,7 @@
 import '../types.dart';
 
-const TranslationKeys translationKeys = TranslationKeys(
-  warnings: TranslationKeysWarnings(
+const Translation translationKeys = Translation(
+  warnings: WarningsTranslation(
     straightRow: 'straightRow',
     keyPattern: 'keyPattern',
     simpleRepeat: 'simpleRepeat',
@@ -19,7 +19,7 @@ const TranslationKeys translationKeys = TranslationKeys(
     userInputs: 'userInputs',
     pwned: 'pwned',
   ),
-  suggestions: TranslationKeysSuggestions(
+  suggestions: SuggestionsTranslation(
     l33t: 'l33t',
     reverseWords: 'reverseWords',
     allUppercase: 'allUppercase',
@@ -35,7 +35,7 @@ const TranslationKeys translationKeys = TranslationKeys(
     noNeed: 'noNeed',
     pwned: 'pwned',
   ),
-  timeEstimation: TranslationKeysTimeEstimation(
+  timeEstimation: TimeEstimationTranslation(
     ltSecond: 'ltSecond',
     second: 'second',
     seconds: 'seconds',

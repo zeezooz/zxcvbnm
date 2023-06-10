@@ -1,7 +1,9 @@
+import '../../options.dart';
 import '../../types.dart';
 
-FeedbackType? bruteforceFeedback({
+Feedback? bruteforceFeedback({
   required MatchEstimated match,
+  required Options options,
   bool? isSoleMatch,
 }) {
   return null;

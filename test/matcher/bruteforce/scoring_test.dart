@@ -4,7 +4,7 @@ import 'package:zxcvbnm/src/matcher/bruteforce/scoring.dart';
 import 'package:zxcvbnm/src/types.dart';
 
 void main() {
-  group('Scoring: guesses bruteforce.', () {
+  group('Bruteforce scoring.', () {
     test(
       'Should be exponentiation of $bruteforceCardinality and the token length.',
       () {
@@ -22,32 +22,29 @@ void main() {
         );
       },
     );
+
     test(
       'Should be ${double.maxFinite} from double.maxFinite.',
-      () {
-        expect(
-          bruteforceScoring(BruteForceMatch(i: 0, j: 0, token: 'a' * 309)),
-          double.maxFinite,
-        );
-      },
+      () => expect(
+        bruteforceScoring(BruteForceMatch(i: 0, j: 0, token: 'a' * 309)),
+        double.maxFinite,
+      ),
     );
+
     test(
       'Should be $minSubmatchGuessesSingleChar from minSubmatchGuessesSingleChar.',
-      () {
-        expect(
-          bruteforceScoring(BruteForceMatch(i: 0, j: 0, token: 'a')),
-          11,
-        );
-      },
+      () => expect(
+        bruteforceScoring(BruteForceMatch(i: 0, j: 0, token: 'a')),
+        11,
+      ),
     );
+
     test(
       'Should be $minSubmatchGuessesMultiChar from minSubmatchGuessesMultiChar.',
-      () {
-        expect(
-          bruteforceScoring(BruteForceMatch(i: 0, j: 0, token: 'ab')),
-          51,
-        );
-      },
+      () => expect(
+        bruteforceScoring(BruteForceMatch(i: 0, j: 0, token: 'ab')),
+        51,
+      ),
       skip: "This can't be reached because min guesses is 51 and with"
           ' a password length of 2 you get 100 already.',
     );

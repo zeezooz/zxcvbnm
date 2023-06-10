@@ -1,12 +1,13 @@
 import '../../options.dart';
 import '../../types.dart';
 
-FeedbackType? bruteforceFeedback({
+Feedback? dateFeedback({
   required MatchEstimated match,
+  required Options options,
   bool? isSoleMatch,
 }) {
-  return FeedbackType(
-    warning: options.translations.warnings.dates,
-    suggestions: <String>[options.translations.suggestions.dates],
+  return Feedback(
+    warning: options.translation.warnings.dates,
+    suggestions: <String>[options.translation.suggestions.dates],
   );
 }

@@ -1,19 +1,23 @@
-import 'matcher/dictionary/variants/matching/unmunger/get_clean_passwords.dart';
+import 'dart:async';
 
-class TranslationKeys {
-  const TranslationKeys({
+import 'matcher/dictionary/scoring.dart';
+import 'matching.dart';
+import 'options.dart';
+
+class Translation {
+  const Translation({
     required this.warnings,
     required this.suggestions,
     required this.timeEstimation,
   });
 
-  final TranslationKeysWarnings warnings;
-  final TranslationKeysSuggestions suggestions;
-  final TranslationKeysTimeEstimation timeEstimation;
+  final WarningsTranslation warnings;
+  final SuggestionsTranslation suggestions;
+  final TimeEstimationTranslation timeEstimation;
 }
 
-class TranslationKeysWarnings {
-  const TranslationKeysWarnings({
+class WarningsTranslation {
+  const WarningsTranslation({
     required this.straightRow,
     required this.keyPattern,
     required this.simpleRepeat,
@@ -50,8 +54,8 @@ class TranslationKeysWarnings {
   final String pwned;
 }
 
-class TranslationKeysSuggestions {
-  const TranslationKeysSuggestions({
+class SuggestionsTranslation {
+  const SuggestionsTranslation({
     required this.l33t,
     required this.reverseWords,
     required this.allUppercase,
@@ -84,8 +88,8 @@ class TranslationKeysSuggestions {
   final String pwned;
 }
 
-class TranslationKeysTimeEstimation {
-  const TranslationKeysTimeEstimation({
+class TimeEstimationTranslation {
+  const TimeEstimationTranslation({
     required this.ltSecond,
     required this.second,
     required this.seconds,
@@ -118,20 +122,23 @@ class TranslationKeysTimeEstimation {
   final String centuries;
 }
 
-typedef L33tTableDefault = Map<String, List<String>>;
+typedef L33tTable = Map<String, List<String>>;
 
-enum Pattern {
-  dictionary,
-  spatial,
-  repeat,
-  sequence,
-  regex,
-  date,
-  bruteforce,
-  separator,
+class PasswordChange {
+  const PasswordChange({
+    required this.l33t,
+    required this.clean,
+  });
+
+  final String l33t;
+  final String clean;
+
+  @override
+  String toString() => '$l33t -> $clean';
 }
 
-enum DictionaryNames {
+enum Dictionary {
+  diceware,
   passwords,
   commonWords,
   firstnames,
@@ -142,14 +149,10 @@ enum DictionaryNames {
 
 class Match {
   const Match._({
-    required this.pattern,
     required this.i,
     required this.j,
     required this.token,
   });
-
-  /// The name of the matcher.
-  final Pattern pattern;
 
   /// The start index of the token found in the password.
   final int i;
@@ -160,20 +163,8 @@ class Match {
   /// The token found in the password.
   final String token;
 
-  Object? operator [](String key) {
-    switch (key) {
-      case 'pattern':
-        return pattern;
-      case 'i':
-        return i;
-      case 'j':
-        return j;
-      case 'token':
-        return token;
-      default:
-        return null;
-    }
-  }
+  @override
+  String toString() => '[$i, $j] "$token"';
 }
 
 class DictionaryMatch extends Match {
@@ -183,34 +174,74 @@ class DictionaryMatch extends Match {
     required String token,
     required this.matchedWord,
     required this.rank,
-    required this.dictionaryName,
-    required this.reversed,
-    required this.l33t,
-  }) : super._(pattern: Pattern.dictionary, i: i, j: j, token: token);
+    required this.dictionary,
+    this.levenshteinDistance,
+    this.levenshteinDistanceEntry,
+  }) : super._(i: i, j: j, token: token);
 
   final String matchedWord;
   final int rank;
-  final DictionaryNames dictionaryName;
-  final bool reversed;
-  final bool l33t;
+  final Dictionary dictionary;
+  final int? levenshteinDistance;
+  final String? levenshteinDistanceEntry;
 
   @override
-  Object? operator [](String key) {
-    switch (key) {
-      case 'matchedWord':
-        return matchedWord;
-      case 'rank':
-        return rank;
-      case 'dictionaryName':
-        return dictionaryName;
-      case 'reversed':
-        return reversed;
-      case 'l33t':
-        return l33t;
-      default:
-        return super[key];
-    }
-  }
+  String toString() => '[$i, $j] "$token", matchedWord: "$matchedWord", '
+      'rank: $rank, dictionary: $dictionary, '
+      'levenshteinDistance: $levenshteinDistance, '
+      'levenshteinDistanceEntry: $levenshteinDistanceEntry';
+
+  ReverseMatch toReverseMatch(String password) => ReverseMatch(
+        i: password.length - 1 - j,
+        j: password.length - 1 - i,
+        token: token.split('').reversed.join(''),
+        matchedWord: matchedWord,
+        rank: rank,
+        dictionary: dictionary,
+        levenshteinDistance: levenshteinDistance,
+        levenshteinDistanceEntry: levenshteinDistanceEntry,
+      );
+
+  L33tMatch toL33tMatch({
+    int? j,
+    required String token,
+    required List<PasswordChange> changes,
+    required String changesDisplay,
+  }) =>
+      L33tMatch(
+        i: i,
+        j: j ?? this.j,
+        token: token,
+        matchedWord: matchedWord,
+        rank: rank,
+        dictionary: dictionary,
+        levenshteinDistance: levenshteinDistance,
+        levenshteinDistanceEntry: levenshteinDistanceEntry,
+        changes: changes,
+        changesDisplay: changesDisplay,
+      );
+}
+
+class ReverseMatch extends DictionaryMatch {
+  const ReverseMatch({
+    required int i,
+    required int j,
+    required String token,
+    required String matchedWord,
+    required int rank,
+    required Dictionary dictionary,
+    int? levenshteinDistance,
+    String? levenshteinDistanceEntry,
+  }) : super(
+          i: i,
+          j: j,
+          token: token,
+          matchedWord: matchedWord,
+          rank: rank,
+          dictionary: dictionary,
+          levenshteinDistance: levenshteinDistance,
+          levenshteinDistanceEntry: levenshteinDistanceEntry,
+        );
 }
 
 class L33tMatch extends DictionaryMatch {
@@ -220,35 +251,44 @@ class L33tMatch extends DictionaryMatch {
     required String token,
     required String matchedWord,
     required int rank,
-    required DictionaryNames dictionaryName,
-    required bool reversed,
-    required this.subs,
-    required this.subDisplay,
+    required Dictionary dictionary,
+    int? levenshteinDistance,
+    String? levenshteinDistanceEntry,
+    required this.changes,
+    required this.changesDisplay,
   }) : super(
           i: i,
           j: j,
           token: token,
           matchedWord: matchedWord,
           rank: rank,
-          dictionaryName: dictionaryName,
-          reversed: reversed,
-          l33t: true,
+          dictionary: dictionary,
+          levenshteinDistance: levenshteinDistance,
+          levenshteinDistanceEntry: levenshteinDistanceEntry,
         );
 
-  final List<PasswordChanges> subs;
-  final String subDisplay;
+  final List<PasswordChange> changes;
+  final String changesDisplay;
 
   @override
-  Object? operator [](String key) {
-    switch (key) {
-      case 'subs':
-        return subs;
-      case 'subDisplay':
-        return subDisplay;
-      default:
-        return super[key];
-    }
-  }
+  String toString() => '[$i, $j] "$token", matchedWord: "$matchedWord", '
+      'rank: $rank, dictionary: $dictionary,'
+      'levenshteinDistance: $levenshteinDistance, '
+      'levenshteinDistanceEntry: $levenshteinDistanceEntry, changes: $changes, '
+      'changesDisplay: $changesDisplay';
+
+  // changes are ignored.
+  bool isDuplicateOf(Object other) =>
+      other is L33tMatch &&
+      i == other.i &&
+      j == other.j &&
+      token == other.token &&
+      matchedWord == other.matchedWord &&
+      rank == other.rank &&
+      dictionary == other.dictionary &&
+      levenshteinDistance == other.levenshteinDistance &&
+      levenshteinDistanceEntry == other.levenshteinDistanceEntry &&
+      changesDisplay == other.changesDisplay;
 }
 
 class SpatialMatch extends Match {
@@ -259,25 +299,11 @@ class SpatialMatch extends Match {
     required this.graph,
     required this.turns,
     required this.shiftedCount,
-  }) : super._(pattern: Pattern.spatial, i: i, j: j, token: token);
+  }) : super._(i: i, j: j, token: token);
 
   final String graph;
   final int turns;
   final int shiftedCount;
-
-  @override
-  Object? operator [](String key) {
-    switch (key) {
-      case 'graph':
-        return graph;
-      case 'turns':
-        return turns;
-      case 'shiftedCount':
-        return shiftedCount;
-      default:
-        return super[key];
-    }
-  }
 }
 
 class RepeatMatch extends Match {
@@ -288,25 +314,11 @@ class RepeatMatch extends Match {
     required this.baseToken,
     required this.baseGuesses,
     required this.repeatCount,
-  }) : super._(pattern: Pattern.repeat, i: i, j: j, token: token);
+  }) : super._(i: i, j: j, token: token);
 
   final String baseToken;
   final int baseGuesses;
   final int repeatCount;
-
-  @override
-  Object? operator [](String key) {
-    switch (key) {
-      case 'baseToken':
-        return baseToken;
-      case 'baseGuesses':
-        return baseGuesses;
-      case 'repeatCount':
-        return repeatCount;
-      default:
-        return super[key];
-    }
-  }
 }
 
 class SequenceMatch extends Match {
@@ -317,25 +329,11 @@ class SequenceMatch extends Match {
     required this.sequenceName,
     required this.sequenceSpace,
     required this.ascending,
-  }) : super._(pattern: Pattern.sequence, i: i, j: j, token: token);
+  }) : super._(i: i, j: j, token: token);
 
   final String sequenceName;
   final int sequenceSpace;
   final bool ascending;
-
-  @override
-  Object? operator [](String key) {
-    switch (key) {
-      case 'sequenceName':
-        return sequenceName;
-      case 'sequenceSpace':
-        return sequenceSpace;
-      case 'ascending':
-        return ascending;
-      default:
-        return super[key];
-    }
-  }
 }
 
 class RegexMatch extends Match {
@@ -345,22 +343,10 @@ class RegexMatch extends Match {
     required String token,
     required this.regexName,
     required this.regexMatch,
-  }) : super._(pattern: Pattern.regex, i: i, j: j, token: token);
+  }) : super._(i: i, j: j, token: token);
 
   final String regexName;
   final List<String> regexMatch;
-
-  @override
-  Object? operator [](String key) {
-    switch (key) {
-      case 'regexName':
-        return regexName;
-      case 'regexMatch':
-        return regexMatch;
-      default:
-        return super[key];
-    }
-  }
 }
 
 class DateMatch extends Match {
@@ -372,7 +358,7 @@ class DateMatch extends Match {
     required this.year,
     required this.month,
     required this.day,
-  }) : super._(pattern: Pattern.date, i: i, j: j, token: token);
+  }) : super._(i: i, j: j, token: token);
 
   final String separator;
   final int year;
@@ -380,20 +366,8 @@ class DateMatch extends Match {
   final int day;
 
   @override
-  Object? operator [](String key) {
-    switch (key) {
-      case 'separator':
-        return separator;
-      case 'year':
-        return year;
-      case 'month':
-        return month;
-      case 'day':
-        return day;
-      default:
-        return super[key];
-    }
-  }
+  String toString() => '[$i, $j] "$token", separator: "$separator", '
+      'date: $year-$month-$day';
 }
 
 class BruteForceMatch extends Match {
@@ -401,7 +375,7 @@ class BruteForceMatch extends Match {
     required int i,
     required int j,
     required String token,
-  }) : super._(pattern: Pattern.bruteforce, i: i, j: j, token: token);
+  }) : super._(i: i, j: j, token: token);
 }
 
 class SeparatorMatch extends Match {
@@ -409,12 +383,11 @@ class SeparatorMatch extends Match {
     required int i,
     required int j,
     required String token,
-  }) : super._(pattern: Pattern.separator, i: i, j: j, token: token);
+  }) : super._(i: i, j: j, token: token);
 }
 
 class MatchEstimated extends Match {
   const MatchEstimated._({
-    required Pattern pattern,
     required int i,
     required int j,
     required String token,
@@ -424,7 +397,6 @@ class MatchEstimated extends Match {
     this.uppercaseVariations,
     this.l33tVariations,
   }) : super._(
-          pattern: pattern,
           i: i,
           j: j,
           token: token,
@@ -445,9 +417,9 @@ class DictionaryMatchEstimated extends DictionaryMatch
     required String token,
     required String matchedWord,
     required int rank,
-    required DictionaryNames dictionaryName,
-    required bool reversed,
-    required bool l33t,
+    required Dictionary dictionary,
+    int? levenshteinDistance,
+    String? levenshteinDistanceEntry,
     required this.guesses,
     required this.guessesLog10,
     this.baseGuesses,
@@ -459,9 +431,47 @@ class DictionaryMatchEstimated extends DictionaryMatch
           token: token,
           matchedWord: matchedWord,
           rank: rank,
-          dictionaryName: dictionaryName,
-          reversed: reversed,
-          l33t: l33t,
+          dictionary: dictionary,
+          levenshteinDistance: levenshteinDistance,
+          levenshteinDistanceEntry: levenshteinDistanceEntry,
+        );
+
+  @override
+  final double guesses;
+  @override
+  final double guessesLog10;
+  @override
+  final int? baseGuesses;
+  @override
+  final int? uppercaseVariations;
+  @override
+  final int? l33tVariations;
+}
+
+class ReverseMatchEstimated extends ReverseMatch implements MatchEstimated {
+  const ReverseMatchEstimated({
+    required int i,
+    required int j,
+    required String token,
+    required String matchedWord,
+    required int rank,
+    required Dictionary dictionary,
+    int? levenshteinDistance,
+    String? levenshteinDistanceEntry,
+    required this.guesses,
+    required this.guessesLog10,
+    this.baseGuesses,
+    this.uppercaseVariations,
+    this.l33tVariations,
+  }) : super(
+          i: i,
+          j: j,
+          token: token,
+          matchedWord: matchedWord,
+          rank: rank,
+          dictionary: dictionary,
+          levenshteinDistance: levenshteinDistance,
+          levenshteinDistanceEntry: levenshteinDistanceEntry,
         );
 
   @override
@@ -483,10 +493,11 @@ class L33tMatchEstimated extends L33tMatch implements MatchEstimated {
     required String token,
     required String matchedWord,
     required int rank,
-    required DictionaryNames dictionaryName,
-    required bool reversed,
-    required List<PasswordChanges> subs,
-    required String subDisplay,
+    required Dictionary dictionary,
+    int? levenshteinDistance,
+    String? levenshteinDistanceEntry,
+    required List<PasswordChange> changes,
+    required String changesDisplay,
     required this.guesses,
     required this.guessesLog10,
     this.baseGuesses,
@@ -498,10 +509,11 @@ class L33tMatchEstimated extends L33tMatch implements MatchEstimated {
           token: token,
           matchedWord: matchedWord,
           rank: rank,
-          dictionaryName: dictionaryName,
-          reversed: reversed,
-          subs: subs,
-          subDisplay: subDisplay,
+          dictionary: dictionary,
+          levenshteinDistance: levenshteinDistance,
+          levenshteinDistanceEntry: levenshteinDistanceEntry,
+          changes: changes,
+          changesDisplay: changesDisplay,
         );
 
   @override
@@ -695,7 +707,6 @@ class BruteForceMatchEstimated extends MatchEstimated
     int? uppercaseVariations,
     int? l33tVariations,
   }) : super._(
-          pattern: Pattern.bruteforce,
           i: i,
           j: j,
           token: token,
@@ -718,7 +729,6 @@ class SeparatorMatchEstimated extends MatchEstimated implements SeparatorMatch {
     int? uppercaseVariations,
     int? l33tVariations,
   }) : super._(
-          pattern: Pattern.separator,
           i: i,
           j: j,
           token: token,
@@ -730,31 +740,115 @@ class SeparatorMatchEstimated extends MatchEstimated implements SeparatorMatch {
         );
 }
 
-class FeedbackType {
-  FeedbackType({
-    this.warning,
-    List<String>? suggestions,
-  }) : suggestions = suggestions ?? <String>[];
-
-  String? warning;
-  List<String> suggestions;
-}
-
-typedef OptionsL33tTable = L33tTableDefault;
-
-class OptionsType {
-  const OptionsType({
-    this.translations,
+class Optimal {
+  const Optimal({
+    required this.m,
+    required this.pi,
+    required this.g,
   });
 
-  /// Defines an object with a key value match to translate the feedback
-  /// given by this library. The default values are plain keys so that you
-  /// can use your own i18n library. Already implemented language can be
-  /// found with something like @zxcvbn-ts/language-en.
-  final TranslationKeys? translations;
+  final Match m;
+  final Match pi;
+  final Match g;
 }
 
-typedef DefaultFeedbackFunction = FeedbackType? Function({
+class CrackTimesSeconds {
+  const CrackTimesSeconds({
+    required this.onlineThrottling100PerHour,
+    required this.onlineNoThrottling10PerSecond,
+    required this.offlineSlowHashing1e4PerSecond,
+    required this.offlineFastHashing1e10PerSecond,
+  });
+
+  final int onlineThrottling100PerHour;
+  final int onlineNoThrottling10PerSecond;
+  final int offlineSlowHashing1e4PerSecond;
+  final int offlineFastHashing1e10PerSecond;
+}
+
+class CrackTimesDisplay {
+  const CrackTimesDisplay({
+    required this.onlineThrottling100PerHour,
+    required this.onlineNoThrottling10PerSecond,
+    required this.offlineSlowHashing1e4PerSecond,
+    required this.offlineFastHashing1e10PerSecond,
+  });
+
+  final String onlineThrottling100PerHour;
+  final String onlineNoThrottling10PerSecond;
+  final String offlineSlowHashing1e4PerSecond;
+  final String offlineFastHashing1e10PerSecond;
+}
+
+class Feedback {
+  const Feedback({
+    this.warning,
+    List<String>? suggestions,
+  }) : suggestions = suggestions ?? const <String>[];
+
+  final String? warning;
+  final List<String> suggestions;
+}
+
+typedef Dictionaries = Map<Dictionary, List<Object>>;
+
+typedef GraphEntry = Map<String, List<String?>>;
+
+typedef Graph = Map<String, GraphEntry>;
+
+typedef RankedDictionary = Map<String, int>;
+
+typedef RankedDictionaries = Map<Dictionary, RankedDictionary>;
+
+typedef DefaultFeedbackFunction = Feedback? Function({
   required MatchEstimated match,
+  required Options options,
   bool? isSoleMatch,
 });
+
+typedef DefaultScoringFunction = DictionaryReturn Function(Match match);
+
+abstract class MatchingType {
+  FutureOr<List<Match>> match({
+    required String password,
+    required Matching omniMatch,
+  });
+}
+
+class Matcher {
+  const Matcher({
+    required this.feedback,
+    required this.scoring,
+    required this.matching,
+  });
+
+  final DefaultFeedbackFunction feedback;
+  final DefaultScoringFunction scoring;
+  final MatchingType matching;
+}
+
+typedef Matchers = Map<String, Matcher>;
+
+class Result {
+  const Result({
+    required this.feedback,
+    required this.crackTimesSeconds,
+    required this.crackTimesDisplay,
+    required this.score,
+    required this.password,
+    required this.guesses,
+    required this.guessesLog10,
+    required this.sequence,
+    required this.calcTime,
+  });
+
+  final Feedback feedback;
+  final CrackTimesSeconds crackTimesSeconds;
+  final CrackTimesDisplay crackTimesDisplay;
+  final int score;
+  final String password;
+  final double guesses;
+  final double guessesLog10;
+  final List<Match> sequence;
+  final int calcTime;
+}
