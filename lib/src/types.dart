@@ -346,7 +346,11 @@ class RegexMatch extends Match {
   }) : super._(i: i, j: j, token: token);
 
   final String regexName;
-  final List<String> regexMatch;
+  final RegExpMatch regexMatch;
+
+  @override
+  String toString() => '[$i, $j] "$token", regexName: "$regexName", '
+      'regexMatch: [${regexMatch.start}, ${regexMatch.end}] "${regexMatch[0]}"';
 }
 
 class DateMatch extends Match {
@@ -633,7 +637,7 @@ class RegexMatchEstimated extends RegexMatch implements MatchEstimated {
     required int j,
     required String token,
     required String regexName,
-    required List<String> regexMatch,
+    required RegExpMatch regexMatch,
     required this.guesses,
     required this.guessesLog10,
     this.baseGuesses,
