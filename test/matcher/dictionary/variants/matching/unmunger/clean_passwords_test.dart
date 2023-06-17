@@ -38,7 +38,7 @@ void main() {
       <String, List<String>>{
         'a': <String>['@', '4'],
         'f': <String>['v'],
-        'm': <String>['^^', 'nn', '2n', r'/\/\'],
+        'm': <String>['^^', 'nn', '2n', r'/\\/\\'],
         'u': <String>['|_|', 'v'],
         'w': <String>['vv'],
         'fi': <String>['ﬁ'],

@@ -31,7 +31,7 @@ void main() {
           <String, List<String>>{
             'a': <String>['@', '4'],
             'f': <String>['v'],
-            'm': <String>['^^', 'nn', '2n', r'/\/\'],
+            'm': <String>['^^', 'nn', '2n', r'/\\/\\'],
             'u': <String>['|_|', 'v'],
             'w': <String>['vv'],
           },
@@ -90,12 +90,22 @@ void main() {
                 r'\': TrieNodeTest(
                   l33t: r'/\',
                   children: <String, TrieNodeTest>{
-                    '/': TrieNodeTest(
-                      l33t: r'/\/',
+                    r'\': TrieNodeTest(
+                      l33t: r'/\\',
                       children: <String, TrieNodeTest>{
-                        r'\': TrieNodeTest(
-                          l33t: r'/\/\',
-                          cleanList: <String>['m'],
+                        '/': TrieNodeTest(
+                          l33t: r'/\\/',
+                          children: <String, TrieNodeTest>{
+                            r'\': TrieNodeTest(
+                              l33t: r'/\\/\',
+                              children: <String, TrieNodeTest>{
+                                r'\': TrieNodeTest(
+                                  l33t: r'/\\/\\',
+                                  cleanList: <String>['m'],
+                                ),
+                              },
+                            ),
+                          },
                         ),
                       },
                     ),

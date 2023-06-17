@@ -31,15 +31,23 @@ class MatchL33t {
         if (!hasFullMatch) {
           hasFullMatch = match.i == 0 && match.j == password.length - 1;
         }
+        final Iterable<IndexedPasswordChange> previousChanges =
+            cleanedPassword.changes.where((IndexedPasswordChange changes) {
+          return changes.i < match.i;
+        });
+        final int i = previousChanges.fold(match.i,
+            (int val, IndexedPasswordChange change) {
+          return val - change.clean.length + change.l33t.length;
+        });
         final Iterable<IndexedPasswordChange> usedChanges =
             cleanedPassword.changes.where((IndexedPasswordChange changes) {
           return changes.i >= match.i && changes.i <= match.j;
         });
-        final int j =
-            usedChanges.fold(match.j, (int val, IndexedPasswordChange change) {
+        final int j = usedChanges.fold(match.j - match.i + i,
+            (int val, IndexedPasswordChange change) {
           return val - change.clean.length + change.l33t.length;
         });
-        final String token = password.substring(match.i, j + 1);
+        final String token = password.substring(i, j + 1);
         final Set<String> seen = <String>{};
         // Filter duplicates.
         final List<PasswordChange> changes = <PasswordChange>[
@@ -51,6 +59,7 @@ class MatchL33t {
               )
         ];
         final L33tMatch newMatch = match.toL33tMatch(
+          i: i,
           j: j,
           token: token,
           changes: changes,

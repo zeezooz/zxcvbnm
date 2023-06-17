@@ -52,6 +52,7 @@ void main() {
       final MatchDictionary matchDictionary = MatchDictionary(options);
       final MatchL33t matchL33t =
           MatchL33t(matchDictionary.defaultMatch, options);
+
       test(
         "Doesn't match single-character l33ted words.",
         () => expect(matchL33t.match('4 1 @'), <L33tMatchTest>[]),
@@ -182,11 +183,11 @@ void main() {
             ],
           );
           expect(
-            matchL33t.match('(()mp|_|ter'),
+            matchL33t.match('|_|(()mp|_|ter'),
             <L33tMatchTest>[
               L33tMatchTest(
-                i: 0,
-                j: 10,
+                i: 3,
+                j: 13,
                 token: '(()mp|_|ter',
                 matchedWord: 'computer',
                 rank: 5,
@@ -210,11 +211,11 @@ void main() {
             ],
           );
           expect(
-            matchL33t.match('p@ciﬁc'),
+            matchL33t.match('ﬁp@ciﬁc'),
             <L33tMatchTest>[
               L33tMatchTest(
-                i: 0,
-                j: 5,
+                i: 1,
+                j: 6,
                 token: 'p@ciﬁc',
                 matchedWord: 'pacific',
                 rank: 6,
