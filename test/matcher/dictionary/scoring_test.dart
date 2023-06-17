@@ -31,24 +31,25 @@ void main() {
   group('Dictionary scoring.', () {
     test(
       'Base guesses == the rank.',
-      () => expect(
-        dictionaryScoring(
-          DictionaryMatch(
-            i: 0,
-            j: 4,
-            token: 'aaaaa',
-            matchedWord: 'aaaaa',
-            rank: 32,
-            dictionary: Dictionary.commonWords,
+      () {
+        const DictionaryMatch match = DictionaryMatch(
+          i: 0,
+          j: 4,
+          token: 'aaaaa',
+          matchedWord: 'aaaaa',
+          rank: 32,
+          dictionary: Dictionary.commonWords,
+        );
+        expect(
+          dictionaryScoring(match),
+          DictionaryReturnTest(
+            baseGuesses: 32,
+            uppercaseVariations: 1,
+            l33tVariations: 1,
+            calculation: 32,
           ),
-        ),
-        DictionaryReturnTest(
-          baseGuesses: 32,
-          uppercaseVariations: 1,
-          l33tVariations: 1,
-          calculation: 32,
-        ),
-      ),
+        );
+      },
     );
 
     test(
@@ -76,24 +77,25 @@ void main() {
 
     test(
       'Guesses are doubled when word is reversed.',
-      () => expect(
-        dictionaryScoring(
-          ReverseMatch(
-            i: 0,
-            j: 2,
-            token: 'aaa',
-            matchedWord: 'aaa',
-            rank: 32,
-            dictionary: Dictionary.commonWords,
+      () {
+        const ReverseMatch match = ReverseMatch(
+          i: 0,
+          j: 2,
+          token: 'aaa',
+          matchedWord: 'aaa',
+          rank: 32,
+          dictionary: Dictionary.commonWords,
+        );
+        expect(
+          dictionaryScoring(match),
+          DictionaryReturnTest(
+            baseGuesses: 32,
+            uppercaseVariations: 1,
+            l33tVariations: 1,
+            calculation: 32 * 2,
           ),
-        ),
-        DictionaryReturnTest(
-          baseGuesses: 32,
-          uppercaseVariations: 1,
-          l33tVariations: 1,
-          calculation: 32 * 2,
-        ),
-      ),
+        );
+      },
     );
 
     test(
@@ -148,24 +150,25 @@ void main() {
 
     test(
       'Special scoring for diceware findings.',
-      () => expect(
-        dictionaryScoring(
-          DictionaryMatch(
-            i: 0,
-            j: 5,
-            token: 'AaA@@@',
-            matchedWord: 'AaA@@@',
-            rank: 32,
-            dictionary: Dictionary.diceware,
+      () {
+        const DictionaryMatch match = DictionaryMatch(
+          i: 0,
+          j: 5,
+          token: 'AaA@@@',
+          matchedWord: 'AaA@@@',
+          rank: 32,
+          dictionary: Dictionary.diceware,
+        );
+        expect(
+          dictionaryScoring(match),
+          DictionaryReturnTest(
+            baseGuesses: 32,
+            uppercaseVariations: 3,
+            l33tVariations: 1,
+            calculation: 3888,
           ),
-        ),
-        DictionaryReturnTest(
-          baseGuesses: 32,
-          uppercaseVariations: 3,
-          l33tVariations: 1,
-          calculation: 3888,
-        ),
-      ),
+        );
+      },
     );
   });
 }

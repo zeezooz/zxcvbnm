@@ -6,7 +6,7 @@ import 'package:zxcvbnm/src/types.dart';
 void main() {
   group('Date scoring.', () {
     test(
-      'Guesses for 1123 is 365 * distance_from_ref_year.',
+      'Guesses for 1123.',
       () {
         const DateMatch match = DateMatch(
           i: 0,
@@ -23,20 +23,18 @@ void main() {
 
     test(
       'Recent years assume minYearSpace. extra guesses are added for separators.',
-      () => expect(
-        dateScoring(
-          DateMatch(
-            i: 0,
-            j: 0,
-            token: '1/1/2020',
-            separator: '/',
-            year: 2020,
-            month: 1,
-            day: 1,
-          ),
-        ),
-        365 * minYearSpace * 4,
-      ),
+      () {
+        const DateMatch match = DateMatch(
+          i: 0,
+          j: 0,
+          token: '1/1/2020',
+          separator: '/',
+          year: 2020,
+          month: 1,
+          day: 1,
+        );
+        expect(dateScoring(match), 365 * minYearSpace * 4);
+      },
     );
   });
 }

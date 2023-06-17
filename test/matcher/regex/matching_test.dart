@@ -32,51 +32,65 @@ class RegexMatchTest extends RegexMatch {
 
 void main() {
   group('Regex matching.', () {
-    const List<List<String>> data = <List<String>>[
-      <String>['1922', 'recentYear'],
-      <String>['2017', 'recentYear'],
-    ];
     final MatchRegex matchRegex = MatchRegex();
-    for (final List<String> item in data) {
-      final String pattern = item[0];
-      final String name = item[1];
-      test(
-        'Matches $pattern as a $name pattern.',
-        () {
-          expect(
-            matchRegex.match(pattern),
-            <RegexMatchTest>[
-              RegexMatchTest(
-                i: 0,
-                j: pattern.length - 1,
-                token: pattern,
-                regexName: name,
-                regexMatch: RegExp('.*').firstMatch(pattern)!,
-              ),
-            ],
-          );
-        },
-      );
-    }
+
     test(
-      'Matches recentYear pattern multiple times.',
+      'Matches 1922 as a recentYear pattern.',
+      () {
+        const String pattern = '1922';
+        expect(
+          matchRegex.match(pattern),
+          <RegexMatchTest>[
+            RegexMatchTest(
+              i: 0,
+              j: pattern.length - 1,
+              token: pattern,
+              regexName: 'recentYear',
+              regexMatch: RegExp('.*').firstMatch(pattern)!,
+            ),
+          ],
+        );
+      },
+    );
+
+    test(
+      'Matches 2017 as a recentYear pattern.',
+      () {
+        const String pattern = '2017';
+        expect(
+          matchRegex.match(pattern),
+          <RegexMatchTest>[
+            RegexMatchTest(
+              i: 0,
+              j: pattern.length - 1,
+              token: pattern,
+              regexName: 'recentYear',
+              regexMatch: RegExp('.*').firstMatch(pattern)!,
+            ),
+          ],
+        );
+      },
+    );
+
+    test(
+      'Matches 2016-2015 as a recentYear pattern.',
       () {
         expect(
-          matchRegex.match('1922-2017'),
+          matchRegex.match('2016-2015'),
           <RegexMatchTest>[
             RegexMatchTest(
               i: 0,
               j: 3,
-              token: '1922',
+              token: '2016',
               regexName: 'recentYear',
-              regexMatch: RegExp('.*').firstMatch('1922')!,
+              regexMatch: RegExp('.*').firstMatch('2016')!,
             ),
             RegexMatchTest(
               i: 5,
               j: 8,
-              token: '2017',
+              token: '2015',
               regexName: 'recentYear',
-              regexMatch: RegExp(r'\d+').firstMatch('-----2017')!,
+              regexMatch: RegExp(r'\d+').firstMatch('-----2015')!,
             ),
           ],
         );

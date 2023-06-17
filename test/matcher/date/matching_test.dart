@@ -180,30 +180,32 @@ void main() {
       },
     );
 
-    const List<String> prefixes = <String>['a', 'ab'];
-    const List<String> suffixes = <String>['!'];
-    const String pattern = '1/1/91';
-    final List<IndexedPassword> passwords =
-        generatePasswords(pattern, prefixes, suffixes);
-    for (final IndexedPassword password in passwords) {
-      test(
-        'Matches embedded dates.',
-        () => expect(
-          matchDate.match(password.password),
-          <DateMatchTest>[
-            DateMatchTest(
-              i: password.i,
-              j: password.j,
-              token: pattern,
-              separator: '/',
-              year: 1991,
-              month: 1,
-              day: 1,
-            ),
-          ],
-        ),
-      );
-    }
+    test(
+      'Matches embedded dates.',
+      () {
+        const List<String> prefixes = <String>['a', 'ab'];
+        const List<String> suffixes = <String>['!'];
+        const String pattern = '1/1/91';
+        final List<IndexedPassword> passwords =
+            generatePasswords(pattern, prefixes, suffixes);
+        for (final IndexedPassword password in passwords) {
+          expect(
+            matchDate.match(password.password),
+            <DateMatchTest>[
+              DateMatchTest(
+                i: password.i,
+                j: password.j,
+                token: pattern,
+                separator: '/',
+                year: 1991,
+                month: 1,
+                day: 1,
+              ),
+            ],
+          );
+        }
+      },
+    );
 
     test(
       'Matches overlapping dates.',
