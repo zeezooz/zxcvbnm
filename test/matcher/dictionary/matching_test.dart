@@ -46,22 +46,64 @@ void main() {
     group('Default dictionaries.', () {
       final Options options = Options(dictionaries: dictionaries);
       final MatchDictionary matchDictionary = MatchDictionary(options);
-      final List<DictionaryMatch> matches = matchDictionary
-          .match('we')
-          .where((DictionaryMatch match) => match is! ReverseMatch)
-          .toList();
+
       test(
         'Default dictionaries.',
-        () => expect(matches, <DictionaryMatchTest>[
-          DictionaryMatchTest(
-            i: 0,
-            j: 1,
-            token: 'we',
-            matchedWord: 'we',
-            rank: 13,
-            dictionary: Dictionary.commonWords,
-          ),
-        ]),
+        () {
+          final List<DictionaryMatch> matches = matchDictionary
+              .match('we')
+              .where((DictionaryMatch match) => match is! ReverseMatch)
+              .toList();
+          expect(matches, <DictionaryMatchTest>[
+            DictionaryMatchTest(
+              i: 0,
+              j: 1,
+              token: 'we',
+              matchedWord: 'we',
+              rank: 13,
+              dictionary: Dictionary.commonWords,
+            ),
+          ]);
+        },
+      );
+
+      test(
+        'Default dictionaries with duplicates.',
+        () {
+          final List<DictionaryMatch> matches = matchDictionary
+              .match('elk')
+              .where((DictionaryMatch match) => match is! ReverseMatch)
+              .toList();
+          expect(
+            matches,
+            <DictionaryMatchTest>[
+              DictionaryMatchTest(
+                i: 0,
+                j: 1,
+                token: 'el',
+                matchedWord: 'el',
+                rank: 2967,
+                dictionary: Dictionary.commonWords,
+              ),
+              DictionaryMatchTest(
+                i: 0,
+                j: 2,
+                token: 'elk',
+                matchedWord: 'elk',
+                rank: 2167,
+                dictionary: Dictionary.diceware,
+              ),
+              DictionaryMatchTest(
+                i: 0,
+                j: 2,
+                token: 'elk',
+                matchedWord: 'elk',
+                rank: 16651,
+                dictionary: Dictionary.commonWords,
+              ),
+            ],
+          );
+        },
       );
     });
 
@@ -86,116 +128,134 @@ void main() {
 
       test(
         'Matches words that contain other words.',
-        () => expect(match('motherboard'), <DictionaryMatchTest>[
-          DictionaryMatchTest(
-            i: 0,
-            j: 5,
-            token: 'mother',
-            matchedWord: 'mother',
-            rank: 2,
-            dictionary: Dictionary.commonWords,
-          ),
-          DictionaryMatchTest(
-            i: 0,
-            j: 10,
-            token: 'motherboard',
-            matchedWord: 'motherboard',
-            rank: 1,
-            dictionary: Dictionary.commonWords,
-          ),
-          DictionaryMatchTest(
-            i: 6,
-            j: 10,
-            token: 'board',
-            matchedWord: 'board',
-            rank: 3,
-            dictionary: Dictionary.commonWords,
-          ),
-        ]),
+        () => expect(
+          match('motherboard'),
+          <DictionaryMatchTest>[
+            DictionaryMatchTest(
+              i: 0,
+              j: 5,
+              token: 'mother',
+              matchedWord: 'mother',
+              rank: 2,
+              dictionary: Dictionary.commonWords,
+            ),
+            DictionaryMatchTest(
+              i: 0,
+              j: 10,
+              token: 'motherboard',
+              matchedWord: 'motherboard',
+              rank: 1,
+              dictionary: Dictionary.commonWords,
+            ),
+            DictionaryMatchTest(
+              i: 6,
+              j: 10,
+              token: 'board',
+              matchedWord: 'board',
+              rank: 3,
+              dictionary: Dictionary.commonWords,
+            ),
+          ],
+        ),
       );
 
       test(
         'Matches multiple words when they overlap.',
-        () => expect(match('abcdef'), <DictionaryMatchTest>[
-          DictionaryMatchTest(
-            i: 0,
-            j: 3,
-            token: 'abcd',
-            matchedWord: 'abcd',
-            rank: 4,
-            dictionary: Dictionary.commonWords,
-          ),
-          DictionaryMatchTest(
-            i: 2,
-            j: 5,
-            token: 'cdef',
-            matchedWord: 'cdef',
-            rank: 5,
-            dictionary: Dictionary.commonWords,
-          ),
-        ]),
+        () => expect(
+          match('abcdef'),
+          <DictionaryMatchTest>[
+            DictionaryMatchTest(
+              i: 0,
+              j: 3,
+              token: 'abcd',
+              matchedWord: 'abcd',
+              rank: 4,
+              dictionary: Dictionary.commonWords,
+            ),
+            DictionaryMatchTest(
+              i: 2,
+              j: 5,
+              token: 'cdef',
+              matchedWord: 'cdef',
+              rank: 5,
+              dictionary: Dictionary.commonWords,
+            ),
+          ],
+        ),
       );
 
       test(
         'Ignores uppercase.',
-        () => expect(match('BoaRdZ'), <DictionaryMatchTest>[
-          DictionaryMatchTest(
-            i: 0,
-            j: 4,
-            token: 'BoaRd',
-            matchedWord: 'board',
-            rank: 3,
-            dictionary: Dictionary.commonWords,
-          ),
-          DictionaryMatchTest(
-            i: 5,
-            j: 5,
-            token: 'Z',
-            matchedWord: 'z',
-            rank: 1,
-            dictionary: Dictionary.passwords,
-          ),
-        ]),
+        () => expect(
+          match('BoaRdZ'),
+          <DictionaryMatchTest>[
+            DictionaryMatchTest(
+              i: 0,
+              j: 4,
+              token: 'BoaRd',
+              matchedWord: 'board',
+              rank: 3,
+              dictionary: Dictionary.commonWords,
+            ),
+            DictionaryMatchTest(
+              i: 5,
+              j: 5,
+              token: 'Z',
+              matchedWord: 'z',
+              rank: 1,
+              dictionary: Dictionary.passwords,
+            ),
+          ],
+        ),
       );
 
-      const List<String> prefixes = <String>['q', '%%'];
-      const List<String> suffixes = <String>['%', 'qq'];
-      const String pattern = 'asdf1234&*';
-      final List<IndexedPassword> passwords =
-          generatePasswords(pattern, prefixes, suffixes);
-      for (final IndexedPassword password in passwords) {
-        test(
-          'Identifies words surrounded by non-words.',
-          () => expect(match(password.password), <DictionaryMatchTest>[
-            DictionaryMatchTest(
-              i: password.i,
-              j: password.j,
-              token: pattern,
-              matchedWord: pattern,
-              rank: 5,
-              dictionary: Dictionary.passwords,
-            )
-          ]),
-        );
-      }
-
-      options.rankedDictionaries.forEach(
-        (Dictionary dictionary, RankedDictionary rankedDictionary) {
-          rankedDictionary.forEach((String word, int rank) {
-            if (word == 'motherboard') return;
-            test(
-              'Matches against all words in provided dictionaries.',
-              () => expect(match(word), <DictionaryMatchTest>[
+      test(
+        'Identifies words surrounded by non-words.',
+        () {
+          const List<String> prefixes = <String>['q', '%%'];
+          const List<String> suffixes = <String>['%', 'qq'];
+          const String pattern = 'asdf1234&*';
+          final List<IndexedPassword> passwords =
+              generatePasswords(pattern, prefixes, suffixes);
+          for (final IndexedPassword password in passwords) {
+            expect(
+              match(password.password),
+              <DictionaryMatchTest>[
                 DictionaryMatchTest(
-                  i: 0,
-                  j: word.length - 1,
-                  token: word,
-                  matchedWord: word,
-                  rank: rank,
-                  dictionary: dictionary,
+                  i: password.i,
+                  j: password.j,
+                  token: pattern,
+                  matchedWord: pattern,
+                  rank: 5,
+                  dictionary: Dictionary.passwords,
                 )
-              ]),
+              ],
             );
+          }
+        },
+      );
+
+      test(
+        'Matches against all words in provided dictionaries.',
+        () {
+          options.rankedDictionaries.forEach(
+              (Dictionary dictionary, RankedDictionary rankedDictionary) {
+            rankedDictionary.forEach((String word, int rank) {
+              if (word == 'motherboard') return;
+              expect(
+                match(word),
+                <DictionaryMatchTest>[
+                  DictionaryMatchTest(
+                    i: 0,
+                    j: word.length - 1,
+                    token: word,
+                    matchedWord: word,
+                    rank: rank,
+                    dictionary: dictionary,
+                  )
+                ],
+              );
+            });
           });
         },
       );
@@ -208,33 +268,39 @@ void main() {
         },
       );
       final MatchDictionary matchDictionary = MatchDictionary(options);
-      final Iterable<DictionaryMatch> matches = matchDictionary
-          .match('foobar')
-          .where(
-            (DictionaryMatch match) =>
-                match.dictionary == Dictionary.userInputs,
-          )
-          .toList();
+
       test(
         'Matches with provided user input dictionary.',
-        () => expect(matches, <DictionaryMatchTest>[
-          DictionaryMatchTest(
-            i: 0,
-            j: 2,
-            token: 'foo',
-            matchedWord: 'foo',
-            rank: 1,
-            dictionary: Dictionary.userInputs,
-          ),
-          DictionaryMatchTest(
-            i: 3,
-            j: 5,
-            token: 'bar',
-            matchedWord: 'bar',
-            rank: 2,
-            dictionary: Dictionary.userInputs,
-          ),
-        ]),
+        () {
+          final List<DictionaryMatch> matches = matchDictionary
+              .match('foobar')
+              .where(
+                (DictionaryMatch match) =>
+                    match.dictionary == Dictionary.userInputs,
+              )
+              .toList();
+          expect(
+            matches,
+            <DictionaryMatchTest>[
+              DictionaryMatchTest(
+                i: 0,
+                j: 2,
+                token: 'foo',
+                matchedWord: 'foo',
+                rank: 1,
+                dictionary: Dictionary.userInputs,
+              ),
+              DictionaryMatchTest(
+                i: 3,
+                j: 5,
+                token: 'bar',
+                matchedWord: 'bar',
+                rank: 2,
+                dictionary: Dictionary.userInputs,
+              ),
+            ],
+          );
+        },
       );
     });
   });

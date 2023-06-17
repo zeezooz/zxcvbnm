@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import '../../helper.dart';
 import '../../levenshtein.dart';
 import '../../options.dart';
@@ -34,15 +32,21 @@ class MatchDictionary {
     final List<DictionaryMatch> matches = <DictionaryMatch>[];
     final int passwordLength = password.length;
     final String passwordLower = password.toLowerCase();
-    for (final Dictionary dictionary in options.rankedDictionaries.keys) {
-      final RankedDictionary rankedDictionary =
-          options.rankedDictionaries[dictionary]!;
-      final int longestDictionaryWordSize =
-          options.rankedDictionariesMaxWordSize[dictionary]!;
-      final int searchWidth = min(longestDictionaryWordSize, passwordLength);
-      for (int i = 0; i < passwordLength; i += 1) {
-        for (int j = i; j < i + searchWidth && j < passwordLength; j += 1) {
-          final String usedPassword = passwordLower.substring(i, j + 1);
+    for (int i = 0; i < passwordLength; i += 1) {
+      // Whether any dictionary has such a long word.
+      bool fitsDictionaryWordSize = true;
+      for (int j = i; j < passwordLength; j += 1) {
+        if (!fitsDictionaryWordSize) break;
+        fitsDictionaryWordSize = false;
+        final String usedPassword = passwordLower.substring(i, j + 1);
+        DictionaryMatch? tokenMatch;
+        for (final Dictionary dictionary in options.rankedDictionaries.keys) {
+          final int longestDictionaryWordSize =
+              options.rankedDictionariesMaxWordSize[dictionary]!;
+          if (j >= i + longestDictionaryWordSize) continue;
+          fitsDictionaryWordSize = true;
+          final RankedDictionary rankedDictionary =
+              options.rankedDictionaries[dictionary]!;
           final bool isInDictionary =
               rankedDictionary.containsKey(usedPassword);
           LevenshteinDistance? distance;
@@ -65,20 +69,26 @@ class MatchDictionary {
             final String usedRankPassword =
                 isLevenshteinMatch ? distance.entry : usedPassword;
             final int rank = rankedDictionary[usedRankPassword]!;
-            matches.add(
-              DictionaryMatch(
-                i: i,
-                j: j,
-                token: password.substring(i, j + 1),
-                matchedWord: usedPassword,
-                rank: rank,
-                dictionary: dictionary,
-                levenshteinDistance: distance?.distance,
-                levenshteinDistanceEntry: distance?.entry,
-              ),
+            final DictionaryMatch match = DictionaryMatch(
+              i: i,
+              j: j,
+              token: password.substring(i, j + 1),
+              matchedWord: usedPassword,
+              rank: rank,
+              dictionary: dictionary,
+              levenshteinDistance: distance?.distance,
+              levenshteinDistanceEntry: distance?.entry,
             );
+            if (dictionary == Dictionary.diceware) {
+              // Always include matches from diceware because they're scored
+              // differently.
+              matches.add(match);
+            } else if (tokenMatch == null || tokenMatch.rank > match.rank) {
+              tokenMatch = match;
+            }
           }
         }
+        if (tokenMatch != null) matches.add(tokenMatch);
       }
     }
     return matches;
