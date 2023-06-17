@@ -11,6 +11,9 @@ class MatchReverse {
     final String reversedPassword = password.split('').reversed.join('');
     return defaultMatch(reversedPassword)
         .map((DictionaryMatch match) => match.toReverseMatch(password))
-        .toList();
+        .where((ReverseMatch match) {
+      // Ignore palindromes because they're matched as a dictionary match.
+      return match.token.toLowerCase() != match.matchedWord;
+    }).toList();
   }
 }

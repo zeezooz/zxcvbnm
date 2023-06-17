@@ -40,19 +40,20 @@ class ReverseMatchTest extends ReverseMatch {
 }
 
 void main() {
-  final Options options = Options(
-    dictionaries: <Dictionary, List<int>>{
-      Dictionary.passwords: <int>[123, 321, 456, 654],
-    },
-  );
-  final MatchDictionary matchDictionary = MatchDictionary(options);
   group('Dictionary reverse matching.', () {
+    final Options options = Options(
+      dictionaries: <Dictionary, List<int>>{
+        Dictionary.passwords: <int>[123, 321, 456, 654, 999],
+      },
+    );
+    final MatchDictionary matchDictionary = MatchDictionary(options);
     final MatchReverse matchReverse =
         MatchReverse(matchDictionary.defaultMatch);
+
     test(
       'Matches against reversed words.',
       () => expect(
-        matchReverse.match('0123456789'),
+        matchReverse.match('012345678999'),
         <ReverseMatchTest>[
           ReverseMatchTest(
             i: 4,
