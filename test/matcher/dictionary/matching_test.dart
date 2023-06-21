@@ -54,16 +54,19 @@ void main() {
               .match('we')
               .where((DictionaryMatch match) => match is! ReverseMatch)
               .toList();
-          expect(matches, <DictionaryMatchTest>[
-            DictionaryMatchTest(
-              i: 0,
-              j: 1,
-              token: 'we',
-              matchedWord: 'we',
-              rank: 13,
-              dictionary: Dictionary.commonWords,
-            ),
-          ]);
+          expect(
+            matches,
+            <DictionaryMatchTest>[
+              DictionaryMatchTest(
+                i: 0,
+                j: 1,
+                token: 'we',
+                matchedWord: 'we',
+                rank: 13,
+                dictionary: Dictionary.commonWords,
+              ),
+            ],
+          );
         },
       );
 

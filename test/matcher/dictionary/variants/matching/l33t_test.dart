@@ -55,7 +55,10 @@ void main() {
 
       test(
         "Doesn't match single-character l33ted words.",
-        () => expect(matchL33t.match('4 1 @'), <L33tMatchTest>[]),
+        () => expect(
+          matchL33t.match('4 1 @'),
+          <L33tMatchTest>[],
+        ),
       );
     });
 
@@ -91,12 +94,18 @@ void main() {
 
       test(
         "Doesn't match ''.",
-        () => expect(matchL33t.match(''), <L33tMatchTest>[]),
+        () => expect(
+          matchL33t.match(''),
+          <L33tMatchTest>[],
+        ),
       );
 
       test(
         "Doesn't match pure dictionary words.",
-        () => expect(matchL33t.match('password'), <L33tMatchTest>[]),
+        () => expect(
+          matchL33t.match('password'),
+          <L33tMatchTest>[],
+        ),
       );
 
       test(
@@ -132,7 +141,10 @@ void main() {
 
       test(
         "Doesn't match with subsets of possible l33t substitution.",
-        () => expect(matchL33t.match(r'P4$$w0rd'), <L33tMatchTest>[]),
+        () => expect(
+          matchL33t.match(r'P4$$w0rd'),
+          <L33tMatchTest>[],
+        ),
       );
 
       test(

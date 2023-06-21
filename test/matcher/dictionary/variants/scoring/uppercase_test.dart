@@ -16,7 +16,10 @@ void main() {
           rank: 1,
           dictionary: Dictionary.commonWords,
         );
-        expect(uppercaseScoring(match), 1);
+        expect(
+          uppercaseScoring(match),
+          1,
+        );
       },
     );
 
@@ -31,7 +34,10 @@ void main() {
           rank: 1,
           dictionary: Dictionary.commonWords,
         );
-        expect(uppercaseScoring(match), 1);
+        expect(
+          uppercaseScoring(match),
+          1,
+        );
       },
     );
 
@@ -46,7 +52,10 @@ void main() {
           rank: 1,
           dictionary: Dictionary.commonWords,
         );
-        expect(uppercaseScoring(match), 2);
+        expect(
+          uppercaseScoring(match),
+          2,
+        );
       },
     );
 
@@ -61,7 +70,10 @@ void main() {
           rank: 1,
           dictionary: Dictionary.commonWords,
         );
-        expect(uppercaseScoring(match), 1);
+        expect(
+          uppercaseScoring(match),
+          1,
+        );
       },
     );
 
@@ -76,7 +88,10 @@ void main() {
           rank: 1,
           dictionary: Dictionary.commonWords,
         );
-        expect(uppercaseScoring(match), 2);
+        expect(
+          uppercaseScoring(match),
+          2,
+        );
       },
     );
 
@@ -91,7 +106,10 @@ void main() {
           rank: 1,
           dictionary: Dictionary.commonWords,
         );
-        expect(uppercaseScoring(match), 2);
+        expect(
+          uppercaseScoring(match),
+          2,
+        );
       },
     );
 
@@ -106,7 +124,10 @@ void main() {
           rank: 1,
           dictionary: Dictionary.commonWords,
         );
-        expect(uppercaseScoring(match), 2);
+        expect(
+          uppercaseScoring(match),
+          2,
+        );
       },
     );
 
@@ -121,7 +142,10 @@ void main() {
           rank: 1,
           dictionary: Dictionary.commonWords,
         );
-        expect(uppercaseScoring(match), nCk(6, 1));
+        expect(
+          uppercaseScoring(match),
+          nCk(6, 1),
+        );
       },
     );
 
@@ -136,7 +160,10 @@ void main() {
           rank: 1,
           dictionary: Dictionary.commonWords,
         );
-        expect(uppercaseScoring(match), nCk(6, 1) + nCk(6, 2));
+        expect(
+          uppercaseScoring(match),
+          nCk(6, 1) + nCk(6, 2),
+        );
       },
     );
 
@@ -151,7 +178,10 @@ void main() {
           rank: 1,
           dictionary: Dictionary.commonWords,
         );
-        expect(uppercaseScoring(match), nCk(6, 1));
+        expect(
+          uppercaseScoring(match),
+          nCk(6, 1),
+        );
       },
     );
 
@@ -166,7 +196,10 @@ void main() {
           rank: 1,
           dictionary: Dictionary.commonWords,
         );
-        expect(uppercaseScoring(match), nCk(6, 1) + nCk(6, 2));
+        expect(
+          uppercaseScoring(match),
+          nCk(6, 1) + nCk(6, 2),
+        );
       },
     );
 
@@ -181,7 +214,10 @@ void main() {
           rank: 1,
           dictionary: Dictionary.commonWords,
         );
-        expect(uppercaseScoring(match), nCk(6, 1) + nCk(6, 2) + nCk(6, 3));
+        expect(
+          uppercaseScoring(match),
+          nCk(6, 1) + nCk(6, 2) + nCk(6, 3),
+        );
       },
     );
   });

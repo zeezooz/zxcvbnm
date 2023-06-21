@@ -3,9 +3,9 @@ import 'dart:math';
 import '../../../../scoring/utils.dart';
 import '../../../../types.dart';
 
-int l33tScoring(Match match) {
+double l33tScoring(Match match) {
   if (match is! L33tMatch) return 1;
-  int variations = 1;
+  double variations = 1;
   // Lower-case match.token before calculating: capitalization shouldn't affect
   // l33t calc.
   final String tokenLower = match.token.toLowerCase();
@@ -23,8 +23,8 @@ int l33tScoring(Match match) {
       // This case is similar to capitalization:
       // with aa44a, clean = 3, l33t = 2, attacker needs to try
       // clean + one l33t + two l33ts
-      int possibilities = 0;
-      for (int i = 1; i <= min(cleanCount, l33tCount); i += 1) {
+      double possibilities = 0;
+      for (int i = 1; i <= min(cleanCount, l33tCount); i++) {
         possibilities += nCk(cleanCount + l33tCount, i);
       }
       variations *= possibilities;

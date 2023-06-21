@@ -45,8 +45,8 @@ String? _dictionaryWarning({
       isSoleMatch: isSoleMatch,
     );
   }
-  if (match.dictionary == Dictionary.lastnames ||
-      match.dictionary == Dictionary.firstnames) {
+  if (match.dictionary == Dictionary.lastNames ||
+      match.dictionary == Dictionary.firstNames) {
     return _namesDictionaryWarning(
       match: match,
       options: options,

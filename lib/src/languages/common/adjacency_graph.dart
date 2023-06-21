@@ -1,5 +1,5 @@
 // ignore_for_file: type=lint
-const Map<String, Map<String, List<String?>>> adjacency_graph = {
+const Map<String, Map<String, List<String?>>> adjacencyGraph = {
   "azerty": {
     "0": ["ç9", null, null, ")°", "pP", "oO"],
     "1": ["²~", null, null, "é2", "aA", null],

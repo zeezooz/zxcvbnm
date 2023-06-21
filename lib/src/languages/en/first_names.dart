@@ -1,5 +1,5 @@
 // ignore_for_file: type=lint
-const List<String> firstnames = [
+const List<String> firstNames = [
   "aaren",
   "aarika",
   "abagael",

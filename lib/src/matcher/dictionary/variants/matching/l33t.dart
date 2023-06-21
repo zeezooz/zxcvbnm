@@ -4,12 +4,13 @@ import '../../types.dart';
 import 'unmunger/clean_password.dart';
 
 /// Dictionary l33t matching.
-class MatchL33t {
+class MatchL33t extends MatchingType {
   MatchL33t(this.defaultMatch, this.options);
 
   final DefaultMatch defaultMatch;
   final Options options;
 
+  @override
   List<L33tMatch> match(String password) {
     final List<L33tMatch> matches = <L33tMatch>[];
     final List<PasswordWithChanges> cleanedPasswords = cleanPassword(

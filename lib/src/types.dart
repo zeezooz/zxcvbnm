@@ -1,8 +1,14 @@
 import 'dart:async';
+import 'dart:math';
 
+import 'data/const.dart';
+import 'matcher/bruteforce/scoring.dart';
+import 'matcher/date/scoring.dart';
 import 'matcher/dictionary/scoring.dart';
-import 'matching.dart';
+import 'matcher/regex/scoring.dart';
+import 'matcher/repeat/scoring.dart';
 import 'options.dart';
+import 'scoring/utils.dart';
 
 class Translation {
   const Translation({
@@ -141,8 +147,8 @@ enum Dictionary {
   diceware,
   passwords,
   commonWords,
-  firstnames,
-  lastnames,
+  firstNames,
+  lastNames,
   wikipedia,
   userInputs,
 }
@@ -164,7 +170,33 @@ class Match {
   final String token;
 
   @override
-  String toString() => '[$i, $j] "$token"';
+  String toString() => '$runtimeType [$i, $j] "$token"';
+
+  double getMinGuesses(String password) {
+    int minGuesses = 1;
+    if (token.length < password.length) {
+      if (token.length == 1) {
+        minGuesses = minSubmatchGuessesSingleChar;
+      } else {
+        minGuesses = minSubmatchGuessesMultiChar;
+      }
+    }
+    return minGuesses.toDouble();
+  }
+
+  MatchEstimated estimate(String password) {
+    if (this is MatchEstimated) return this as MatchEstimated;
+    final double guesses = 0;
+    final double minGuesses = getMinGuesses(password);
+    final double matchGuesses = max(guesses, minGuesses);
+    return MatchEstimated._(
+      i: i,
+      j: j,
+      token: token,
+      guesses: matchGuesses,
+      guessesLog10: log10(matchGuesses),
+    );
+  }
 }
 
 class DictionaryMatch extends Match {
@@ -186,7 +218,7 @@ class DictionaryMatch extends Match {
   final String? levenshteinDistanceEntry;
 
   @override
-  String toString() => '[$i, $j] "$token", matchedWord: "$matchedWord", '
+  String toString() => '${super.toString()}, matchedWord: "$matchedWord", '
       'rank: $rank, dictionary: $dictionary, '
       'levenshteinDistance: $levenshteinDistance, '
       'levenshteinDistanceEntry: $levenshteinDistanceEntry';
@@ -203,13 +235,14 @@ class DictionaryMatch extends Match {
       );
 
   L33tMatch toL33tMatch({
+    int? i,
     int? j,
     required String token,
     required List<PasswordChange> changes,
     required String changesDisplay,
   }) =>
       L33tMatch(
-        i: i,
+        i: i ?? this.i,
         j: j ?? this.j,
         token: token,
         matchedWord: matchedWord,
@@ -220,6 +253,32 @@ class DictionaryMatch extends Match {
         changes: changes,
         changesDisplay: changesDisplay,
       );
+
+  @override
+  DictionaryMatchEstimated estimate(String password) {
+    if (this is DictionaryMatchEstimated) {
+      return this as DictionaryMatchEstimated;
+    }
+    final DictionaryReturn estimation = dictionaryScoring(this);
+    final double guesses = estimation.calculation;
+    final double minGuesses = getMinGuesses(password);
+    final double matchGuesses = max(guesses, minGuesses);
+    return DictionaryMatchEstimated(
+      i: i,
+      j: j,
+      token: token,
+      matchedWord: matchedWord,
+      rank: rank,
+      dictionary: dictionary,
+      levenshteinDistance: levenshteinDistance,
+      levenshteinDistanceEntry: levenshteinDistanceEntry,
+      guesses: matchGuesses,
+      guessesLog10: log10(matchGuesses),
+      baseGuesses: estimation.baseGuesses,
+      uppercaseVariations: estimation.uppercaseVariations,
+      l33tVariations: estimation.l33tVariations,
+    );
+  }
 }
 
 class ReverseMatch extends DictionaryMatch {
@@ -242,6 +301,32 @@ class ReverseMatch extends DictionaryMatch {
           levenshteinDistance: levenshteinDistance,
           levenshteinDistanceEntry: levenshteinDistanceEntry,
         );
+
+  @override
+  ReverseMatchEstimated estimate(String password) {
+    if (this is ReverseMatchEstimated) {
+      return this as ReverseMatchEstimated;
+    }
+    final DictionaryReturn estimation = dictionaryScoring(this);
+    final double guesses = estimation.calculation;
+    final double minGuesses = getMinGuesses(password);
+    final double matchGuesses = max(guesses, minGuesses);
+    return ReverseMatchEstimated(
+      i: i,
+      j: j,
+      token: token,
+      matchedWord: matchedWord,
+      rank: rank,
+      dictionary: dictionary,
+      levenshteinDistance: levenshteinDistance,
+      levenshteinDistanceEntry: levenshteinDistanceEntry,
+      guesses: matchGuesses,
+      guessesLog10: log10(matchGuesses),
+      baseGuesses: estimation.baseGuesses,
+      uppercaseVariations: estimation.uppercaseVariations,
+      l33tVariations: estimation.l33tVariations,
+    );
+  }
 }
 
 class L33tMatch extends DictionaryMatch {
@@ -271,10 +356,7 @@ class L33tMatch extends DictionaryMatch {
   final String changesDisplay;
 
   @override
-  String toString() => '[$i, $j] "$token", matchedWord: "$matchedWord", '
-      'rank: $rank, dictionary: $dictionary,'
-      'levenshteinDistance: $levenshteinDistance, '
-      'levenshteinDistanceEntry: $levenshteinDistanceEntry, changes: $changes, '
+  String toString() => '${super.toString()}, changes: $changes, '
       'changesDisplay: $changesDisplay';
 
   // changes are ignored.
@@ -289,6 +371,34 @@ class L33tMatch extends DictionaryMatch {
       levenshteinDistance == other.levenshteinDistance &&
       levenshteinDistanceEntry == other.levenshteinDistanceEntry &&
       changesDisplay == other.changesDisplay;
+
+  @override
+  L33tMatchEstimated estimate(String password) {
+    if (this is L33tMatchEstimated) {
+      return this as L33tMatchEstimated;
+    }
+    final DictionaryReturn estimation = dictionaryScoring(this);
+    final double guesses = estimation.calculation;
+    final double minGuesses = getMinGuesses(password);
+    final double matchGuesses = max(guesses, minGuesses);
+    return L33tMatchEstimated(
+      i: i,
+      j: j,
+      token: token,
+      matchedWord: matchedWord,
+      rank: rank,
+      dictionary: dictionary,
+      levenshteinDistance: levenshteinDistance,
+      levenshteinDistanceEntry: levenshteinDistanceEntry,
+      changes: changes,
+      changesDisplay: changesDisplay,
+      guesses: matchGuesses,
+      guessesLog10: log10(matchGuesses),
+      baseGuesses: estimation.baseGuesses,
+      uppercaseVariations: estimation.uppercaseVariations,
+      l33tVariations: estimation.l33tVariations,
+    );
+  }
 }
 
 class SpatialMatch extends Match {
@@ -304,6 +414,10 @@ class SpatialMatch extends Match {
   final String graph;
   final int turns;
   final int shiftedCount;
+
+  @override
+  String toString() => '${super.toString()}, graph: "$graph", turns: $turns, '
+      'shiftedCount: $shiftedCount';
 }
 
 class RepeatMatch extends Match {
@@ -317,8 +431,32 @@ class RepeatMatch extends Match {
   }) : super._(i: i, j: j, token: token);
 
   final String baseToken;
-  final int baseGuesses;
+  final double baseGuesses;
   final int repeatCount;
+
+  @override
+  String toString() => '${super.toString()}, baseToken: "$baseToken", '
+      'baseGuesses: $baseGuesses, repeatCount: $repeatCount';
+
+  @override
+  RepeatMatchEstimated estimate(String password) {
+    if (this is RepeatMatchEstimated) {
+      return this as RepeatMatchEstimated;
+    }
+    final double guesses = repeatScoring(this);
+    final double minGuesses = getMinGuesses(password);
+    final double matchGuesses = max(guesses, minGuesses);
+    return RepeatMatchEstimated(
+      i: i,
+      j: j,
+      token: token,
+      baseToken: baseToken,
+      baseGuesses: baseGuesses,
+      repeatCount: repeatCount,
+      guesses: matchGuesses,
+      guessesLog10: log10(matchGuesses),
+    );
+  }
 }
 
 class SequenceMatch extends Match {
@@ -334,6 +472,10 @@ class SequenceMatch extends Match {
   final String sequenceName;
   final int sequenceSpace;
   final bool ascending;
+
+  @override
+  String toString() => '${super.toString()}, sequenceName: "$sequenceName", '
+      'sequenceSpace: $sequenceSpace, ascending: $ascending';
 }
 
 class RegexMatch extends Match {
@@ -349,8 +491,27 @@ class RegexMatch extends Match {
   final RegExpMatch regexMatch;
 
   @override
-  String toString() => '[$i, $j] "$token", regexName: "$regexName", '
+  String toString() => '${super.toString()}, regexName: "$regexName", '
       'regexMatch: [${regexMatch.start}, ${regexMatch.end}] "${regexMatch[0]}"';
+
+  @override
+  RegexMatchEstimated estimate(String password) {
+    if (this is RegexMatchEstimated) {
+      return this as RegexMatchEstimated;
+    }
+    final double guesses = regexScoring(this);
+    final double minGuesses = getMinGuesses(password);
+    final double matchGuesses = max(guesses, minGuesses);
+    return RegexMatchEstimated(
+      i: i,
+      j: j,
+      token: token,
+      regexName: regexName,
+      regexMatch: regexMatch,
+      guesses: matchGuesses,
+      guessesLog10: log10(matchGuesses),
+    );
+  }
 }
 
 class DateMatch extends Match {
@@ -370,8 +531,29 @@ class DateMatch extends Match {
   final int day;
 
   @override
-  String toString() => '[$i, $j] "$token", separator: "$separator", '
+  String toString() => '${super.toString()}, separator: "$separator", '
       'date: $year-$month-$day';
+
+  @override
+  DateMatchEstimated estimate(String password) {
+    if (this is DateMatchEstimated) {
+      return this as DateMatchEstimated;
+    }
+    final double guesses = dateScoring(this);
+    final double minGuesses = getMinGuesses(password);
+    final double matchGuesses = max(guesses, minGuesses);
+    return DateMatchEstimated(
+      i: i,
+      j: j,
+      token: token,
+      separator: separator,
+      year: year,
+      month: month,
+      day: day,
+      guesses: matchGuesses,
+      guessesLog10: log10(matchGuesses),
+    );
+  }
 }
 
 class BruteForceMatch extends Match {
@@ -380,6 +562,23 @@ class BruteForceMatch extends Match {
     required int j,
     required String token,
   }) : super._(i: i, j: j, token: token);
+
+  @override
+  BruteForceMatchEstimated estimate(String password) {
+    if (this is BruteForceMatchEstimated) {
+      return this as BruteForceMatchEstimated;
+    }
+    final double guesses = bruteforceScoring(this);
+    final double minGuesses = getMinGuesses(password);
+    final double matchGuesses = max(guesses, minGuesses);
+    return BruteForceMatchEstimated(
+      i: i,
+      j: j,
+      token: token,
+      guesses: matchGuesses,
+      guessesLog10: log10(matchGuesses),
+    );
+  }
 }
 
 class SeparatorMatch extends Match {
@@ -397,9 +596,6 @@ class MatchEstimated extends Match {
     required String token,
     required this.guesses,
     required this.guessesLog10,
-    this.baseGuesses,
-    this.uppercaseVariations,
-    this.l33tVariations,
   }) : super._(
           i: i,
           j: j,
@@ -408,9 +604,10 @@ class MatchEstimated extends Match {
 
   final double guesses;
   final double guessesLog10;
-  final int? baseGuesses;
-  final int? uppercaseVariations;
-  final int? l33tVariations;
+
+  @override
+  String toString() => '${super.toString()}, guesses: "$guesses", '
+      'guessesLog10: $guessesLog10';
 }
 
 class DictionaryMatchEstimated extends DictionaryMatch
@@ -426,9 +623,9 @@ class DictionaryMatchEstimated extends DictionaryMatch
     String? levenshteinDistanceEntry,
     required this.guesses,
     required this.guessesLog10,
-    this.baseGuesses,
-    this.uppercaseVariations,
-    this.l33tVariations,
+    required this.baseGuesses,
+    required this.uppercaseVariations,
+    required this.l33tVariations,
   }) : super(
           i: i,
           j: j,
@@ -444,15 +641,19 @@ class DictionaryMatchEstimated extends DictionaryMatch
   final double guesses;
   @override
   final double guessesLog10;
+  final int baseGuesses;
+  final double uppercaseVariations;
+  final double l33tVariations;
+
   @override
-  final int? baseGuesses;
-  @override
-  final int? uppercaseVariations;
-  @override
-  final int? l33tVariations;
+  String toString() => '${super.toString()}, guesses: "$guesses", '
+      'guessesLog10: $guessesLog10, baseGuesses: $baseGuesses, '
+      'uppercaseVariations: $uppercaseVariations, '
+      'l33tVariations: $l33tVariations';
 }
 
-class ReverseMatchEstimated extends ReverseMatch implements MatchEstimated {
+class ReverseMatchEstimated extends DictionaryMatchEstimated
+    implements ReverseMatch {
   const ReverseMatchEstimated({
     required int i,
     required int j,
@@ -462,11 +663,11 @@ class ReverseMatchEstimated extends ReverseMatch implements MatchEstimated {
     required Dictionary dictionary,
     int? levenshteinDistance,
     String? levenshteinDistanceEntry,
-    required this.guesses,
-    required this.guessesLog10,
-    this.baseGuesses,
-    this.uppercaseVariations,
-    this.l33tVariations,
+    required double guesses,
+    required double guessesLog10,
+    required int baseGuesses,
+    required double uppercaseVariations,
+    required double l33tVariations,
   }) : super(
           i: i,
           j: j,
@@ -476,21 +677,18 @@ class ReverseMatchEstimated extends ReverseMatch implements MatchEstimated {
           dictionary: dictionary,
           levenshteinDistance: levenshteinDistance,
           levenshteinDistanceEntry: levenshteinDistanceEntry,
+          guesses: guesses,
+          guessesLog10: guessesLog10,
+          baseGuesses: baseGuesses,
+          uppercaseVariations: uppercaseVariations,
+          l33tVariations: l33tVariations,
         );
 
   @override
-  final double guesses;
-  @override
-  final double guessesLog10;
-  @override
-  final int? baseGuesses;
-  @override
-  final int? uppercaseVariations;
-  @override
-  final int? l33tVariations;
+  ReverseMatchEstimated estimate(String password) => this;
 }
 
-class L33tMatchEstimated extends L33tMatch implements MatchEstimated {
+class L33tMatchEstimated extends DictionaryMatchEstimated implements L33tMatch {
   const L33tMatchEstimated({
     required int i,
     required int j,
@@ -500,13 +698,13 @@ class L33tMatchEstimated extends L33tMatch implements MatchEstimated {
     required Dictionary dictionary,
     int? levenshteinDistance,
     String? levenshteinDistanceEntry,
-    required List<PasswordChange> changes,
-    required String changesDisplay,
-    required this.guesses,
-    required this.guessesLog10,
-    this.baseGuesses,
-    this.uppercaseVariations,
-    this.l33tVariations,
+    required this.changes,
+    required this.changesDisplay,
+    required double guesses,
+    required double guessesLog10,
+    required int baseGuesses,
+    required double uppercaseVariations,
+    required double l33tVariations,
   }) : super(
           i: i,
           j: j,
@@ -516,20 +714,44 @@ class L33tMatchEstimated extends L33tMatch implements MatchEstimated {
           dictionary: dictionary,
           levenshteinDistance: levenshteinDistance,
           levenshteinDistanceEntry: levenshteinDistanceEntry,
-          changes: changes,
-          changesDisplay: changesDisplay,
+          guesses: guesses,
+          guessesLog10: guessesLog10,
+          baseGuesses: baseGuesses,
+          uppercaseVariations: uppercaseVariations,
+          l33tVariations: l33tVariations,
         );
 
   @override
-  final double guesses;
+  final List<PasswordChange> changes;
   @override
-  final double guessesLog10;
+  final String changesDisplay;
+
   @override
-  final int? baseGuesses;
+  String toString() => '$runtimeType [$i, $j] "$token", '
+      'matchedWord: "$matchedWord", rank: $rank, dictionary: $dictionary, '
+      'levenshteinDistance: $levenshteinDistance, '
+      'levenshteinDistanceEntry: $levenshteinDistanceEntry, '
+      'changes: $changes, changesDisplay: $changesDisplay, '
+      'guesses: "$guesses", guessesLog10: $guessesLog10, '
+      'baseGuesses: $baseGuesses, uppercaseVariations: $uppercaseVariations, '
+      'l33tVariations: $l33tVariations';
+
+  // changes are ignored.
   @override
-  final int? uppercaseVariations;
+  bool isDuplicateOf(Object other) =>
+      other is L33tMatch &&
+      i == other.i &&
+      j == other.j &&
+      token == other.token &&
+      matchedWord == other.matchedWord &&
+      rank == other.rank &&
+      dictionary == other.dictionary &&
+      levenshteinDistance == other.levenshteinDistance &&
+      levenshteinDistanceEntry == other.levenshteinDistanceEntry &&
+      changesDisplay == other.changesDisplay;
+
   @override
-  final int? l33tVariations;
+  L33tMatchEstimated estimate(String password) => this;
 }
 
 class SpatialMatchEstimated extends SpatialMatch implements MatchEstimated {
@@ -542,9 +764,6 @@ class SpatialMatchEstimated extends SpatialMatch implements MatchEstimated {
     required int shiftedCount,
     required this.guesses,
     required this.guessesLog10,
-    this.baseGuesses,
-    this.uppercaseVariations,
-    this.l33tVariations,
   }) : super(
           i: i,
           j: j,
@@ -558,12 +777,10 @@ class SpatialMatchEstimated extends SpatialMatch implements MatchEstimated {
   final double guesses;
   @override
   final double guessesLog10;
+
   @override
-  final int? baseGuesses;
-  @override
-  final int? uppercaseVariations;
-  @override
-  final int? l33tVariations;
+  String toString() => '${super.toString()}, guesses: "$guesses", '
+      'guessesLog10: $guessesLog10';
 }
 
 class RepeatMatchEstimated extends RepeatMatch implements MatchEstimated {
@@ -572,12 +789,10 @@ class RepeatMatchEstimated extends RepeatMatch implements MatchEstimated {
     required int j,
     required String token,
     required String baseToken,
-    required int baseGuesses,
+    required double baseGuesses,
     required int repeatCount,
     required this.guesses,
     required this.guessesLog10,
-    this.uppercaseVariations,
-    this.l33tVariations,
   }) : super(
           i: i,
           j: j,
@@ -591,10 +806,10 @@ class RepeatMatchEstimated extends RepeatMatch implements MatchEstimated {
   final double guesses;
   @override
   final double guessesLog10;
+
   @override
-  final int? uppercaseVariations;
-  @override
-  final int? l33tVariations;
+  String toString() => '${super.toString()}, guesses: "$guesses", '
+      'guessesLog10: $guessesLog10';
 }
 
 class SequenceMatchEstimated extends SequenceMatch implements MatchEstimated {
@@ -607,9 +822,6 @@ class SequenceMatchEstimated extends SequenceMatch implements MatchEstimated {
     required bool ascending,
     required this.guesses,
     required this.guessesLog10,
-    this.baseGuesses,
-    this.uppercaseVariations,
-    this.l33tVariations,
   }) : super(
           i: i,
           j: j,
@@ -623,12 +835,10 @@ class SequenceMatchEstimated extends SequenceMatch implements MatchEstimated {
   final double guesses;
   @override
   final double guessesLog10;
+
   @override
-  final int? baseGuesses;
-  @override
-  final int? uppercaseVariations;
-  @override
-  final int? l33tVariations;
+  String toString() => '${super.toString()}, guesses: "$guesses", '
+      'guessesLog10: $guessesLog10';
 }
 
 class RegexMatchEstimated extends RegexMatch implements MatchEstimated {
@@ -640,9 +850,6 @@ class RegexMatchEstimated extends RegexMatch implements MatchEstimated {
     required RegExpMatch regexMatch,
     required this.guesses,
     required this.guessesLog10,
-    this.baseGuesses,
-    this.uppercaseVariations,
-    this.l33tVariations,
   }) : super(
           i: i,
           j: j,
@@ -655,12 +862,10 @@ class RegexMatchEstimated extends RegexMatch implements MatchEstimated {
   final double guesses;
   @override
   final double guessesLog10;
+
   @override
-  final int? baseGuesses;
-  @override
-  final int? uppercaseVariations;
-  @override
-  final int? l33tVariations;
+  String toString() => '${super.toString()}, guesses: "$guesses", '
+      'guessesLog10: $guessesLog10';
 }
 
 class DateMatchEstimated extends DateMatch implements MatchEstimated {
@@ -674,9 +879,6 @@ class DateMatchEstimated extends DateMatch implements MatchEstimated {
     required int day,
     required this.guesses,
     required this.guessesLog10,
-    this.baseGuesses,
-    this.uppercaseVariations,
-    this.l33tVariations,
   }) : super(
           i: i,
           j: j,
@@ -691,12 +893,10 @@ class DateMatchEstimated extends DateMatch implements MatchEstimated {
   final double guesses;
   @override
   final double guessesLog10;
+
   @override
-  final int? baseGuesses;
-  @override
-  final int? uppercaseVariations;
-  @override
-  final int? l33tVariations;
+  String toString() => '${super.toString()}, guesses: "$guesses", '
+      'guessesLog10: $guessesLog10';
 }
 
 class BruteForceMatchEstimated extends MatchEstimated
@@ -707,19 +907,16 @@ class BruteForceMatchEstimated extends MatchEstimated
     required String token,
     required double guesses,
     required double guessesLog10,
-    int? baseGuesses,
-    int? uppercaseVariations,
-    int? l33tVariations,
   }) : super._(
           i: i,
           j: j,
           token: token,
           guesses: guesses,
           guessesLog10: guessesLog10,
-          baseGuesses: baseGuesses,
-          uppercaseVariations: uppercaseVariations,
-          l33tVariations: l33tVariations,
         );
+
+  @override
+  BruteForceMatchEstimated estimate(String password) => this;
 }
 
 class SeparatorMatchEstimated extends MatchEstimated implements SeparatorMatch {
@@ -729,19 +926,16 @@ class SeparatorMatchEstimated extends MatchEstimated implements SeparatorMatch {
     required String token,
     required double guesses,
     required double guessesLog10,
-    int? baseGuesses,
-    int? uppercaseVariations,
-    int? l33tVariations,
   }) : super._(
           i: i,
           j: j,
           token: token,
           guesses: guesses,
           guessesLog10: guessesLog10,
-          baseGuesses: baseGuesses,
-          uppercaseVariations: uppercaseVariations,
-          l33tVariations: l33tVariations,
         );
+
+  @override
+  SeparatorMatchEstimated estimate(String password) => this;
 }
 
 class Optimal {
@@ -751,9 +945,15 @@ class Optimal {
     required this.g,
   });
 
-  final Match m;
-  final Match pi;
-  final Match g;
+  // Match.
+  final MatchEstimated m;
+
+  // Product term Prod(m.guesses for m in sequence).
+  // Allows for fast (non-looping) updates to the minimization function.
+  final double pi;
+
+  // Overall metric.
+  final double g;
 }
 
 class CrackTimesSeconds {
@@ -813,10 +1013,7 @@ typedef DefaultFeedbackFunction = Feedback? Function({
 typedef DefaultScoringFunction = DictionaryReturn Function(Match match);
 
 abstract class MatchingType {
-  FutureOr<List<Match>> match({
-    required String password,
-    required Matching omniMatch,
-  });
+  FutureOr<List<Match>> match(String password);
 }
 
 class Matcher {

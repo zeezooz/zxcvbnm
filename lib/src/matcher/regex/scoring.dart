@@ -13,7 +13,8 @@ double regexScoring(RegexMatch match) {
     'symbols': 33,
   };
   if (charClassBases.containsKey(match.regexName)) {
-    return pow(charClassBases[match.regexName]!, match.token.length).toDouble();
+    return pow(charClassBases[match.regexName]!.toDouble(), match.token.length)
+        .toDouble();
   }
   // TODO: Add more regex types for example special dates like 09.11
   switch (match.regexName) {

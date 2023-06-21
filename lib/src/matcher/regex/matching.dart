@@ -3,7 +3,8 @@ import '../../helper.dart';
 import '../../types.dart';
 
 /// Regex matching.
-class MatchRegex {
+class MatchRegex extends MatchingType {
+  @override
   List<RegexMatch> match(String password, {Map<String, RegExp>? regexes}) {
     regexes ??= regexen;
     final List<RegexMatch> matches = <RegexMatch>[];

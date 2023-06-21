@@ -16,7 +16,10 @@ void main() {
         regexName: 'alphaLower',
         regexMatch: RegExp('.*').firstMatch(token)!,
       );
-      expect(regexScoring(match), pow(26, 7));
+      expect(
+        regexScoring(match),
+        pow(26, 7),
+      );
     });
 
     test('Guesses of 62^5 for 5-char alphanumeric regex.', () {
@@ -28,7 +31,10 @@ void main() {
         regexName: 'alphanumeric',
         regexMatch: RegExp('.*').firstMatch(token)!,
       );
-      expect(regexScoring(match), pow(2 * 26 + 10, 5));
+      expect(
+        regexScoring(match),
+        pow(2 * 26 + 10, 5),
+      );
     });
 
     test('Guesses of |year - referenceYear| for distant year matches.', () {
@@ -40,7 +46,10 @@ void main() {
         regexName: 'recentYear',
         regexMatch: RegExp('.*').firstMatch(token)!,
       );
-      expect(regexScoring(match), (referenceYear - 1972).abs());
+      expect(
+        regexScoring(match),
+        (referenceYear - 1972).abs(),
+      );
     });
 
     test('Guesses of minYearSpace for a year close to referenceYear.', () {
@@ -52,7 +61,10 @@ void main() {
         regexName: 'recentYear',
         regexMatch: RegExp('.*').firstMatch(token)!,
       );
-      expect(regexScoring(match), minYearSpace);
+      expect(
+        regexScoring(match),
+        minYearSpace,
+      );
     });
 
     test('Should equal 0 for not found regex names.', () {
@@ -64,7 +76,10 @@ void main() {
         regexName: 'someRegexName',
         regexMatch: RegExp('.*').firstMatch(token)!,
       );
-      expect(regexScoring(match), 0);
+      expect(
+        regexScoring(match),
+        0,
+      );
     });
   });
 }

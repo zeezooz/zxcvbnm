@@ -2,11 +2,12 @@ import '../../../../types.dart';
 import '../../types.dart';
 
 ///  Dictionary reverse matching.
-class MatchReverse {
+class MatchReverse extends MatchingType {
   MatchReverse(this.defaultMatch);
 
   final DefaultMatch defaultMatch;
 
+  @override
   List<ReverseMatch> match(String password) {
     final String reversedPassword = password.split('').reversed.join('');
     return defaultMatch(reversedPassword)

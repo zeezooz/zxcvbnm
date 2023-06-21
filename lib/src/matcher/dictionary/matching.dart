@@ -5,7 +5,7 @@ import '../../types.dart';
 import 'variants/matching/l33t.dart';
 import 'variants/matching/reverse.dart';
 
-class MatchDictionary {
+class MatchDictionary extends MatchingType {
   MatchDictionary(this.options) {
     l33t = MatchL33t(defaultMatch, options);
     reverse = MatchReverse(defaultMatch);
@@ -15,6 +15,7 @@ class MatchDictionary {
   late final MatchL33t l33t;
   late final MatchReverse reverse;
 
+  @override
   List<DictionaryMatch> match(String password) {
     final List<DictionaryMatch> matches = <DictionaryMatch>[
       ...defaultMatch(password),
@@ -32,10 +33,10 @@ class MatchDictionary {
     final List<DictionaryMatch> matches = <DictionaryMatch>[];
     final int passwordLength = password.length;
     final String passwordLower = password.toLowerCase();
-    for (int i = 0; i < passwordLength; i += 1) {
+    for (int i = 0; i < passwordLength; i++) {
       // Whether any dictionary has such a long word.
       bool fitsDictionaryWordSize = true;
-      for (int j = i; j < passwordLength; j += 1) {
+      for (int j = i; j < passwordLength; j++) {
         if (!fitsDictionaryWordSize) break;
         fitsDictionaryWordSize = false;
         final String usedPassword = passwordLower.substring(i, j + 1);

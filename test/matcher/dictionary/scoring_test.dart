@@ -7,9 +7,9 @@ import 'package:zxcvbnm/src/types.dart';
 class DictionaryReturnTest extends DictionaryReturn {
   DictionaryReturnTest({
     required int baseGuesses,
-    required int uppercaseVariations,
-    required int l33tVariations,
-    required int calculation,
+    required double uppercaseVariations,
+    required double l33tVariations,
+    required double calculation,
   }) : super(
           baseGuesses: baseGuesses,
           uppercaseVariations: uppercaseVariations,
@@ -63,13 +63,14 @@ void main() {
           rank: 32,
           dictionary: Dictionary.commonWords,
         );
+        final double uppercaseVariations = uppercaseScoring(match);
         expect(
           dictionaryScoring(match),
           DictionaryReturnTest(
             baseGuesses: 32,
-            uppercaseVariations: 41,
+            uppercaseVariations: uppercaseVariations,
             l33tVariations: 1,
-            calculation: 32 * uppercaseScoring(match),
+            calculation: 32 * uppercaseVariations,
           ),
         );
       },
@@ -111,13 +112,14 @@ void main() {
           changes: <PasswordChange>[PasswordChange(l33t: '@', clean: 'a')],
           changesDisplay: '@ -> a',
         );
+        final double l33tVariations = l33tScoring(match);
         expect(
           dictionaryScoring(match),
           DictionaryReturnTest(
             baseGuesses: 32,
             uppercaseVariations: 1,
-            l33tVariations: 41,
-            calculation: 32 * l33tScoring(match),
+            l33tVariations: l33tVariations,
+            calculation: 32 * l33tVariations,
           ),
         );
       },
@@ -136,13 +138,15 @@ void main() {
           changes: <PasswordChange>[PasswordChange(l33t: '@', clean: 'a')],
           changesDisplay: '@ -> a',
         );
+        final double uppercaseVariations = uppercaseScoring(match);
+        final double l33tVariations = l33tScoring(match);
         expect(
           dictionaryScoring(match),
           DictionaryReturnTest(
             baseGuesses: 32,
-            uppercaseVariations: 3,
-            l33tVariations: 41,
-            calculation: 32 * l33tScoring(match) * uppercaseScoring(match),
+            uppercaseVariations: uppercaseVariations,
+            l33tVariations: l33tVariations,
+            calculation: 32 * uppercaseVariations * l33tVariations,
           ),
         );
       },

@@ -16,7 +16,10 @@ void main() {
           rank: 1,
           dictionary: Dictionary.commonWords,
         );
-        expect(l33tScoring(match), 1);
+        expect(
+          l33tScoring(match),
+          1,
+        );
       },
     );
 
@@ -31,7 +34,10 @@ void main() {
           rank: 1,
           dictionary: Dictionary.commonWords,
         );
-        expect(l33tScoring(match), 1);
+        expect(
+          l33tScoring(match),
+          1,
+        );
       },
     );
 
@@ -48,7 +54,10 @@ void main() {
           changes: <PasswordChange>[PasswordChange(l33t: '4', clean: 'a')],
           changesDisplay: '4 -> a',
         );
-        expect(l33tScoring(match), 2);
+        expect(
+          l33tScoring(match),
+          2,
+        );
       },
     );
 
@@ -65,7 +74,10 @@ void main() {
           changes: <PasswordChange>[PasswordChange(l33t: '4', clean: 'a')],
           changesDisplay: '4 -> a',
         );
-        expect(l33tScoring(match), 2);
+        expect(
+          l33tScoring(match),
+          2,
+        );
       },
     );
 
@@ -80,7 +92,10 @@ void main() {
           rank: 1,
           dictionary: Dictionary.commonWords,
         );
-        expect(l33tScoring(match), 1);
+        expect(
+          l33tScoring(match),
+          1,
+        );
       },
     );
 
@@ -97,7 +112,10 @@ void main() {
           changes: <PasswordChange>[PasswordChange(l33t: '4', clean: 'a')],
           changesDisplay: '4 -> a',
         );
-        expect(l33tScoring(match), 2);
+        expect(
+          l33tScoring(match),
+          2,
+        );
       },
     );
 
@@ -114,7 +132,10 @@ void main() {
           changes: <PasswordChange>[PasswordChange(l33t: '8', clean: 'b')],
           changesDisplay: '8 -> b',
         );
-        expect(l33tScoring(match), 2);
+        expect(
+          l33tScoring(match),
+          2,
+        );
       },
     );
 
@@ -131,7 +152,10 @@ void main() {
           changes: <PasswordChange>[PasswordChange(l33t: '+', clean: 't')],
           changesDisplay: '+ -> t',
         );
-        expect(l33tScoring(match), 2);
+        expect(
+          l33tScoring(match),
+          2,
+        );
       },
     );
 
@@ -151,7 +175,10 @@ void main() {
           ],
           changesDisplay: '4 -> a, 8 -> b',
         );
-        expect(l33tScoring(match), 4);
+        expect(
+          l33tScoring(match),
+          4,
+        );
       },
     );
 
@@ -168,7 +195,10 @@ void main() {
           changes: <PasswordChange>[PasswordChange(l33t: '4', clean: 'a')],
           changesDisplay: '4 -> a',
         );
-        expect(l33tScoring(match), nCk(6, 2) + nCk(6, 1));
+        expect(
+          l33tScoring(match),
+          nCk(6, 2) + nCk(6, 1),
+        );
       },
     );
 
@@ -185,7 +215,10 @@ void main() {
           changes: <PasswordChange>[PasswordChange(l33t: '4', clean: 'a')],
           changesDisplay: '4 -> a',
         );
-        expect(l33tScoring(match), nCk(6, 2) + nCk(6, 1));
+        expect(
+          l33tScoring(match),
+          nCk(6, 2) + nCk(6, 1),
+        );
       },
     );
 
@@ -205,7 +238,10 @@ void main() {
           ],
           changesDisplay: '4 -> a, + -> t',
         );
-        expect(l33tScoring(match), (nCk(4, 2) + nCk(4, 1)) * nCk(3, 1));
+        expect(
+          l33tScoring(match),
+          (nCk(4, 2) + nCk(4, 1)) * nCk(3, 1),
+        );
       },
     );
 
@@ -222,7 +258,10 @@ void main() {
           changes: <PasswordChange>[PasswordChange(l33t: 'vv', clean: 'w')],
           changesDisplay: 'vv -> w',
         );
-        expect(l33tScoring(match), nCk(4, 1));
+        expect(
+          l33tScoring(match),
+          nCk(4, 1),
+        );
       },
     );
 
@@ -239,7 +278,10 @@ void main() {
           changes: <PasswordChange>[PasswordChange(l33t: '4', clean: 'a')],
           changesDisplay: '4 -> a',
         );
-        expect(l33tScoring(match), nCk(6, 2) + nCk(6, 1));
+        expect(
+          l33tScoring(match),
+          nCk(6, 2) + nCk(6, 1),
+        );
       },
     );
   });

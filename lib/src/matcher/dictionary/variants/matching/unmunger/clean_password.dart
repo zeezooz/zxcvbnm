@@ -101,14 +101,14 @@ class QueueItem {
     do {
       final List<TrieNode> nodes = <TrieNode>[];
       TrieNode? current = trieRoot;
-      for (int i = _index; i < string.length; i += 1) {
+      for (int i = _index; i < string.length; i++) {
         final String character = string.substring(i, i + 1);
         current = current?.children[character];
         if (current == null) break;
         nodes.add(current);
       }
       // Iterate backward to get wider substitutions first.
-      for (int i = _index + nodes.length - 1; i >= _index; i -= 1) {
+      for (int i = _index + nodes.length - 1; i >= _index; i--) {
         current = nodes[i - _index];
         for (final String clean in current.cleanList) {
           nextChanges.add(

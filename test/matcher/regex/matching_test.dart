@@ -74,27 +74,25 @@ void main() {
 
     test(
       'Matches 2016-2015 as a recentYear pattern.',
-      () {
-        expect(
-          matchRegex.match('2016-2015'),
-          <RegexMatchTest>[
-            RegexMatchTest(
-              i: 0,
-              j: 3,
-              token: '2016',
-              regexName: 'recentYear',
-              regexMatch: RegExp('.*').firstMatch('2016')!,
-            ),
-            RegexMatchTest(
-              i: 5,
-              j: 8,
-              token: '2015',
-              regexName: 'recentYear',
-              regexMatch: RegExp(r'\d+').firstMatch('-----2015')!,
-            ),
-          ],
-        );
-      },
+      () => expect(
+        matchRegex.match('2016-2015'),
+        <RegexMatchTest>[
+          RegexMatchTest(
+            i: 0,
+            j: 3,
+            token: '2016',
+            regexName: 'recentYear',
+            regexMatch: RegExp('.*').firstMatch('2016')!,
+          ),
+          RegexMatchTest(
+            i: 5,
+            j: 8,
+            token: '2015',
+            regexName: 'recentYear',
+            regexMatch: RegExp(r'\d+').firstMatch('-----2015')!,
+          ),
+        ],
+      ),
     );
   });
 }

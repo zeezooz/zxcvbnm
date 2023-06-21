@@ -17,7 +17,10 @@ void main() {
           month: 1,
           day: 1,
         );
-        expect(dateScoring(match), 365 * (referenceYear - match.year).abs());
+        expect(
+          dateScoring(match),
+          365 * (referenceYear - match.year).abs(),
+        );
       },
     );
 
@@ -33,7 +36,10 @@ void main() {
           month: 1,
           day: 1,
         );
-        expect(dateScoring(match), 365 * minYearSpace * 4);
+        expect(
+          dateScoring(match),
+          365 * minYearSpace * 4,
+        );
       },
     );
   });

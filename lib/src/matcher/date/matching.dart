@@ -4,7 +4,7 @@ import '../../helper.dart';
 import '../../types.dart';
 
 /// Date matching.
-class MatchDate {
+class MatchDate extends MatchingType {
   /// A "date" is recognized as:
   ///   - any 3-tuple that starts or ends with a 2- or 4-digit year,
   ///   - with 2 or 0 separator chars (1.1.91 or 1191),
@@ -24,6 +24,7 @@ class MatchDate {
   /// Note: instead of using a lazy or greedy regex to find many dates over
   /// the full string, this uses a ^...$ regex against every substring of the
   /// password -- less performant but leads to every possible date match.
+  @override
   List<DateMatch> match(String password) {
     final List<DateMatch> matches = <DateMatch>[
       ..._matchesWithoutSeparator(password),
@@ -39,8 +40,8 @@ class MatchDate {
     final RegExp maybeDateWithSeparator =
         RegExp(r'^(\d{1,4})([\s/\\_.-])(\d{1,2})\2(\d{1,4})$');
     // Dates with separators are between length 6 '1/1/91' and 10 '11/11/1991'.
-    for (int i = 0; i <= password.length - 6; i += 1) {
-      for (int j = i + 5; j <= i + 9 && j < password.length; j += 1) {
+    for (int i = 0; i <= password.length - 6; i++) {
+      for (int j = i + 5; j <= i + 9 && j < password.length; j++) {
         final String token = password.substring(i, j + 1);
         final RegExpMatch? match = maybeDateWithSeparator.firstMatch(token);
         if (match == null) continue;
@@ -72,8 +73,8 @@ class MatchDate {
     final List<DateMatch> matches = <DateMatch>[];
     final RegExp maybeDateWithoutSeparator = RegExp(r'^\d{4,8}$');
     // Dates without separators are between length 4 '1191' and 8 '11111991'.
-    for (int i = 0; i <= password.length - 4; i += 1) {
-      for (int j = i + 3; j <= i + 7 && j < password.length; j += 1) {
+    for (int i = 0; i <= password.length - 4; i++) {
+      for (int j = i + 3; j <= i + 7 && j < password.length; j++) {
         final String token = password.substring(i, j + 1);
         if (maybeDateWithoutSeparator.hasMatch(token)) {
           final List<DayMonthYear> candidates = <DayMonthYear>[];
@@ -132,7 +133,7 @@ class MatchDate {
   /// To reduce noise, remove date matches that are strict substrings of others.
   List<DateMatch> _filterNoise(List<DateMatch> matches) {
     return matches.where((DateMatch match) {
-      for (int i = 0; i < matches.length; i += 1) {
+      for (int i = 0; i < matches.length; i++) {
         final DateMatch otherMatch = matches[i];
         if (match != otherMatch &&
             otherMatch.i <= match.i &&
@@ -158,14 +159,14 @@ class MatchDate {
     int over12 = 0;
     int over31 = 0;
     int under1 = 0;
-    for (int i = 0; i < integers.length; i += 1) {
+    for (int i = 0; i < integers.length; i++) {
       final int integer = integers[i];
       if ((integer > 99 && integer < dateMinYear) || integer > dateMaxYear) {
         return null;
       }
-      if (integer > 31) over31 += 1;
-      if (integer > 12) over12 += 1;
-      if (integer <= 0) under1 += 1;
+      if (integer > 31) over31++;
+      if (integer > 12) over12++;
+      if (integer <= 0) under1++;
     }
     if (over31 >= 2 || over12 == 3 || under1 >= 2) return null;
     // First look for a four digit year: yyyy + daymonth or daymonth + yyyy.
@@ -181,7 +182,7 @@ class MatchDate {
         integers.sublist(1, 3),
       ],
     ];
-    for (int i = 0; i < yearSplits.length; i += 1) {
+    for (int i = 0; i < yearSplits.length; i++) {
       final int year = yearSplits[i][0][0];
       final List<int> rest = yearSplits[i][1];
       if (year >= dateMinYear && year <= dateMaxYear) {
@@ -195,7 +196,7 @@ class MatchDate {
     // Given no four-digit year, two digit years are the most flexible int
     // to match, so try to parse a day-month out of integers[0..1] or
     // integers[1..0].
-    for (int i = 0; i < yearSplits.length; i += 1) {
+    for (int i = 0; i < yearSplits.length; i++) {
       final int year = yearSplits[i][0][0];
       final List<int> rest = yearSplits[i][1];
       final DayMonthYear? dm = _dayMonth(rest);
@@ -215,7 +216,7 @@ class MatchDate {
       integers,
       integers.reversed.toList(),
     ];
-    for (int i = 0; i < temp.length; i += 1) {
+    for (int i = 0; i < temp.length; i++) {
       final List<int> data = temp[i];
       final int day = data[0];
       final int month = data[1];

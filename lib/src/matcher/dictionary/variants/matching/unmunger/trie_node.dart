@@ -30,7 +30,7 @@ class TrieNode {
   void addChange(String l33t, String clean) {
     TrieNode current = this;
     final StringBuffer prefix = StringBuffer();
-    for (int i = 0; i < l33t.length; i += 1) {
+    for (int i = 0; i < l33t.length; i++) {
       final String character = l33t.substring(i, i + 1);
       prefix.write(character);
       current = current.children.putIfAbsent(
