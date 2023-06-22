@@ -7,6 +7,7 @@ import 'matcher/date/scoring.dart';
 import 'matcher/dictionary/scoring.dart';
 import 'matcher/regex/scoring.dart';
 import 'matcher/repeat/scoring.dart';
+import 'matcher/separator/scoring.dart';
 import 'options.dart';
 import 'scoring/utils.dart';
 
@@ -587,6 +588,23 @@ class SeparatorMatch extends Match {
     required int j,
     required String token,
   }) : super._(i: i, j: j, token: token);
+
+  @override
+  SeparatorMatchEstimated estimate(String password) {
+    if (this is SeparatorMatchEstimated) {
+      return this as SeparatorMatchEstimated;
+    }
+    final double guesses = separatorScoring(this);
+    final double minGuesses = getMinGuesses(password);
+    final double matchGuesses = max(guesses, minGuesses);
+    return SeparatorMatchEstimated(
+      i: i,
+      j: j,
+      token: token,
+      guesses: matchGuesses,
+      guessesLog10: log10(matchGuesses),
+    );
+  }
 }
 
 class MatchEstimated extends Match {

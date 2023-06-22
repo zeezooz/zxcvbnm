@@ -5,6 +5,7 @@ import 'matcher/date/matching.dart';
 import 'matcher/dictionary/matching.dart';
 import 'matcher/regex/matching.dart';
 import 'matcher/repeat/matching.dart';
+import 'matcher/separator/matching.dart';
 import 'options.dart';
 import 'types.dart';
 
@@ -18,9 +19,9 @@ class OmniMatch {
       MatchDictionary(options),
       MatchRegex(),
       MatchRepeat(this),
+      MatchSeparator(),
       // MatchSequence(),
       // MatchSpatial(),
-      // MatchSeparator(),
     ];
   }
 
