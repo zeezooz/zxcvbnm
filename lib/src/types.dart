@@ -8,6 +8,7 @@ import 'matcher/dictionary/scoring.dart';
 import 'matcher/regex/scoring.dart';
 import 'matcher/repeat/scoring.dart';
 import 'matcher/separator/scoring.dart';
+import 'matcher/sequence/scoring.dart';
 import 'options.dart';
 import 'scoring/utils.dart';
 
@@ -475,8 +476,28 @@ class SequenceMatch extends Match {
   final bool ascending;
 
   @override
-  String toString() => '${super.toString()}, sequenceName: "$sequenceName", '
+  String toString() => '${super.toString()}, sequenceName: $sequenceName, '
       'sequenceSpace: $sequenceSpace, ascending: $ascending';
+
+  @override
+  SequenceMatchEstimated estimate(String password) {
+    if (this is SequenceMatchEstimated) {
+      return this as SequenceMatchEstimated;
+    }
+    final double guesses = sequenceScoring(this);
+    final double minGuesses = getMinGuesses(password);
+    final double matchGuesses = max(guesses, minGuesses);
+    return SequenceMatchEstimated(
+      i: i,
+      j: j,
+      token: token,
+      sequenceName: sequenceName,
+      sequenceSpace: sequenceSpace,
+      ascending: ascending,
+      guesses: matchGuesses,
+      guessesLog10: log10(matchGuesses),
+    );
+  }
 }
 
 class RegexMatch extends Match {
@@ -492,7 +513,7 @@ class RegexMatch extends Match {
   final RegExpMatch regexMatch;
 
   @override
-  String toString() => '${super.toString()}, regexName: "$regexName", '
+  String toString() => '${super.toString()}, regexName: $regexName, '
       'regexMatch: [${regexMatch.start}, ${regexMatch.end}] "${regexMatch[0]}"';
 
   @override
@@ -624,7 +645,7 @@ class MatchEstimated extends Match {
   final double guessesLog10;
 
   @override
-  String toString() => '${super.toString()}, guesses: "$guesses", '
+  String toString() => '${super.toString()}, guesses: $guesses, '
       'guessesLog10: $guessesLog10';
 }
 
@@ -664,7 +685,7 @@ class DictionaryMatchEstimated extends DictionaryMatch
   final double l33tVariations;
 
   @override
-  String toString() => '${super.toString()}, guesses: "$guesses", '
+  String toString() => '${super.toString()}, guesses: $guesses, '
       'guessesLog10: $guessesLog10, baseGuesses: $baseGuesses, '
       'uppercaseVariations: $uppercaseVariations, '
       'l33tVariations: $l33tVariations';
@@ -750,7 +771,7 @@ class L33tMatchEstimated extends DictionaryMatchEstimated implements L33tMatch {
       'levenshteinDistance: $levenshteinDistance, '
       'levenshteinDistanceEntry: $levenshteinDistanceEntry, '
       'changes: $changes, changesDisplay: $changesDisplay, '
-      'guesses: "$guesses", guessesLog10: $guessesLog10, '
+      'guesses: $guesses, guessesLog10: $guessesLog10, '
       'baseGuesses: $baseGuesses, uppercaseVariations: $uppercaseVariations, '
       'l33tVariations: $l33tVariations';
 
@@ -797,7 +818,7 @@ class SpatialMatchEstimated extends SpatialMatch implements MatchEstimated {
   final double guessesLog10;
 
   @override
-  String toString() => '${super.toString()}, guesses: "$guesses", '
+  String toString() => '${super.toString()}, guesses: $guesses, '
       'guessesLog10: $guessesLog10';
 }
 
@@ -826,7 +847,7 @@ class RepeatMatchEstimated extends RepeatMatch implements MatchEstimated {
   final double guessesLog10;
 
   @override
-  String toString() => '${super.toString()}, guesses: "$guesses", '
+  String toString() => '${super.toString()}, guesses: $guesses, '
       'guessesLog10: $guessesLog10';
 }
 
@@ -855,7 +876,7 @@ class SequenceMatchEstimated extends SequenceMatch implements MatchEstimated {
   final double guessesLog10;
 
   @override
-  String toString() => '${super.toString()}, guesses: "$guesses", '
+  String toString() => '${super.toString()}, guesses: $guesses, '
       'guessesLog10: $guessesLog10';
 }
 
@@ -882,7 +903,7 @@ class RegexMatchEstimated extends RegexMatch implements MatchEstimated {
   final double guessesLog10;
 
   @override
-  String toString() => '${super.toString()}, guesses: "$guesses", '
+  String toString() => '${super.toString()}, guesses: $guesses, '
       'guessesLog10: $guessesLog10';
 }
 
@@ -913,7 +934,7 @@ class DateMatchEstimated extends DateMatch implements MatchEstimated {
   final double guessesLog10;
 
   @override
-  String toString() => '${super.toString()}, guesses: "$guesses", '
+  String toString() => '${super.toString()}, guesses: $guesses, '
       'guessesLog10: $guessesLog10';
 }
 

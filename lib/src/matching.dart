@@ -6,6 +6,7 @@ import 'matcher/dictionary/matching.dart';
 import 'matcher/regex/matching.dart';
 import 'matcher/repeat/matching.dart';
 import 'matcher/separator/matching.dart';
+import 'matcher/sequence/matching.dart';
 import 'options.dart';
 import 'types.dart';
 
@@ -20,7 +21,7 @@ class OmniMatch {
       MatchRegex(),
       MatchRepeat(this),
       MatchSeparator(),
-      // MatchSequence(),
+      MatchSequence(),
       // MatchSpatial(),
     ];
   }

@@ -1,7 +1,7 @@
 import '../../options.dart';
 import '../../types.dart';
 
-Feedback? regexFeedback({
+Feedback? repeatFeedback({
   required RepeatMatchEstimated match,
   required Options options,
   bool? isSoleMatch,

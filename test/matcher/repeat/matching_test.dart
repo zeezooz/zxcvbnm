@@ -197,7 +197,7 @@ void main() {
               j: pattern.length - 1,
               token: pattern,
               baseToken: 'ab',
-              baseGuesses: 101,
+              baseGuesses: 9,
               repeatCount: 2,
             )
           ],
@@ -237,7 +237,7 @@ void main() {
               j: pattern.length - 1,
               token: pattern,
               baseToken: 'ab',
-              baseGuesses: 101,
+              baseGuesses: 9,
               repeatCount: 4,
             )
           ],
