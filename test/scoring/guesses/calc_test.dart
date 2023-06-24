@@ -1,5 +1,6 @@
 import 'package:test/test.dart';
 import 'package:zxcvbnm/src/matcher/date/scoring.dart';
+import 'package:zxcvbnm/src/options.dart';
 import 'package:zxcvbnm/src/types.dart';
 
 class DateMatchEstimatedTest extends DateMatchEstimated {
@@ -42,6 +43,8 @@ class DateMatchEstimatedTest extends DateMatchEstimated {
 
 void main() {
   group('Scoring.', () {
+    final Options options = Options();
+
     test(
       'estimate returns cached guesses when available',
       () {
@@ -53,7 +56,7 @@ void main() {
           guessesLog10: 0,
         );
         expect(
-          match.estimate(''),
+          match.estimate('', options),
           match,
         );
       },
@@ -72,7 +75,7 @@ void main() {
           day: 14,
         );
         expect(
-          match.estimate('1977'),
+          match.estimate('1977', options),
           DateMatchEstimatedTest(
             i: 0,
             j: 3,

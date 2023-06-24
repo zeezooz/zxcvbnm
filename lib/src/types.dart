@@ -9,6 +9,7 @@ import 'matcher/regex/scoring.dart';
 import 'matcher/repeat/scoring.dart';
 import 'matcher/separator/scoring.dart';
 import 'matcher/sequence/scoring.dart';
+import 'matcher/spatial/scoring.dart';
 import 'options.dart';
 import 'scoring/utils.dart';
 
@@ -186,7 +187,7 @@ class Match {
     return minGuesses.toDouble();
   }
 
-  MatchEstimated estimate(String password) {
+  MatchEstimated estimate(String password, Options options) {
     if (this is MatchEstimated) return this as MatchEstimated;
     final double guesses = 0;
     final double minGuesses = getMinGuesses(password);
@@ -257,7 +258,7 @@ class DictionaryMatch extends Match {
       );
 
   @override
-  DictionaryMatchEstimated estimate(String password) {
+  DictionaryMatchEstimated estimate(String password, Options options) {
     if (this is DictionaryMatchEstimated) {
       return this as DictionaryMatchEstimated;
     }
@@ -305,7 +306,7 @@ class ReverseMatch extends DictionaryMatch {
         );
 
   @override
-  ReverseMatchEstimated estimate(String password) {
+  ReverseMatchEstimated estimate(String password, Options options) {
     if (this is ReverseMatchEstimated) {
       return this as ReverseMatchEstimated;
     }
@@ -375,7 +376,7 @@ class L33tMatch extends DictionaryMatch {
       changesDisplay == other.changesDisplay;
 
   @override
-  L33tMatchEstimated estimate(String password) {
+  L33tMatchEstimated estimate(String password, Options options) {
     if (this is L33tMatchEstimated) {
       return this as L33tMatchEstimated;
     }
@@ -420,6 +421,26 @@ class SpatialMatch extends Match {
   @override
   String toString() => '${super.toString()}, graph: "$graph", turns: $turns, '
       'shiftedCount: $shiftedCount';
+
+  @override
+  SpatialMatchEstimated estimate(String password, Options options) {
+    if (this is SpatialMatchEstimated) {
+      return this as SpatialMatchEstimated;
+    }
+    final double guesses = spatialScoring(this, options);
+    final double minGuesses = getMinGuesses(password);
+    final double matchGuesses = max(guesses, minGuesses);
+    return SpatialMatchEstimated(
+      i: i,
+      j: j,
+      token: token,
+      graph: graph,
+      turns: turns,
+      shiftedCount: shiftedCount,
+      guesses: matchGuesses,
+      guessesLog10: log10(matchGuesses),
+    );
+  }
 }
 
 class RepeatMatch extends Match {
@@ -441,7 +462,7 @@ class RepeatMatch extends Match {
       'baseGuesses: $baseGuesses, repeatCount: $repeatCount';
 
   @override
-  RepeatMatchEstimated estimate(String password) {
+  RepeatMatchEstimated estimate(String password, Options options) {
     if (this is RepeatMatchEstimated) {
       return this as RepeatMatchEstimated;
     }
@@ -480,7 +501,7 @@ class SequenceMatch extends Match {
       'sequenceSpace: $sequenceSpace, ascending: $ascending';
 
   @override
-  SequenceMatchEstimated estimate(String password) {
+  SequenceMatchEstimated estimate(String password, Options options) {
     if (this is SequenceMatchEstimated) {
       return this as SequenceMatchEstimated;
     }
@@ -517,7 +538,7 @@ class RegexMatch extends Match {
       'regexMatch: [${regexMatch.start}, ${regexMatch.end}] "${regexMatch[0]}"';
 
   @override
-  RegexMatchEstimated estimate(String password) {
+  RegexMatchEstimated estimate(String password, Options options) {
     if (this is RegexMatchEstimated) {
       return this as RegexMatchEstimated;
     }
@@ -557,7 +578,7 @@ class DateMatch extends Match {
       'date: $year-$month-$day';
 
   @override
-  DateMatchEstimated estimate(String password) {
+  DateMatchEstimated estimate(String password, Options options) {
     if (this is DateMatchEstimated) {
       return this as DateMatchEstimated;
     }
@@ -586,7 +607,7 @@ class BruteForceMatch extends Match {
   }) : super._(i: i, j: j, token: token);
 
   @override
-  BruteForceMatchEstimated estimate(String password) {
+  BruteForceMatchEstimated estimate(String password, Options options) {
     if (this is BruteForceMatchEstimated) {
       return this as BruteForceMatchEstimated;
     }
@@ -611,7 +632,7 @@ class SeparatorMatch extends Match {
   }) : super._(i: i, j: j, token: token);
 
   @override
-  SeparatorMatchEstimated estimate(String password) {
+  SeparatorMatchEstimated estimate(String password, Options options) {
     if (this is SeparatorMatchEstimated) {
       return this as SeparatorMatchEstimated;
     }
@@ -724,7 +745,7 @@ class ReverseMatchEstimated extends DictionaryMatchEstimated
         );
 
   @override
-  ReverseMatchEstimated estimate(String password) => this;
+  ReverseMatchEstimated estimate(String password, Options options) => this;
 }
 
 class L33tMatchEstimated extends DictionaryMatchEstimated implements L33tMatch {
@@ -790,7 +811,7 @@ class L33tMatchEstimated extends DictionaryMatchEstimated implements L33tMatch {
       changesDisplay == other.changesDisplay;
 
   @override
-  L33tMatchEstimated estimate(String password) => this;
+  L33tMatchEstimated estimate(String password, Options options) => this;
 }
 
 class SpatialMatchEstimated extends SpatialMatch implements MatchEstimated {
@@ -955,7 +976,7 @@ class BruteForceMatchEstimated extends MatchEstimated
         );
 
   @override
-  BruteForceMatchEstimated estimate(String password) => this;
+  BruteForceMatchEstimated estimate(String password, Options options) => this;
 }
 
 class SeparatorMatchEstimated extends MatchEstimated implements SeparatorMatch {
@@ -974,7 +995,7 @@ class SeparatorMatchEstimated extends MatchEstimated implements SeparatorMatch {
         );
 
   @override
-  SeparatorMatchEstimated estimate(String password) => this;
+  SeparatorMatchEstimated estimate(String password, Options options) => this;
 }
 
 class Optimal {

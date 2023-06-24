@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import '../data/const.dart';
+import '../options.dart';
 import '../types.dart';
 import 'utils.dart';
 
@@ -34,11 +35,12 @@ import 'utils.dart';
 ///   Sum(D^i for i in [1..sequenceLength-1].
 MatchSequence mostGuessableMatchSequence(
   String password,
-  List<Match> matches, {
+  List<Match> matches,
+  Options options, {
   bool excludeAdditive = false,
 }) {
   final ScoringHelper helper =
-      ScoringHelper(password, excludeAdditive: excludeAdditive);
+      ScoringHelper(password, options, excludeAdditive: excludeAdditive);
   final int passwordLength = password.length;
   // Partition matches into sublists according to ending index j.
   final List<List<Match>> matchesByJ =
@@ -82,11 +84,13 @@ MatchSequence mostGuessableMatchSequence(
 
 class ScoringHelper {
   ScoringHelper(
-    this.password, {
+    this.password,
+    this.options, {
     this.excludeAdditive = false,
   });
 
   final String password;
+  final Options options;
   final bool excludeAdditive;
   final Map<int, Map<int, Optimal>> optimal = <int, Map<int, Optimal>>{};
 
@@ -95,7 +99,7 @@ class ScoringHelper {
   // than previously encountered sequences, updating state if so.
   void update(Match match, int sequenceLength) {
     final int j = match.j;
-    final MatchEstimated matchEstimated = match.estimate(password);
+    final MatchEstimated matchEstimated = match.estimate(password, options);
     // We're considering a length-sequenceLength sequence ending with match:
     // obtain the product term in the minimization function by multiplying
     // match's guesses by the product of the length-(sequenceLength-1)

@@ -18,6 +18,7 @@ void main() {
         final double baseGuesses = mostGuessableMatchSequence(
           baseToken,
           await omniMatch.match(baseToken),
+          options,
         ).guesses;
         final RepeatMatch match = RepeatMatch(
           i: 0,
@@ -42,6 +43,7 @@ void main() {
         final double baseGuesses = mostGuessableMatchSequence(
           baseToken,
           await omniMatch.match(baseToken),
+          options,
         ).guesses;
         final RepeatMatch match = RepeatMatch(
           i: 0,
@@ -66,6 +68,7 @@ void main() {
         final double baseGuesses = mostGuessableMatchSequence(
           baseToken,
           await omniMatch.match(baseToken),
+          options,
         ).guesses;
         final RepeatMatch match = RepeatMatch(
           i: 0,
@@ -90,6 +93,7 @@ void main() {
         final double baseGuesses = mostGuessableMatchSequence(
           baseToken,
           await omniMatch.match(baseToken),
+          options,
         ).guesses;
         final RepeatMatch match = RepeatMatch(
           i: 0,
@@ -114,6 +118,7 @@ void main() {
         final double baseGuesses = mostGuessableMatchSequence(
           baseToken,
           await omniMatch.match(baseToken),
+          options,
         ).guesses;
         final RepeatMatch match = RepeatMatch(
           i: 0,

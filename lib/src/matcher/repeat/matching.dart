@@ -79,6 +79,7 @@ class MatchRepeat extends MatchingType {
     final MatchSequence matchSequence = mostGuessableMatchSequence(
       baseToken,
       matches is Future ? await matches : matches,
+      omniMatch.options,
     );
     return matchSequence.guesses;
   }
