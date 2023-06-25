@@ -7,41 +7,41 @@ import 'package:zxcvbnm/src/types.dart';
 
 void main() {
   group('Regex scoring.', () {
-    test('Guesses of 26^7 for 7-char lowercase regex.', () {
+    test('Lowercase regex.', () {
       final String token = 'aizocdk';
       final RegexMatch match = RegexMatch(
         i: 0,
-        j: 6,
+        j: token.length - 1,
         token: token,
         regexName: 'alphaLower',
         regexMatch: RegExp('.*').firstMatch(token)!,
       );
       expect(
         regexScoring(match),
-        pow(26, 7),
+        pow(26, token.length),
       );
     });
 
-    test('Guesses of 62^5 for 5-char alphanumeric regex.', () {
+    test('Alphanumeric regex.', () {
       final String token = 'ag7C8';
       final RegexMatch match = RegexMatch(
         i: 0,
-        j: 4,
+        j: token.length - 1,
         token: token,
         regexName: 'alphanumeric',
         regexMatch: RegExp('.*').firstMatch(token)!,
       );
       expect(
         regexScoring(match),
-        pow(2 * 26 + 10, 5),
+        pow(2 * 26 + 10, token.length),
       );
     });
 
-    test('Guesses of |year - referenceYear| for distant year matches.', () {
+    test('Distant year matches.', () {
       final String token = '1972';
       final RegexMatch match = RegexMatch(
         i: 0,
-        j: 3,
+        j: token.length - 1,
         token: token,
         regexName: 'recentYear',
         regexMatch: RegExp('.*').firstMatch(token)!,
@@ -52,11 +52,11 @@ void main() {
       );
     });
 
-    test('Guesses of minYearSpace for a year close to referenceYear.', () {
+    test('A year close to referenceYear.', () {
       final String token = '2020';
       final RegexMatch match = RegexMatch(
         i: 0,
-        j: 3,
+        j: token.length - 1,
         token: token,
         regexName: 'recentYear',
         regexMatch: RegExp('.*').firstMatch(token)!,
@@ -67,7 +67,7 @@ void main() {
       );
     });
 
-    test('Should equal 0 for not found regex names.', () {
+    test('Not found regex names.', () {
       final String token = '';
       final RegexMatch match = RegexMatch(
         i: 0,

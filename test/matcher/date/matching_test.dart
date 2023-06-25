@@ -48,16 +48,18 @@ void main() {
           final String password = '13${separator}2${separator}1921';
           expect(
             matchDate.match(password),
-            <DateMatchTest>[
-              DateMatchTest(
-                i: 0,
-                j: password.length - 1,
-                token: password,
-                separator: separator,
-                year: 1921,
-                month: 2,
-                day: 13,
-              ),
+            <List<DateMatchTest>>[
+              <DateMatchTest>[
+                DateMatchTest(
+                  i: 0,
+                  j: password.length - 1,
+                  token: password,
+                  separator: separator,
+                  year: 1921,
+                  month: 2,
+                  day: 13,
+                ),
+              ],
             ],
           );
         },
@@ -78,16 +80,18 @@ void main() {
               .replaceFirst('d', d.toString());
           expect(
             matchDate.match(password),
-            <DateMatchTest>[
-              DateMatchTest(
-                i: 0,
-                j: password.length - 1,
-                token: password,
-                separator: '',
-                year: 1988,
-                month: 8,
-                day: 8,
-              ),
+            <List<DateMatchTest>>[
+              <DateMatchTest>[
+                DateMatchTest(
+                  i: 0,
+                  j: password.length - 1,
+                  token: password,
+                  separator: '',
+                  year: 1988,
+                  month: 8,
+                  day: 8,
+                ),
+              ],
             ],
           );
         },
@@ -100,16 +104,18 @@ void main() {
         const String password = '111504';
         expect(
           matchDate.match(password),
-          <DateMatchTest>[
-            DateMatchTest(
-              i: 0,
-              j: password.length - 1,
-              token: password,
-              separator: '',
-              year: 2004,
-              month: 11,
-              day: 15,
-            ),
+          <List<DateMatchTest>>[
+            <DateMatchTest>[
+              DateMatchTest(
+                i: 0,
+                j: password.length - 1,
+                token: password,
+                separator: '',
+                year: 2004,
+                month: 11,
+                day: 15,
+              ),
+            ],
           ],
         );
       },
@@ -130,14 +136,16 @@ void main() {
         'Matches $password1.',
         () => expect(
           matchDate.match(password1),
-          <DateMatchTest>[
-            DateMatchTest(
-              i: 0,
-              j: password1.length - 1,
-              token: password1,
-              separator: '',
-              year: year,
-            ),
+          <List<DateMatchTest>>[
+            <DateMatchTest>[
+              DateMatchTest(
+                i: 0,
+                j: password1.length - 1,
+                token: password1,
+                separator: '',
+                year: year,
+              ),
+            ],
           ],
         ),
       );
@@ -146,14 +154,16 @@ void main() {
         'Matches $password2.',
         () => expect(
           matchDate.match(password2),
-          <DateMatchTest>[
-            DateMatchTest(
-              i: 0,
-              j: password2.length - 1,
-              token: password2,
-              separator: '.',
-              year: year,
-            ),
+          <List<DateMatchTest>>[
+            <DateMatchTest>[
+              DateMatchTest(
+                i: 0,
+                j: password2.length - 1,
+                token: password2,
+                separator: '.',
+                year: year,
+              ),
+            ],
           ],
         ),
       );
@@ -165,16 +175,18 @@ void main() {
         const String password = '02/02/02';
         expect(
           matchDate.match(password),
-          <DateMatchTest>[
-            DateMatchTest(
-              i: 0,
-              j: password.length - 1,
-              token: password,
-              separator: '/',
-              year: 2002,
-              month: 2,
-              day: 2,
-            ),
+          <List<DateMatchTest>>[
+            <DateMatchTest>[
+              DateMatchTest(
+                i: 0,
+                j: password.length - 1,
+                token: password,
+                separator: '/',
+                year: 2002,
+                month: 2,
+                day: 2,
+              ),
+            ],
           ],
         );
       },
@@ -185,22 +197,24 @@ void main() {
       () {
         const List<String> prefixes = <String>['a', 'ab'];
         const List<String> suffixes = <String>['!'];
-        const String pattern = '1/1/91';
+        const String token = '1/1/91';
         final List<IndexedPassword> passwords =
-            generatePasswords(pattern, prefixes, suffixes);
+            generatePasswords(token, prefixes, suffixes);
         for (final IndexedPassword password in passwords) {
           expect(
             matchDate.match(password.password),
-            <DateMatchTest>[
-              DateMatchTest(
-                i: password.i,
-                j: password.j,
-                token: pattern,
-                separator: '/',
-                year: 1991,
-                month: 1,
-                day: 1,
-              ),
+            <List<DateMatchTest>>[
+              <DateMatchTest>[
+                DateMatchTest(
+                  i: password.i,
+                  j: password.j,
+                  token: token,
+                  separator: '/',
+                  year: 1991,
+                  month: 1,
+                  day: 1,
+                ),
+              ],
             ],
           );
         }
@@ -211,25 +225,27 @@ void main() {
       'Matches overlapping dates.',
       () => expect(
         matchDate.match('12/20/1991.12.20'),
-        <DateMatchTest>[
-          DateMatchTest(
-            i: 0,
-            j: 9,
-            token: '12/20/1991',
-            separator: '/',
-            year: 1991,
-            month: 12,
-            day: 20,
-          ),
-          DateMatchTest(
-            i: 6,
-            j: 15,
-            token: '1991.12.20',
-            separator: '.',
-            year: 1991,
-            month: 12,
-            day: 20,
-          ),
+        <List<DateMatchTest>>[
+          <DateMatchTest>[
+            DateMatchTest(
+              i: 0,
+              j: 9,
+              token: '12/20/1991',
+              separator: '/',
+              year: 1991,
+              month: 12,
+              day: 20,
+            ),
+            DateMatchTest(
+              i: 6,
+              j: 15,
+              token: '1991.12.20',
+              separator: '.',
+              year: 1991,
+              month: 12,
+              day: 20,
+            ),
+          ],
         ],
       ),
     );
@@ -238,16 +254,18 @@ void main() {
       'Matches dates padded by non-ambiguous digits.',
       () => expect(
         matchDate.match('912/20/919'),
-        <DateMatchTest>[
-          DateMatchTest(
-            i: 1,
-            j: 8,
-            token: '12/20/91',
-            separator: '/',
-            year: 1991,
-            month: 12,
-            day: 20,
-          ),
+        <List<DateMatchTest>>[
+          <DateMatchTest>[
+            DateMatchTest(
+              i: 1,
+              j: 8,
+              token: '12/20/91',
+              separator: '/',
+              year: 1991,
+              month: 12,
+              day: 20,
+            ),
+          ],
         ],
       ),
     );

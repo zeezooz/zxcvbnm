@@ -1,4 +1,3 @@
-import '../../helper.dart';
 import '../../options.dart';
 import '../../types.dart';
 
@@ -12,14 +11,13 @@ class MatchSpatial extends MatchingType {
       RegExp(r'[~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:"ZXCVBNM<>?]');
 
   @override
-  List<SpatialMatch> match(String password) {
+  List<List<SpatialMatch>> match(String password) {
     final List<SpatialMatch> matches = <SpatialMatch>[];
     for (final String graphName in options.graph.keys) {
       final GraphEntry graph = options.graph[graphName]!;
       matches.addAll(_helper(password, graph, graphName));
     }
-    sort(matches);
-    return matches;
+    return <List<SpatialMatch>>[matches];
   }
 
   List<SpatialMatch> _helper(

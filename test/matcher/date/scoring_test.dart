@@ -25,7 +25,7 @@ void main() {
     );
 
     test(
-      'Recent years assume minYearSpace. extra guesses are added for separators.',
+      'Recent years assume minYearSpace. Extra guesses are added for separators.',
       () {
         const DateMatch match = DateMatch(
           i: 0,

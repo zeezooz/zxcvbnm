@@ -7,7 +7,7 @@ void main() {
   group('Separator scoring.', () {
     for (final String token in separatorChars) {
       test(
-        "The separator pattern '$token' has guesses of $separatorCharCount",
+        "The separator pattern '$token'.",
         () {
           expect(
             separatorScoring(SeparatorMatch(i: 0, j: 0, token: token)),

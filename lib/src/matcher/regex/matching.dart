@@ -1,11 +1,13 @@
 import '../../data/const.dart';
-import '../../helper.dart';
 import '../../types.dart';
 
 /// Regex matching.
 class MatchRegex extends MatchingType {
   @override
-  List<RegexMatch> match(String password, {Map<String, RegExp>? regexes}) {
+  List<List<RegexMatch>> match(
+    String password, {
+    Map<String, RegExp>? regexes,
+  }) {
     regexes ??= regexen;
     final List<RegexMatch> matches = <RegexMatch>[];
     regexes.forEach((String name, RegExp regex) {
@@ -21,7 +23,6 @@ class MatchRegex extends MatchingType {
         );
       }
     });
-    sort(matches);
-    return matches;
+    return <List<RegexMatch>>[matches];
   }
 }

@@ -2,7 +2,7 @@ import 'package:test/test.dart';
 import 'package:zxcvbnm/src/scoring/utils.dart';
 
 void main() {
-  group('Scoring: utils nck.', () {
+  group('Scoring utils: nCk.', () {
     test('Should calculate correctly.', () {
       const List<List<int>> data = <List<int>>[
         <int>[0, 0, 1],

@@ -16,7 +16,7 @@ void main() {
       final bool ascending = item[1] as bool;
       final int guesses = item[2] as int;
       test(
-        "The sequence pattern '$token' has guesses of $guesses.",
+        "The sequence pattern '$token'.",
         () {
           final SequenceMatch match = SequenceMatch(
             i: 0,

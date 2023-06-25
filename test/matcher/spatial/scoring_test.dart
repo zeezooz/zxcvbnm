@@ -9,7 +9,7 @@ void main() {
     final Options options = Options(graph: adjacencyGraph);
 
     test(
-      'With no turns or shifts, guesses is starts * degree * (len-1).',
+      'No turns or shifts.',
       () {
         final SpatialMatch match = SpatialMatch(
           i: 0,
@@ -27,7 +27,7 @@ void main() {
     );
 
     test(
-      'Guesses is added for shifted keys, similar to capitals in dictionary matching,',
+      'Shifted keys.',
       () {
         final SpatialMatch match = SpatialMatch(
           i: 0,
@@ -45,7 +45,7 @@ void main() {
     );
 
     test(
-      'When everything is shifted, guesses are doubled.',
+      'Everything is shifted.',
       () {
         final SpatialMatch match = SpatialMatch(
           i: 0,
@@ -63,7 +63,7 @@ void main() {
     );
 
     test(
-      'Spatial guesses accounts for turn positions, directions and starting keys.',
+      'Turns.',
       () {
         final SpatialMatch match = SpatialMatch(
           i: 0,

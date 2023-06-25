@@ -54,23 +54,25 @@ void main() {
       'Matches against reversed words.',
       () => expect(
         matchReverse.match('012345678999'),
-        <ReverseMatchTest>[
-          ReverseMatchTest(
-            i: 4,
-            j: 6,
-            token: '456',
-            matchedWord: '654',
-            rank: 4,
-            dictionary: Dictionary.passwords,
-          ),
-          ReverseMatchTest(
-            i: 1,
-            j: 3,
-            token: '123',
-            matchedWord: '321',
-            rank: 2,
-            dictionary: Dictionary.passwords,
-          ),
+        <List<ReverseMatchTest>>[
+          <ReverseMatchTest>[
+            ReverseMatchTest(
+              i: 4,
+              j: 6,
+              token: '456',
+              matchedWord: '654',
+              rank: 4,
+              dictionary: Dictionary.passwords,
+            ),
+            ReverseMatchTest(
+              i: 1,
+              j: 3,
+              token: '123',
+              matchedWord: '321',
+              rank: 2,
+              dictionary: Dictionary.passwords,
+            ),
+          ],
         ],
       ),
     );

@@ -6,7 +6,7 @@ class MatchSequence extends MatchingType {
   static const int _maxDelta = 5;
 
   @override
-  List<SequenceMatch> match(String password) {
+  List<List<SequenceMatch>> match(String password) {
     // Identifies sequences by looking for repeated differences in unicode
     // codepoint. This allows skipping, such as 9753, and also matches some
     // extended unicode sequences such as Greek and Cyrillic alphabets.
@@ -19,7 +19,7 @@ class MatchSequence extends MatchingType {
     // Expected result:
     // [(i, j, delta), ...] = [(0, 3, 1), (5, 7, -2), (8, 9, 1)]
     final List<SequenceMatch> result = <SequenceMatch>[];
-    if (password.length <= 1) return result;
+    if (password.length <= 1) return <List<SequenceMatch>>[result];
     int i = 0;
     int? lastDelta;
     final int passwordLength = password.length;
@@ -48,7 +48,7 @@ class MatchSequence extends MatchingType {
         result: result,
       );
     }
-    return result;
+    return <List<SequenceMatch>>[result];
   }
 
   void update({

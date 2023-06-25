@@ -1,4 +1,3 @@
-import '../../helper.dart';
 import '../../levenshtein.dart';
 import '../../options.dart';
 import '../../types.dart';
@@ -16,14 +15,13 @@ class MatchDictionary extends MatchingType {
   late final MatchReverse reverse;
 
   @override
-  List<DictionaryMatch> match(String password) {
+  List<List<DictionaryMatch>> match(String password) {
     final List<DictionaryMatch> matches = <DictionaryMatch>[
       ...defaultMatch(password),
-      ...reverse.match(password),
-      ...l33t.match(password),
+      ...reverse.match(password)[0],
+      ...l33t.match(password)[0],
     ];
-    sort(matches);
-    return matches;
+    return <List<DictionaryMatch>>[matches];
   }
 
   List<DictionaryMatch> defaultMatch(

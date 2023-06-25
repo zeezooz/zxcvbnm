@@ -30,7 +30,7 @@ class DictionaryReturnTest extends DictionaryReturn {
 void main() {
   group('Dictionary scoring.', () {
     test(
-      'Base guesses == the rank.',
+      'Base guesses.',
       () {
         const DictionaryMatch match = DictionaryMatch(
           i: 0,
@@ -53,7 +53,7 @@ void main() {
     );
 
     test(
-      'Extra guesses are added for capitalization.',
+      'Capitalization.',
       () {
         const DictionaryMatch match = DictionaryMatch(
           i: 0,
@@ -77,7 +77,7 @@ void main() {
     );
 
     test(
-      'Guesses are doubled when word is reversed.',
+      'Word is reversed.',
       () {
         const ReverseMatch match = ReverseMatch(
           i: 0,
@@ -100,7 +100,7 @@ void main() {
     );
 
     test(
-      'Extra guesses are added for common l33t substitutions.',
+      'Common l33t substitutions.',
       () {
         const L33tMatch match = L33tMatch(
           i: 0,
@@ -126,7 +126,7 @@ void main() {
     );
 
     test(
-      'Extra guesses are added for both capitalization and common l33t substitutions.',
+      'Both capitalization and common l33t substitutions.',
       () {
         const L33tMatch match = L33tMatch(
           i: 0,
@@ -153,7 +153,7 @@ void main() {
     );
 
     test(
-      'Special scoring for diceware findings.',
+      'Diceware findings.',
       () {
         const DictionaryMatch match = DictionaryMatch(
           i: 0,

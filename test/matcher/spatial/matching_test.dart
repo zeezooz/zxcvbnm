@@ -49,7 +49,7 @@ void main() {
         for (final String password in passwords) {
           expect(
             matchSpatial.match(password),
-            <SpatialMatchTest>[],
+            <List<SpatialMatchTest>>[<SpatialMatchTest>[]],
           );
         }
       },
@@ -58,25 +58,25 @@ void main() {
     test(
       'Matches against spatial patterns surrounded by non-spatial patterns.',
       () {
-        const String pattern = '6tfGHJ';
+        const String token = '6tfGHJ';
         expect(
-          matchSpatial.match('rz!$pattern%z'),
-          <SpatialMatchTest>[
-            SpatialMatchTest(
-              i: 3,
-              j: 3 + pattern.length - 1,
-              token: pattern,
-              graph: 'qwerty',
-              turns: 2,
-              shiftedCount: 3,
-            ),
+          matchSpatial.match('rz!$token%z'),
+          <List<SpatialMatchTest>>[
+            <SpatialMatchTest>[
+              SpatialMatchTest(
+                i: 3,
+                j: 3 + token.length - 1,
+                token: token,
+                graph: 'qwerty',
+                turns: 2,
+                shiftedCount: 3,
+              ),
+            ],
           ],
         );
       },
     );
-  });
 
-  group('Spatial matching specific patterns vs keyboards.', () {
     const List<List<Object>> data = <List<Object>>[
       <Object>['12345', 'qwerty', 1, 0],
       <Object>['@WSX', 'qwerty', 1, 4],
@@ -94,30 +94,32 @@ void main() {
       <Object>[';qoaOQ:Aoq;a', 'dvorak', 11, 4],
     ];
     for (final List<Object> item in data) {
-      final String pattern = item[0] as String;
-      final String keyboard = item[1] as String;
+      final String password = item[0] as String;
+      final String graph = item[1] as String;
       final int turns = item[2] as int;
-      final int shifts = item[3] as int;
+      final int shiftedCount = item[3] as int;
       test(
-        "Matches '$pattern' as a $keyboard pattern.",
+        "Matches '$password' as a $graph pattern.",
         () {
           final Options options = Options(
             graph: <String, GraphEntry>{
-              keyboard: adjacencyGraph[keyboard]!,
+              graph: adjacencyGraph[graph]!,
             },
           );
           final MatchSpatial matchSpatial = MatchSpatial(options);
           expect(
-            matchSpatial.match(pattern),
-            <SpatialMatchTest>[
-              SpatialMatchTest(
-                i: 0,
-                j: pattern.length - 1,
-                token: pattern,
-                graph: keyboard,
-                turns: turns,
-                shiftedCount: shifts,
-              ),
+            matchSpatial.match(password),
+            <List<SpatialMatchTest>>[
+              <SpatialMatchTest>[
+                SpatialMatchTest(
+                  i: 0,
+                  j: password.length - 1,
+                  token: password,
+                  graph: graph,
+                  turns: turns,
+                  shiftedCount: shiftedCount,
+                ),
+              ],
             ],
           );
         },

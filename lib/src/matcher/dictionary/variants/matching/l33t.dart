@@ -11,7 +11,7 @@ class MatchL33t extends MatchingType {
   final Options options;
 
   @override
-  List<L33tMatch> match(String password) {
+  List<List<L33tMatch>> match(String password) {
     final List<L33tMatch> matches = <L33tMatch>[];
     final List<PasswordWithChanges> cleanedPasswords = cleanPassword(
       password,
@@ -77,6 +77,6 @@ class MatchL33t extends MatchingType {
         }
       }
     }
-    return matches;
+    return <List<L33tMatch>>[matches];
   }
 }

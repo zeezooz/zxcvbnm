@@ -27,37 +27,37 @@ void main() {
     final MatchSeparator matchSeparator = MatchSeparator();
 
     test(
-      "Doesn't match length separators.",
+      "Doesn't match without separators.",
       () => expect(
         matchSeparator.match(''),
-        <SeparatorMatchTest>[],
+        <List<SeparatorMatchTest>>[<SeparatorMatchTest>[]],
       ),
     );
 
     test(
       'Matches same separators.',
-      () {
-        expect(
-          matchSeparator.match('first second third'),
+      () => expect(
+        matchSeparator.match('first second third'),
+        <List<SeparatorMatchTest>>[
           <SeparatorMatchTest>[
             SeparatorMatchTest(i: 5, j: 5, token: ' '),
             SeparatorMatchTest(i: 12, j: 12, token: ' '),
           ],
-        );
-      },
+        ],
+      ),
     );
 
     test(
       'Matches with different potential separators.',
-      () {
-        expect(
-          matchSeparator.match('first-second-third,&'),
+      () => expect(
+        matchSeparator.match('first-second-third,&'),
+        <List<SeparatorMatchTest>>[
           <SeparatorMatchTest>[
             SeparatorMatchTest(i: 5, j: 5, token: '-'),
             SeparatorMatchTest(i: 12, j: 12, token: '-'),
           ],
-        );
-      },
+        ],
+      ),
     );
   });
 }

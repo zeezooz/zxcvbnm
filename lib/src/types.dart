@@ -1073,7 +1073,7 @@ typedef DefaultFeedbackFunction = Feedback? Function({
 typedef DefaultScoringFunction = DictionaryReturn Function(Match match);
 
 abstract class MatchingType {
-  FutureOr<List<Match>> match(String password);
+  List<FutureOr<List<Match>>> match(String password);
 }
 
 class Matcher {

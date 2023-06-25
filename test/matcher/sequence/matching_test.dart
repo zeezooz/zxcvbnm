@@ -38,13 +38,13 @@ void main() {
     final MatchSequence matchSequence = MatchSequence();
 
     test(
-      "Doesn't match length sequences.",
+      "Doesn't match without sequences.",
       () {
         const List<String> passwords = <String>['', 'a', '1'];
         for (final String password in passwords) {
           expect(
             matchSequence.match(password),
-            <SequenceMatchTest>[],
+            <List<SequenceMatchTest>>[<SequenceMatchTest>[]],
           );
         }
       },
@@ -54,54 +54,58 @@ void main() {
       'Matches overlapping patterns.',
       () => expect(
         matchSequence.match('abcbabc'),
-        <SequenceMatchTest>[
-          SequenceMatchTest(
-            i: 0,
-            j: 2,
-            token: 'abc',
-            sequenceName: 'lower',
-            sequenceSpace: 26,
-            ascending: true,
-          ),
-          SequenceMatchTest(
-            i: 2,
-            j: 4,
-            token: 'cba',
-            sequenceName: 'lower',
-            sequenceSpace: 26,
-            ascending: false,
-          ),
-          SequenceMatchTest(
-            i: 4,
-            j: 6,
-            token: 'abc',
-            sequenceName: 'lower',
-            sequenceSpace: 26,
-            ascending: true,
-          ),
+        <List<SequenceMatchTest>>[
+          <SequenceMatchTest>[
+            SequenceMatchTest(
+              i: 0,
+              j: 2,
+              token: 'abc',
+              sequenceName: 'lower',
+              sequenceSpace: 26,
+              ascending: true,
+            ),
+            SequenceMatchTest(
+              i: 2,
+              j: 4,
+              token: 'cba',
+              sequenceName: 'lower',
+              sequenceSpace: 26,
+              ascending: false,
+            ),
+            SequenceMatchTest(
+              i: 4,
+              j: 6,
+              token: 'abc',
+              sequenceName: 'lower',
+              sequenceSpace: 26,
+              ascending: true,
+            ),
+          ],
         ],
       ),
     );
 
     const List<String> prefixes = <String>['!', '22'];
     const List<String> suffixes = <String>['!', '22'];
-    const String pattern = 'jihg';
+    const String token = 'jihg';
     final List<IndexedPassword> passwords =
-        generatePasswords(pattern, prefixes, suffixes);
+        generatePasswords(token, prefixes, suffixes);
     for (final IndexedPassword password in passwords) {
       test(
-        'Matches embedded sequence patterns ${password.password}.',
+        'Matches embedded sequence in ${password.password}.',
         () => expect(
           matchSequence.match(password.password),
-          <SequenceMatchTest>[
-            SequenceMatchTest(
-              i: password.i,
-              j: password.j,
-              token: pattern,
-              sequenceName: 'lower',
-              sequenceSpace: 26,
-              ascending: false,
-            ),
+          <List<SequenceMatchTest>>[
+            <SequenceMatchTest>[
+              SequenceMatchTest(
+                i: password.i,
+                j: password.j,
+                token: token,
+                sequenceName: 'lower',
+                sequenceSpace: 26,
+                ascending: false,
+              ),
+            ],
           ],
         ),
       );
@@ -123,23 +127,25 @@ void main() {
       <Object>['97531', 'digits', 10, false],
     ];
     for (final List<Object> item in data) {
-      final String pattern = item[0] as String;
-      final String name = item[1] as String;
-      final int space = item[2] as int;
-      final bool isAscending = item[3] as bool;
+      final String password = item[0] as String;
+      final String sequenceName = item[1] as String;
+      final int sequenceSpace = item[2] as int;
+      final bool ascending = item[3] as bool;
       test(
-        "Matches '$pattern' as a '$name' sequence.",
+        "Matches '$password' as a '$sequenceName' sequence.",
         () => expect(
-          matchSequence.match(pattern),
-          <SequenceMatchTest>[
-            SequenceMatchTest(
-              i: 0,
-              j: pattern.length - 1,
-              token: pattern,
-              sequenceName: name,
-              sequenceSpace: space,
-              ascending: isAscending,
-            ),
+          matchSequence.match(password),
+          <List<SequenceMatchTest>>[
+            <SequenceMatchTest>[
+              SequenceMatchTest(
+                i: 0,
+                j: password.length - 1,
+                token: password,
+                sequenceName: sequenceName,
+                sequenceSpace: sequenceSpace,
+                ascending: ascending,
+              ),
+            ],
           ],
         ),
       );

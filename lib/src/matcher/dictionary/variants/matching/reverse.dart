@@ -8,13 +8,15 @@ class MatchReverse extends MatchingType {
   final DefaultMatch defaultMatch;
 
   @override
-  List<ReverseMatch> match(String password) {
+  List<List<ReverseMatch>> match(String password) {
     final String reversedPassword = password.split('').reversed.join('');
-    return defaultMatch(reversedPassword)
-        .map((DictionaryMatch match) => match.toReverseMatch(password))
-        .where((ReverseMatch match) {
-      // Ignore palindromes because they're matched as a dictionary match.
-      return match.token.toLowerCase() != match.matchedWord;
-    }).toList();
+    return <List<ReverseMatch>>[
+      defaultMatch(reversedPassword)
+          .map((DictionaryMatch match) => match.toReverseMatch(password))
+          .where((ReverseMatch match) {
+        // Ignore palindromes because they're matched as a dictionary match.
+        return match.token.toLowerCase() != match.matchedWord;
+      }).toList(),
+    ];
   }
 }

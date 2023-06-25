@@ -1,6 +1,5 @@
 import '../../data/const.dart';
 import '../../data/date_splits.dart';
-import '../../helper.dart';
 import '../../types.dart';
 
 /// Date matching.
@@ -25,14 +24,12 @@ class MatchDate extends MatchingType {
   /// the full string, this uses a ^...$ regex against every substring of the
   /// password -- less performant but leads to every possible date match.
   @override
-  List<DateMatch> match(String password) {
+  List<List<DateMatch>> match(String password) {
     final List<DateMatch> matches = <DateMatch>[
       ..._matchesWithoutSeparator(password),
       ..._matchesWithSeparator(password),
     ];
-    final List<DateMatch> filteredMatches = _filterNoise(matches);
-    sort(filteredMatches);
-    return filteredMatches;
+    return <List<DateMatch>>[_filterNoise(matches)];
   }
 
   List<DateMatch> _matchesWithSeparator(String password) {

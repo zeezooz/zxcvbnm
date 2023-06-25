@@ -1,12 +1,11 @@
 import 'package:test/test.dart';
-import 'package:zxcvbnm/src/data/const.dart';
 import 'package:zxcvbnm/src/matcher/bruteforce/scoring.dart';
 import 'package:zxcvbnm/src/types.dart';
 
 void main() {
   group('Bruteforce scoring.', () {
     test(
-      'Should be exponentiation of $bruteforceCardinality and the token length.',
+      'Token length.',
       () {
         expect(
           bruteforceScoring(BruteForceMatch(i: 0, j: 0, token: 'a' * 2)),
@@ -24,7 +23,7 @@ void main() {
     );
 
     test(
-      'Should be ${double.maxFinite} from double.maxFinite.',
+      'Overflow.',
       () => expect(
         bruteforceScoring(BruteForceMatch(i: 0, j: 0, token: 'a' * 309)),
         double.maxFinite,
@@ -32,7 +31,7 @@ void main() {
     );
 
     test(
-      'Should be $minSubmatchGuessesSingleChar from minSubmatchGuessesSingleChar.',
+      'Min guesses for single character.',
       () => expect(
         bruteforceScoring(BruteForceMatch(i: 0, j: 0, token: 'a')),
         11,
@@ -40,7 +39,7 @@ void main() {
     );
 
     test(
-      'Should be $minSubmatchGuessesMultiChar from minSubmatchGuessesMultiChar.',
+      'Min guesses for multiple characters.',
       () => expect(
         bruteforceScoring(BruteForceMatch(i: 0, j: 0, token: 'ab')),
         51,

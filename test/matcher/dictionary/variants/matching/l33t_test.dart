@@ -47,73 +47,66 @@ class L33tMatchTest extends L33tMatch {
 
 void main() {
   group('L33t matching.', () {
-    group('Default const.', () {
-      final Options options = Options();
-      final MatchDictionary matchDictionary = MatchDictionary(options);
-      final MatchL33t matchL33t =
-          MatchL33t(matchDictionary.defaultMatch, options);
+    const Map<Dictionary, List<String>> dictionaries =
+        <Dictionary, List<String>>{
+      Dictionary.commonWords: <String>[
+        'aac',
+        'password',
+        'paassword',
+        'asdf0',
+        'computer',
+        'pacific',
+      ],
+      Dictionary.wikipedia: <String>['cgo'],
+    };
+    const L33tTable l33tTable = <String, List<String>>{
+      'a': <String>['4', '@'],
+      'c': <String>['(', '{', '[', '<'],
+      'g': <String>['6', '9'],
+      'o': <String>['0', '()'],
+      'u': <String>['|_|'],
+      'fi': <String>['ﬁ'],
+    };
+    final Options options = Options(
+      dictionaries: dictionaries,
+      l33tTable: l33tTable,
+      l33tMaxSubstitutions: 15,
+    );
+    final MatchDictionary matchDictionary = MatchDictionary(options);
+    final MatchL33t matchL33t =
+        MatchL33t(matchDictionary.defaultMatch, options);
 
-      test(
-        "Doesn't match single-character l33ted words.",
-        () => expect(
-          matchL33t.match('4 1 @'),
-          <L33tMatchTest>[],
-        ),
-      );
-    });
+    test(
+      "Doesn't match single-character l33ted words.",
+      () => expect(
+        matchL33t.match('4 1 @'),
+        <List<L33tMatchTest>>[<L33tMatchTest>[]],
+      ),
+    );
 
-    group('Main match.', () {
-      const Map<Dictionary, List<String>> dictionaries =
-          <Dictionary, List<String>>{
-        Dictionary.commonWords: <String>[
-          'aac',
-          'password',
-          'paassword',
-          'asdf0',
-          'computer',
-          'pacific',
-        ],
-        Dictionary.wikipedia: <String>['cgo'],
-      };
-      const L33tTable l33tTable = <String, List<String>>{
-        'a': <String>['4', '@'],
-        'c': <String>['(', '{', '[', '<'],
-        'g': <String>['6', '9'],
-        'o': <String>['0', '()'],
-        'u': <String>['|_|'],
-        'fi': <String>['ﬁ'],
-      };
-      final Options options = Options(
-        dictionaries: dictionaries,
-        l33tTable: l33tTable,
-        l33tMaxSubstitutions: 15,
-      );
-      final MatchDictionary matchDictionary = MatchDictionary(options);
-      final MatchL33t matchL33t =
-          MatchL33t(matchDictionary.defaultMatch, options);
+    test(
+      "Doesn't match ''.",
+      () => expect(
+        matchL33t.match(''),
+        <List<L33tMatchTest>>[<L33tMatchTest>[]],
+      ),
+    );
 
-      test(
-        "Doesn't match ''.",
-        () => expect(
-          matchL33t.match(''),
-          <L33tMatchTest>[],
-        ),
-      );
+    test(
+      "Doesn't match pure dictionary words.",
+      () => expect(
+        matchL33t.match('password'),
+        <List<L33tMatchTest>>[<L33tMatchTest>[]],
+      ),
+    );
 
-      test(
-        "Doesn't match pure dictionary words.",
-        () => expect(
-          matchL33t.match('password'),
-          <L33tMatchTest>[],
-        ),
-      );
-
-      test(
-        'Should match when multiple l33t substitution are needed for the same letter.',
-        () {
-          const String password = 'p4@ssword';
-          expect(
-            matchL33t.match(password),
+    test(
+      'Should match when multiple l33t substitution are needed for the same letter.',
+      () {
+        const String password = 'p4@ssword';
+        expect(
+          matchL33t.match(password),
+          <List<L33tMatchTest>>[
             <L33tMatchTest>[
               L33tMatchTest(
                 i: 0,
@@ -135,23 +128,25 @@ void main() {
                 changesDisplay: '4 -> a, @ -> a',
               ),
             ],
-          );
-        },
-      );
+          ],
+        );
+      },
+    );
 
-      test(
-        "Doesn't match with subsets of possible l33t substitution.",
-        () => expect(
-          matchL33t.match(r'P4$$w0rd'),
-          <L33tMatchTest>[],
-        ),
-      );
+    test(
+      "Doesn't match with subsets of possible l33t substitution.",
+      () => expect(
+        matchL33t.match(r'P4$$w0rd'),
+        <List<L33tMatchTest>>[<L33tMatchTest>[]],
+      ),
+    );
 
-      test(
-        'Matches against common l33t substitution.',
-        () {
-          expect(
-            matchL33t.match('p4ssword'),
+    test(
+      'Matches against common l33t substitution.',
+      () {
+        expect(
+          matchL33t.match('p4ssword'),
+          <List<L33tMatchTest>>[
             <L33tMatchTest>[
               L33tMatchTest(
                 i: 0,
@@ -169,9 +164,11 @@ void main() {
                 changesDisplay: '4 -> a',
               ),
             ],
-          );
-          expect(
-            matchL33t.match('p@@ssw0rd'),
+          ],
+        );
+        expect(
+          matchL33t.match('p@@ssw0rd'),
+          <List<L33tMatchTest>>[
             <L33tMatchTest>[
               L33tMatchTest(
                 i: 0,
@@ -193,9 +190,11 @@ void main() {
                 changesDisplay: '@ -> a, 0 -> o',
               ),
             ],
-          );
-          expect(
-            matchL33t.match('|_|(()mp|_|ter'),
+          ],
+        );
+        expect(
+          matchL33t.match('|_|(()mp|_|ter'),
+          <List<L33tMatchTest>>[
             <L33tMatchTest>[
               L33tMatchTest(
                 i: 3,
@@ -221,9 +220,11 @@ void main() {
                 changesDisplay: '( -> c, () -> o, |_| -> u',
               ),
             ],
-          );
-          expect(
-            matchL33t.match('ﬁp@ciﬁc'),
+          ],
+        );
+        expect(
+          matchL33t.match('ﬁp@ciﬁc'),
+          <List<L33tMatchTest>>[
             <L33tMatchTest>[
               L33tMatchTest(
                 i: 1,
@@ -245,9 +246,11 @@ void main() {
                 changesDisplay: '@ -> a, ﬁ -> fi',
               ),
             ],
-          );
-          expect(
-            matchL33t.match('aSdfO{G0asDfO'),
+          ],
+        );
+        expect(
+          matchL33t.match('aSdfO{G0asDfO'),
+          <List<L33tMatchTest>>[
             <L33tMatchTest>[
               L33tMatchTest(
                 i: 5,
@@ -269,14 +272,16 @@ void main() {
                 changesDisplay: '{ -> c, 0 -> o',
               ),
             ],
-          );
-        },
-      );
+          ],
+        );
+      },
+    );
 
-      test(
-        'Matches against overlapping l33t patterns.',
-        () => expect(
-          matchL33t.match('@a(go{G0'),
+    test(
+      'Matches against overlapping l33t patterns.',
+      () => expect(
+        matchL33t.match('@a(go{G0'),
+        <List<L33tMatchTest>>[
           <L33tMatchTest>[
             L33tMatchTest(
               i: 0,
@@ -332,8 +337,8 @@ void main() {
               changesDisplay: '{ -> c, 0 -> o',
             ),
           ],
-        ),
-      );
-    });
+        ],
+      ),
+    );
   });
 }

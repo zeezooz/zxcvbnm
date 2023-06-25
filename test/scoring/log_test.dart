@@ -4,8 +4,7 @@ import 'package:test/test.dart';
 import 'package:zxcvbnm/src/scoring/utils.dart';
 
 void main() {
-  const double epsilon = 1e-10;
-  group('Scoring: utils log.', () {
+  group('Scoring utils: log.', () {
     test(
       'log2 should calculate correctly.',
       () {
@@ -43,6 +42,7 @@ void main() {
 
     const int firstNumber = 17;
     const int secondNumber = 4;
+    const double epsilon = 1e-10;
 
     test(
       'Product rule.',

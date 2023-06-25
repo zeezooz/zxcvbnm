@@ -6,11 +6,11 @@ class MatchSeparator extends MatchingType {
   final RegExp _separatorRegex = RegExp('[${separatorChars.join('')}]');
 
   @override
-  List<SeparatorMatch> match(String password) {
+  List<List<SeparatorMatch>> match(String password) {
     final List<SeparatorMatch> result = <SeparatorMatch>[];
-    if (password.isEmpty) return result;
+    if (password.isEmpty) return <List<SeparatorMatch>>[result];
     final String? mostUsedSeparator = _mostUsedSeparator(password);
-    if (mostUsedSeparator == null) return result;
+    if (mostUsedSeparator == null) return <List<SeparatorMatch>>[result];
     final RegExp usedSeparatorRegex = _usedSeparatorRegex(mostUsedSeparator);
     for (final RegExpMatch match in usedSeparatorRegex.allMatches(password)) {
       // Add one to the index because we changed the regex from negative
@@ -21,7 +21,7 @@ class MatchSeparator extends MatchingType {
       final int i = match.start + 1;
       result.add(SeparatorMatch(i: i, j: i, token: mostUsedSeparator));
     }
-    return result;
+    return <List<SeparatorMatch>>[result];
   }
 
   String? _mostUsedSeparator(String password) {

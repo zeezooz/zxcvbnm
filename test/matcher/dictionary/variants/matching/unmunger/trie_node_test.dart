@@ -26,8 +26,8 @@ void main() {
   group('L33t table to trie node.', () {
     test(
       'Should convert correctly.',
-      () => expect(
-        TrieNode.fromL33tTable(
+      () {
+        final TrieNode trieNode = TrieNode.fromL33tTable(
           <String, List<String>>{
             'a': <String>['@', '4'],
             'f': <String>['v'],
@@ -35,101 +35,104 @@ void main() {
             'u': <String>['|_|', 'v'],
             'w': <String>['vv'],
           },
-        ),
-        TrieNodeTest(
-          l33t: '',
-          children: <String, TrieNodeTest>{
-            '@': TrieNodeTest(
-              l33t: '@',
-              cleanList: <String>['a'],
-            ),
-            '4': TrieNodeTest(
-              l33t: '4',
-              cleanList: <String>['a'],
-            ),
-            'v': TrieNodeTest(
-              l33t: 'v',
-              cleanList: <String>['f', 'u'],
-              children: <String, TrieNodeTest>{
-                'v': TrieNodeTest(
-                  l33t: 'vv',
-                  cleanList: <String>['w'],
-                ),
-              },
-            ),
-            '^': TrieNodeTest(
-              l33t: '^',
-              children: <String, TrieNodeTest>{
-                '^': TrieNodeTest(
-                  l33t: '^^',
-                  cleanList: <String>['m'],
-                ),
-              },
-            ),
-            'n': TrieNodeTest(
-              l33t: 'n',
-              children: <String, TrieNodeTest>{
-                'n': TrieNodeTest(
-                  l33t: 'nn',
-                  cleanList: <String>['m'],
-                ),
-              },
-            ),
-            '2': TrieNodeTest(
-              l33t: '2',
-              children: <String, TrieNodeTest>{
-                'n': TrieNodeTest(
-                  l33t: '2n',
-                  cleanList: <String>['m'],
-                ),
-              },
-            ),
-            '/': TrieNodeTest(
-              l33t: '/',
-              children: <String, TrieNodeTest>{
-                r'\': TrieNodeTest(
-                  l33t: r'/\',
-                  children: <String, TrieNodeTest>{
-                    r'\': TrieNodeTest(
-                      l33t: r'/\\',
-                      children: <String, TrieNodeTest>{
-                        '/': TrieNodeTest(
-                          l33t: r'/\\/',
-                          children: <String, TrieNodeTest>{
-                            r'\': TrieNodeTest(
-                              l33t: r'/\\/\',
-                              children: <String, TrieNodeTest>{
-                                r'\': TrieNodeTest(
-                                  l33t: r'/\\/\\',
-                                  cleanList: <String>['m'],
-                                ),
-                              },
-                            ),
-                          },
-                        ),
-                      },
-                    ),
-                  },
-                ),
-              },
-            ),
-            '|': TrieNodeTest(
-              l33t: '|',
-              children: <String, TrieNodeTest>{
-                '_': TrieNodeTest(
-                  l33t: '|_',
-                  children: <String, TrieNodeTest>{
-                    '|': TrieNodeTest(
-                      l33t: '|_|',
-                      cleanList: <String>['u'],
-                    ),
-                  },
-                ),
-              },
-            ),
-          },
-        ),
-      ),
+        );
+        expect(
+          trieNode,
+          TrieNodeTest(
+            l33t: '',
+            children: <String, TrieNodeTest>{
+              '@': TrieNodeTest(
+                l33t: '@',
+                cleanList: <String>['a'],
+              ),
+              '4': TrieNodeTest(
+                l33t: '4',
+                cleanList: <String>['a'],
+              ),
+              'v': TrieNodeTest(
+                l33t: 'v',
+                cleanList: <String>['f', 'u'],
+                children: <String, TrieNodeTest>{
+                  'v': TrieNodeTest(
+                    l33t: 'vv',
+                    cleanList: <String>['w'],
+                  ),
+                },
+              ),
+              '^': TrieNodeTest(
+                l33t: '^',
+                children: <String, TrieNodeTest>{
+                  '^': TrieNodeTest(
+                    l33t: '^^',
+                    cleanList: <String>['m'],
+                  ),
+                },
+              ),
+              'n': TrieNodeTest(
+                l33t: 'n',
+                children: <String, TrieNodeTest>{
+                  'n': TrieNodeTest(
+                    l33t: 'nn',
+                    cleanList: <String>['m'],
+                  ),
+                },
+              ),
+              '2': TrieNodeTest(
+                l33t: '2',
+                children: <String, TrieNodeTest>{
+                  'n': TrieNodeTest(
+                    l33t: '2n',
+                    cleanList: <String>['m'],
+                  ),
+                },
+              ),
+              '/': TrieNodeTest(
+                l33t: '/',
+                children: <String, TrieNodeTest>{
+                  r'\': TrieNodeTest(
+                    l33t: r'/\',
+                    children: <String, TrieNodeTest>{
+                      r'\': TrieNodeTest(
+                        l33t: r'/\\',
+                        children: <String, TrieNodeTest>{
+                          '/': TrieNodeTest(
+                            l33t: r'/\\/',
+                            children: <String, TrieNodeTest>{
+                              r'\': TrieNodeTest(
+                                l33t: r'/\\/\',
+                                children: <String, TrieNodeTest>{
+                                  r'\': TrieNodeTest(
+                                    l33t: r'/\\/\\',
+                                    cleanList: <String>['m'],
+                                  ),
+                                },
+                              ),
+                            },
+                          ),
+                        },
+                      ),
+                    },
+                  ),
+                },
+              ),
+              '|': TrieNodeTest(
+                l33t: '|',
+                children: <String, TrieNodeTest>{
+                  '_': TrieNodeTest(
+                    l33t: '|_',
+                    children: <String, TrieNodeTest>{
+                      '|': TrieNodeTest(
+                        l33t: '|_|',
+                        cleanList: <String>['u'],
+                      ),
+                    },
+                  ),
+                },
+              ),
+            },
+          ),
+        );
+      },
     );
   });
 }

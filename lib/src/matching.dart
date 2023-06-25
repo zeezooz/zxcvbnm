@@ -14,7 +14,7 @@ import 'types.dart';
 typedef Matchers = List<MatchingType>;
 
 /// Omnimatch combine matchers.
-class OmniMatch {
+class OmniMatch extends MatchingType {
   OmniMatch(this.options) {
     matchers = <MatchingType>[
       MatchDate(),
@@ -30,7 +30,8 @@ class OmniMatch {
   final Options options;
   late final Matchers matchers;
 
-  FutureOr<List<Match>> match(String password) async {
+  @override
+  List<FutureOr<List<Match>>> match(String password) {
     final List<Match> matches = <Match>[];
     final List<Future<List<Match>>> futures = <Future<List<Match>>>[];
     final Matchers matchers = <MatchingType>[
@@ -38,21 +39,10 @@ class OmniMatch {
       for (final Matcher matcher in options.matchers.values) matcher.matching,
     ];
     for (final MatchingType matcher in matchers) {
-      final FutureOr<List<Match>> result = matcher.match(password);
-      if (result is Future<List<Match>>) {
-        futures.add(result);
-      } else {
-        matches.addAll(result);
-      }
+      final List<FutureOr<List<Match>>> result = matcher.match(password);
+      matches.addAll(synchronousMatches(result));
+      futures.addAll(asynchronousMatches(result));
     }
-    if (futures.isNotEmpty) {
-      final List<List<Match>> results =
-          await Future.wait(futures, eagerError: true);
-      for (final List<Match> result in results) {
-        matches.addAll(result);
-      }
-    }
-    sort(matches);
-    return matches;
+    return <FutureOr<List<Match>>>[matches, ...futures];
   }
 }

@@ -1,5 +1,5 @@
 List<IndexedPassword> generatePasswords(
-  String pattern,
+  String token,
   List<String> prefixes,
   List<String> suffixes,
 ) {
@@ -12,9 +12,9 @@ List<IndexedPassword> generatePasswords(
     for (final String suffix in suffixesCopy) {
       result.add(
         IndexedPassword(
-          password: prefix + pattern + suffix,
+          password: prefix + token + suffix,
           i: prefix.length,
-          j: prefix.length + pattern.length - 1,
+          j: prefix.length + token.length - 1,
         ),
       );
     }
