@@ -2,13 +2,20 @@ import 'dart:async';
 import 'dart:math';
 
 import 'data/const.dart';
+import 'feedback.dart';
 import 'matcher/bruteforce/scoring.dart';
+import 'matcher/date/feedback.dart';
 import 'matcher/date/scoring.dart';
+import 'matcher/dictionary/feedback.dart';
 import 'matcher/dictionary/scoring.dart';
+import 'matcher/regex/feedback.dart';
 import 'matcher/regex/scoring.dart';
+import 'matcher/repeat/feedback.dart';
 import 'matcher/repeat/scoring.dart';
 import 'matcher/separator/scoring.dart';
+import 'matcher/sequence/feedback.dart';
 import 'matcher/sequence/scoring.dart';
+import 'matcher/spatial/feedback.dart';
 import 'matcher/spatial/scoring.dart';
 import 'options.dart';
 import 'scoring/utils.dart';
@@ -668,6 +675,13 @@ class MatchEstimated extends Match {
   @override
   String toString() => '${super.toString()}, guesses: $guesses, '
       'guessesLog10: $guessesLog10';
+
+  Feedback? feedback(
+    Options options, {
+    bool? isSoleMatch,
+  }) {
+    return null;
+  }
 }
 
 class DictionaryMatchEstimated extends DictionaryMatch
@@ -710,6 +724,18 @@ class DictionaryMatchEstimated extends DictionaryMatch
       'guessesLog10: $guessesLog10, baseGuesses: $baseGuesses, '
       'uppercaseVariations: $uppercaseVariations, '
       'l33tVariations: $l33tVariations';
+
+  @override
+  Feedback? feedback(
+    Options options, {
+    bool? isSoleMatch,
+  }) {
+    return dictionaryFeedback(
+      match: this,
+      options: options,
+      isSoleMatch: isSoleMatch,
+    );
+  }
 }
 
 class ReverseMatchEstimated extends DictionaryMatchEstimated
@@ -841,6 +867,18 @@ class SpatialMatchEstimated extends SpatialMatch implements MatchEstimated {
   @override
   String toString() => '${super.toString()}, guesses: $guesses, '
       'guessesLog10: $guessesLog10';
+
+  @override
+  Feedback? feedback(
+    Options options, {
+    bool? isSoleMatch,
+  }) {
+    return spatialFeedback(
+      match: this,
+      options: options,
+      isSoleMatch: isSoleMatch,
+    );
+  }
 }
 
 class RepeatMatchEstimated extends RepeatMatch implements MatchEstimated {
@@ -870,6 +908,18 @@ class RepeatMatchEstimated extends RepeatMatch implements MatchEstimated {
   @override
   String toString() => '${super.toString()}, guesses: $guesses, '
       'guessesLog10: $guessesLog10';
+
+  @override
+  Feedback? feedback(
+    Options options, {
+    bool? isSoleMatch,
+  }) {
+    return repeatFeedback(
+      match: this,
+      options: options,
+      isSoleMatch: isSoleMatch,
+    );
+  }
 }
 
 class SequenceMatchEstimated extends SequenceMatch implements MatchEstimated {
@@ -899,6 +949,18 @@ class SequenceMatchEstimated extends SequenceMatch implements MatchEstimated {
   @override
   String toString() => '${super.toString()}, guesses: $guesses, '
       'guessesLog10: $guessesLog10';
+
+  @override
+  Feedback? feedback(
+    Options options, {
+    bool? isSoleMatch,
+  }) {
+    return sequenceFeedback(
+      match: this,
+      options: options,
+      isSoleMatch: isSoleMatch,
+    );
+  }
 }
 
 class RegexMatchEstimated extends RegexMatch implements MatchEstimated {
@@ -926,6 +988,18 @@ class RegexMatchEstimated extends RegexMatch implements MatchEstimated {
   @override
   String toString() => '${super.toString()}, guesses: $guesses, '
       'guessesLog10: $guessesLog10';
+
+  @override
+  Feedback? feedback(
+    Options options, {
+    bool? isSoleMatch,
+  }) {
+    return regexFeedback(
+      match: this,
+      options: options,
+      isSoleMatch: isSoleMatch,
+    );
+  }
 }
 
 class DateMatchEstimated extends DateMatch implements MatchEstimated {
@@ -957,6 +1031,18 @@ class DateMatchEstimated extends DateMatch implements MatchEstimated {
   @override
   String toString() => '${super.toString()}, guesses: $guesses, '
       'guessesLog10: $guessesLog10';
+
+  @override
+  Feedback? feedback(
+    Options options, {
+    bool? isSoleMatch,
+  }) {
+    return dateFeedback(
+      match: this,
+      options: options,
+      isSoleMatch: isSoleMatch,
+    );
+  }
 }
 
 class BruteForceMatchEstimated extends MatchEstimated
@@ -1042,16 +1128,6 @@ class CrackTimesDisplay {
   final String onlineNoThrottling10PerSecond;
   final String offlineSlowHashing1e4PerSecond;
   final String offlineFastHashing1e10PerSecond;
-}
-
-class Feedback {
-  const Feedback({
-    this.warning,
-    List<String>? suggestions,
-  }) : suggestions = suggestions ?? const <String>[];
-
-  final String? warning;
-  final List<String> suggestions;
 }
 
 typedef Dictionaries = Map<Dictionary, List<Object>>;
