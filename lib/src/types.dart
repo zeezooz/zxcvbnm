@@ -136,6 +136,26 @@ class TimeEstimationTranslation {
   final String year;
   final String years;
   final String centuries;
+
+  String property(String key) {
+    switch (key) {
+      case 'ltSecond': return ltSecond;
+      case 'second': return second;
+      case 'seconds': return seconds;
+      case 'minute': return minute;
+      case 'minutes': return minutes;
+      case 'hour': return hour;
+      case 'hours': return hours;
+      case 'day': return day;
+      case 'days': return days;
+      case 'month': return month;
+      case 'months': return months;
+      case 'year': return year;
+      case 'years': return years;
+      case 'centuries': return centuries;
+      default: return '';
+    }
+  }
 }
 
 typedef L33tTable = Map<String, List<String>>;
@@ -1110,10 +1130,10 @@ class CrackTimesSeconds {
     required this.offlineFastHashing1e10PerSecond,
   });
 
-  final int onlineThrottling100PerHour;
-  final int onlineNoThrottling10PerSecond;
-  final int offlineSlowHashing1e4PerSecond;
-  final int offlineFastHashing1e10PerSecond;
+  final double onlineThrottling100PerHour;
+  final double onlineNoThrottling10PerSecond;
+  final double offlineSlowHashing1e4PerSecond;
+  final double offlineFastHashing1e10PerSecond;
 }
 
 class CrackTimesDisplay {
