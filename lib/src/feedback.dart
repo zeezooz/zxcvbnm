@@ -26,7 +26,10 @@ class Feedback {
     Feedback? feedback = _longestMatch(matches)
         .feedback(options, isSoleMatch: matches.length == 1);
     if (feedback != null) {
-      feedback.suggestions.insert(0, extraFeedback);
+      feedback = Feedback(
+        warning: feedback.warning,
+        suggestions: <String>[extraFeedback, ...feedback.suggestions],
+      );
     } else {
       feedback = Feedback(suggestions: <String>[extraFeedback]);
     }
@@ -37,7 +40,7 @@ class Feedback {
   final List<String> suggestions;
 
   @override
-  String toString() => '$warning $suggestions';
+  String toString() => '$warning, $suggestions';
 
   static MatchEstimated _longestMatch(List<MatchEstimated> sequence) {
     MatchEstimated longestMatch = sequence[0];

@@ -2,7 +2,7 @@ import 'package:test/test.dart';
 import 'package:zxcvbnm/languages/en.dart';
 import 'package:zxcvbnm/src/matcher/dictionary/matching.dart';
 import 'package:zxcvbnm/src/options.dart';
-import 'package:zxcvbnm/src/types.dart' hide Matcher;
+import 'package:zxcvbnm/src/types.dart';
 
 import '../../helper/generate_passwords.dart';
 import 'variants/matching/reverse_test.dart';

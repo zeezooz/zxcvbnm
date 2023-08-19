@@ -57,7 +57,7 @@ class MatchL33t extends MatchingType {
               PasswordChange(
                 l33t: change.l33t,
                 clean: change.clean,
-              )
+              ),
         ];
         final L33tMatch newMatch = match.toL33tMatch(
           i: i,

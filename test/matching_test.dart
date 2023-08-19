@@ -2,7 +2,7 @@ import 'package:test/test.dart';
 import 'package:zxcvbnm/languages/en.dart';
 import 'package:zxcvbnm/src/matching.dart';
 import 'package:zxcvbnm/src/options.dart';
-import 'package:zxcvbnm/src/types.dart' hide Matcher;
+import 'package:zxcvbnm/src/types.dart';
 
 import 'matcher/date/matching_test.dart';
 import 'matcher/dictionary/matching_test.dart';

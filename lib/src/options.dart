@@ -6,7 +6,7 @@ import 'types.dart';
 class Options {
   Options({
     this.translation = translationKeys,
-    Matchers? matchers,
+    List<MatchingType>? matchers,
     Dictionaries? dictionaries,
     L33tTable? l33tTable,
     this.graph = const <String, GraphEntry>{},
@@ -14,7 +14,7 @@ class Options {
     this.levenshteinThreshold = 2,
     this.l33tMaxSubstitutions = 512,
     this.maxLength = 256,
-  })  : matchers = matchers ?? <String, Matcher>{},
+  })  : matchers = matchers ?? <MatchingType>[],
         _dictionaries = dictionaries ?? <Dictionary, List<Object>>{},
         _l33tTable = l33tTable ?? l33tTableDefault,
         _trieNodeRoot = TrieNode.fromL33tTable(l33tTable ?? l33tTableDefault) {
@@ -27,7 +27,7 @@ class Options {
   /// found with something like @zxcvbn-ts/language-en.
   Translation translation;
 
-  final Matchers matchers;
+  final List<MatchingType> matchers;
 
   /// Define dictionary that should be used to check against. The matcher will
   /// search the dictionaries for similar password with l33t speak and reversed
@@ -91,10 +91,39 @@ class Options {
   /// Default is 256.
   int maxLength;
 
-  bool addMatcher(String name, Matcher matcher) {
-    if (matchers.containsKey(name)) return false;
-    matchers[name] = matcher;
-    return true;
+  Options copyWith({
+    Translation? translation,
+    List<MatchingType>? matchers,
+    Dictionaries? dictionaries,
+    List<Object>? userInputs,
+    L33tTable? l33tTable,
+    Graph? graph,
+    bool? useLevenshteinDistance,
+    int? levenshteinThreshold,
+    int? l33tMaxSubstitutions,
+    int? maxLength,
+  }) {
+    dictionaries ??= _dictionaries;
+    final Dictionaries newDictionaries = <Dictionary, List<Object>>{
+      ...dictionaries,
+      if (userInputs != null)
+        Dictionary.userInputs: <Object>[
+          ...?dictionaries[Dictionary.userInputs],
+          ...userInputs,
+        ],
+    };
+    return Options(
+      translation: translation ?? this.translation,
+      matchers: matchers ?? this.matchers,
+      dictionaries: newDictionaries,
+      l33tTable: l33tTable ?? _l33tTable,
+      graph: graph ?? this.graph,
+      useLevenshteinDistance:
+          useLevenshteinDistance ?? this.useLevenshteinDistance,
+      levenshteinThreshold: levenshteinThreshold ?? this.levenshteinThreshold,
+      l33tMaxSubstitutions: l33tMaxSubstitutions ?? this.l33tMaxSubstitutions,
+      maxLength: maxLength ?? this.maxLength,
+    );
   }
 
   void extendUserInputsDictionary(List<Object> list) {
@@ -112,7 +141,7 @@ class Options {
     final List<String> sanitizedInputs = <String>[
       for (final Object input in list)
         if (input is String || input is num || input is bool)
-          input.toString().toLowerCase()
+          input.toString().toLowerCase(),
     ];
     return _rankedDictionary(sanitizedInputs);
   }
@@ -123,7 +152,9 @@ class Options {
     final Map<Dictionary, int> rankedDictionariesMaxWordSize =
         <Dictionary, int>{};
     _dictionaries.forEach((Dictionary dictionary, List<Object> list) {
-      rankedDictionaries[dictionary] = _rankedDictionary(list);
+      rankedDictionaries[dictionary] = dictionary == Dictionary.userInputs
+          ? _sanitizedRankedDictionary(list)
+          : _rankedDictionary(list);
       rankedDictionariesMaxWordSize[dictionary] =
           _rankedDictionariesMaxWordSize(list);
     });

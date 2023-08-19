@@ -36,7 +36,7 @@ class OmniMatch extends MatchingType {
     final List<Future<List<Match>>> futures = <Future<List<Match>>>[];
     final Matchers matchers = <MatchingType>[
       ...this.matchers,
-      for (final Matcher matcher in options.matchers.values) matcher.matching,
+      ...options.matchers,
     ];
     for (final MatchingType matcher in matchers) {
       final List<FutureOr<List<Match>>> result = matcher.match(password);
