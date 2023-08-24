@@ -1,5 +1,6 @@
 import 'package:zxcvbnm/src/feedback.dart';
 import 'package:zxcvbnm/src/matchers/base_matcher.dart';
+import 'package:zxcvbnm/src/matchers/brute_force_matcher.dart';
 import 'package:zxcvbnm/src/types.dart';
 
 import '../matcher/dictionary/matching_test.dart';
@@ -8,7 +9,6 @@ import '../matcher/regex/matching_test.dart';
 import '../matcher/repeat/matching_test.dart';
 import '../matcher/sequence/matching_test.dart';
 import '../matcher/spatial/matching_test.dart';
-import '../scoring/search_test.dart';
 import '../zxcvbnm_test.dart';
 
 final List<ResultTest> passwordTests = <ResultTest>[
@@ -910,3 +910,31 @@ final List<ResultTest> passwordTests = <ResultTest>[
     sequence: <BaseMatch>[],
   ),
 ];
+
+class BruteForceMatchTest extends BruteForceMatch {
+  BruteForceMatchTest({
+    required String password,
+    required int start,
+    required int end,
+    double? guesses,
+  })  : guessesTest = guesses,
+        super(
+          password: password,
+          start: start,
+          end: end,
+        );
+
+  final double? guessesTest;
+
+  @override
+  double get guesses => guessesTest ?? super.guesses;
+
+  @override
+  // ignore: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
+  bool operator ==(Object other) =>
+      other is BruteForceMatch &&
+      password == other.password &&
+      start == other.start &&
+      end == other.end &&
+      (guessesTest == null || guessesTest == other.guesses);
+}

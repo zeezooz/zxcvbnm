@@ -2,6 +2,7 @@ import 'dart:math';
 
 import '../data/const.dart';
 import '../matchers/base_matcher.dart';
+import '../matchers/brute_force_matcher.dart';
 import '../options.dart';
 import '../types.dart';
 import 'utils.dart';

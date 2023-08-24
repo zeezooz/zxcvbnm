@@ -4,35 +4,8 @@ import 'package:zxcvbnm/src/options.dart';
 import 'package:zxcvbnm/src/scoring/index.dart';
 import 'package:zxcvbnm/src/types.dart';
 
+import '../helper/password_tests.dart';
 import '../matcher/separator/matching_test.dart';
-
-class BruteForceMatchTest extends BruteForceMatch {
-  BruteForceMatchTest({
-    required String password,
-    required int start,
-    required int end,
-    double? guesses,
-  })  : guessesTest = guesses,
-        super(
-          password: password,
-          start: start,
-          end: end,
-        );
-
-  final double? guessesTest;
-
-  @override
-  double get guesses => guessesTest ?? super.guesses;
-
-  @override
-  // ignore: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
-  bool operator ==(Object other) =>
-      other is BruteForceMatch &&
-      password == other.password &&
-      start == other.start &&
-      end == other.end &&
-      (guessesTest == null || guessesTest == other.guesses);
-}
 
 void main() {
   group('Scoring search.', () {

@@ -2,6 +2,7 @@ import 'package:test/test.dart';
 import 'package:zxcvbnm/languages/en.dart';
 import 'package:zxcvbnm/src/feedback.dart';
 import 'package:zxcvbnm/src/matchers/base_matcher.dart';
+import 'package:zxcvbnm/src/matchers/brute_force_matcher.dart';
 import 'package:zxcvbnm/src/options.dart';
 import 'package:zxcvbnm/src/types.dart';
 
@@ -13,7 +14,6 @@ import 'matcher/regex/matching_test.dart';
 import 'matcher/repeat/matching_test.dart';
 import 'matcher/sequence/matching_test.dart';
 import 'matcher/spatial/matching_test.dart';
-import 'scoring/search_test.dart';
 
 class FeedbackTest extends Feedback {
   const FeedbackTest({
@@ -39,11 +39,10 @@ void main() {
         final Feedback feedback = Feedback.fromMatches(
           3,
           <BaseMatch>[
-            BruteForceMatchTest(
+            BruteForceMatch(
               password: '',
               start: 0,
               end: 0,
-              guesses: 1,
             ),
           ],
           options,
@@ -81,11 +80,10 @@ void main() {
         final Feedback feedback = Feedback.fromMatches(
           1,
           <BaseMatch>[
-            BruteForceMatchTest(
+            BruteForceMatch(
               password: '',
               start: 0,
               end: 0,
-              guesses: 1,
             ),
           ],
           options,

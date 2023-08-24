@@ -1,5 +1,4 @@
 import 'feedback.dart';
-import 'matcher/bruteforce/scoring.dart';
 import 'matcher/date/feedback.dart';
 import 'matcher/date/scoring.dart';
 import 'matcher/dictionary/feedback.dart';
@@ -507,20 +506,6 @@ class DateMatch extends BaseMatch {
       isSoleMatch: isSoleMatch,
     );
   }
-}
-
-class BruteForceMatch extends BaseMatch {
-  BruteForceMatch({
-    required String password,
-    required int start,
-    required int end,
-  }) : super(password: password, start: start, end: end);
-
-  @override
-  double get estimatedGuesses => bruteforceScoring(this);
-
-  @override
-  Feedback? feedback({required bool isSoleMatch}) => null;
 }
 
 class SeparatorMatch extends BaseMatch {
