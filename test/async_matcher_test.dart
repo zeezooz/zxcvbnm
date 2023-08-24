@@ -1,18 +1,15 @@
-import 'dart:math';
-
 import 'package:test/test.dart';
 import 'package:zxcvbnm/languages/en.dart';
 import 'package:zxcvbnm/src/feedback.dart';
+import 'package:zxcvbnm/src/matchers/base_matcher.dart';
 import 'package:zxcvbnm/src/options.dart';
-import 'package:zxcvbnm/src/scoring/utils.dart';
-import 'package:zxcvbnm/src/types.dart';
 import 'package:zxcvbnm/zxcvbnm.dart';
 
 void main() {
   group('Async matcher.', () {
     final Options options = Options(
       translation: translation,
-      matchers: <MatchingType>[MatchAsync()],
+      matchers: <BaseMatcher>[MatchAsync()],
       dictionaries: dictionaries,
       graph: adjacencyGraph,
     );
@@ -36,17 +33,17 @@ void main() {
   });
 }
 
-class MatchAsync extends MatchingType {
+class MatchAsync extends BaseMatcher {
   @override
-  List<Future<List<Match>>> match(String password) {
-    return <Future<List<Match>>>[
-      Future<List<Match>>.delayed(
+  List<Future<List<BaseMatch>>> match(String password) {
+    return <Future<List<BaseMatch>>>[
+      Future<List<BaseMatch>>.delayed(
         Duration(seconds: 2),
-        () => <Match>[
+        () => <BaseMatch>[
           AsyncMatch(
-            i: 0,
-            j: password.length - 1,
-            token: password,
+            password: password,
+            start: 0,
+            end: password.length,
           ),
         ],
       ),
@@ -54,47 +51,18 @@ class MatchAsync extends MatchingType {
   }
 }
 
-class AsyncMatch extends Match {
-  const AsyncMatch({
-    required int i,
-    required int j,
-    required String token,
-  }) : super(i: i, j: j, token: token);
+class AsyncMatch extends BaseMatch {
+  AsyncMatch({
+    required String password,
+    required int start,
+    required int end,
+  }) : super(password: password, start: start, end: end);
 
   @override
-  AsyncMatchEstimated estimate(String password, Options options) {
-    if (this is AsyncMatchEstimated) return this as AsyncMatchEstimated;
-    final double guesses = max(token.length * 10, getMinGuesses(password));
-    return AsyncMatchEstimated(
-      i: i,
-      j: j,
-      token: token,
-      guesses: guesses,
-      guessesLog10: log10(guesses),
-    );
-  }
-}
-
-class AsyncMatchEstimated extends MatchEstimated implements AsyncMatch {
-  const AsyncMatchEstimated({
-    required int i,
-    required int j,
-    required String token,
-    required double guesses,
-    required double guessesLog10,
-  }) : super(
-          i: i,
-          j: j,
-          token: token,
-          guesses: guesses,
-          guessesLog10: guessesLog10,
-        );
+  double get estimatedGuesses => length * 10;
 
   @override
-  AsyncMatchEstimated estimate(String password, Options options) => this;
-
-  @override
-  Feedback? feedback(Options options, {bool? isSoleMatch}) {
+  Feedback? feedback({required bool isSoleMatch}) {
     return Feedback(warning: 'So async.');
   }
 }

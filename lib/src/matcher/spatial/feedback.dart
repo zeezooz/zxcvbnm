@@ -3,9 +3,9 @@ import '../../options.dart';
 import '../../types.dart';
 
 Feedback? spatialFeedback({
-  required SpatialMatchEstimated match,
+  required SpatialMatch match,
   required Options options,
-  bool? isSoleMatch,
+  required bool isSoleMatch,
 }) {
   String warning = options.translation.warnings.keyPattern;
   if (match.turns == 1) {

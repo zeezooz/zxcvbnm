@@ -1,8 +1,19 @@
 import 'package:test/test.dart';
 import 'package:zxcvbnm/languages/en.dart';
 import 'package:zxcvbnm/src/feedback.dart';
+import 'package:zxcvbnm/src/matchers/base_matcher.dart';
 import 'package:zxcvbnm/src/options.dart';
 import 'package:zxcvbnm/src/types.dart';
+
+import 'matcher/date/matching_test.dart';
+import 'matcher/dictionary/matching_test.dart';
+import 'matcher/dictionary/variants/matching/l33t_test.dart';
+import 'matcher/dictionary/variants/matching/reverse_test.dart';
+import 'matcher/regex/matching_test.dart';
+import 'matcher/repeat/matching_test.dart';
+import 'matcher/sequence/matching_test.dart';
+import 'matcher/spatial/matching_test.dart';
+import 'scoring/search_test.dart';
 
 class FeedbackTest extends Feedback {
   const FeedbackTest({
@@ -27,13 +38,12 @@ void main() {
       () {
         final Feedback feedback = Feedback.fromMatches(
           3,
-          <MatchEstimated>[
-            BruteForceMatchEstimated(
-              i: 0,
-              j: 0,
-              token: '',
+          <BaseMatch>[
+            BruteForceMatchTest(
+              password: '',
+              start: 0,
+              end: 0,
               guesses: 1,
-              guessesLog10: 0,
             ),
           ],
           options,
@@ -50,7 +60,7 @@ void main() {
       () {
         final Feedback feedback = Feedback.fromMatches(
           3,
-          <MatchEstimated>[],
+          <BaseMatch>[],
           options,
         );
         expect(
@@ -70,13 +80,12 @@ void main() {
       () {
         final Feedback feedback = Feedback.fromMatches(
           1,
-          <MatchEstimated>[
-            BruteForceMatchEstimated(
-              i: 0,
-              j: 0,
-              token: '',
+          <BaseMatch>[
+            BruteForceMatchTest(
+              password: '',
+              start: 0,
+              end: 0,
               guesses: 1,
-              guessesLog10: 0,
             ),
           ],
           options,
@@ -95,19 +104,18 @@ void main() {
       () {
         Feedback feedback = Feedback.fromMatches(
           1,
-          <MatchEstimated>[
-            DictionaryMatchEstimated(
-              i: 0,
-              j: 4,
-              token: 'tests',
+          <BaseMatch>[
+            DictionaryMatchTest(
+              password: 'tests',
+              start: 0,
+              end: 5,
               matchedWord: 'tests',
               rank: 10,
               dictionary: Dictionary.passwords,
               guesses: 10000,
-              guessesLog10: 4,
-              baseGuesses: 10,
               uppercaseVariations: 0,
               l33tVariations: 0,
+              options: options,
             ),
           ],
           options,
@@ -122,19 +130,18 @@ void main() {
 
         feedback = Feedback.fromMatches(
           1,
-          <MatchEstimated>[
-            DictionaryMatchEstimated(
-              i: 0,
-              j: 4,
-              token: 'tests',
+          <BaseMatch>[
+            DictionaryMatchTest(
+              password: 'tests',
+              start: 0,
+              end: 5,
               matchedWord: 'tests',
               rank: 100,
               dictionary: Dictionary.passwords,
               guesses: 10000,
-              guessesLog10: 4,
-              baseGuesses: 100,
               uppercaseVariations: 0,
               l33tVariations: 0,
+              options: options,
             ),
           ],
           options,
@@ -149,19 +156,18 @@ void main() {
 
         feedback = Feedback.fromMatches(
           1,
-          <MatchEstimated>[
-            DictionaryMatchEstimated(
-              i: 0,
-              j: 4,
-              token: 'tests',
+          <BaseMatch>[
+            DictionaryMatchTest(
+              password: 'tests',
+              start: 0,
+              end: 5,
               matchedWord: 'tests',
               rank: 1000,
               dictionary: Dictionary.passwords,
               guesses: 10000,
-              guessesLog10: 4,
-              baseGuesses: 1000,
               uppercaseVariations: 0,
               l33tVariations: 0,
+              options: options,
             ),
           ],
           options,
@@ -176,21 +182,20 @@ void main() {
 
         feedback = Feedback.fromMatches(
           1,
-          <MatchEstimated>[
-            L33tMatchEstimated(
-              i: 0,
-              j: 4,
-              token: 'tests',
+          <BaseMatch>[
+            L33tMatchTest(
+              password: 'tests',
+              start: 0,
+              end: 5,
               matchedWord: 'tests',
               rank: 10,
               dictionary: Dictionary.passwords,
               guesses: 10000,
-              guessesLog10: 4,
-              baseGuesses: 10,
               uppercaseVariations: 0,
               l33tVariations: 0,
               changes: <PasswordChange>[],
               changesDisplay: '',
+              options: options,
             ),
           ],
           options,
@@ -208,19 +213,18 @@ void main() {
 
         feedback = Feedback.fromMatches(
           1,
-          <MatchEstimated>[
-            ReverseMatchEstimated(
-              i: 0,
-              j: 4,
-              token: 'tests',
+          <BaseMatch>[
+            ReverseMatchTest(
+              password: 'tests',
+              start: 0,
+              end: 5,
               matchedWord: 'tests',
               rank: 10,
               dictionary: Dictionary.passwords,
               guesses: 10000,
-              guessesLog10: 4,
-              baseGuesses: 10,
               uppercaseVariations: 0,
               l33tVariations: 0,
+              options: options,
             ),
           ],
           options,
@@ -238,19 +242,18 @@ void main() {
 
         feedback = Feedback.fromMatches(
           1,
-          <MatchEstimated>[
-            ReverseMatchEstimated(
-              i: 0,
-              j: 4,
-              token: 'Tests',
+          <BaseMatch>[
+            ReverseMatchTest(
+              password: 'Tests',
+              start: 0,
+              end: 5,
               matchedWord: 'tests',
               rank: 10,
               dictionary: Dictionary.passwords,
               guesses: 100000,
-              guessesLog10: 5,
-              baseGuesses: 10,
               uppercaseVariations: 0,
               l33tVariations: 0,
+              options: options,
             ),
           ],
           options,
@@ -268,19 +271,18 @@ void main() {
 
         feedback = Feedback.fromMatches(
           1,
-          <MatchEstimated>[
-            ReverseMatchEstimated(
-              i: 0,
-              j: 4,
-              token: 'TESTS',
+          <BaseMatch>[
+            ReverseMatchTest(
+              password: 'TESTS',
+              start: 0,
+              end: 5,
               matchedWord: 'tests',
               rank: 10,
               dictionary: Dictionary.passwords,
               guesses: 100000,
-              guessesLog10: 5,
-              baseGuesses: 10,
               uppercaseVariations: 0,
               l33tVariations: 0,
+              options: options,
             ),
           ],
           options,
@@ -298,19 +300,18 @@ void main() {
 
         feedback = Feedback.fromMatches(
           1,
-          <MatchEstimated>[
-            DictionaryMatchEstimated(
-              i: 0,
-              j: 4,
-              token: 'tests',
+          <BaseMatch>[
+            DictionaryMatchTest(
+              password: 'tests',
+              start: 0,
+              end: 5,
               matchedWord: 'tests',
               rank: 10,
               dictionary: Dictionary.wikipedia,
               guesses: 10000,
-              guessesLog10: 4,
-              baseGuesses: 10,
               uppercaseVariations: 0,
               l33tVariations: 0,
+              options: options,
             ),
           ],
           options,
@@ -325,32 +326,30 @@ void main() {
 
         feedback = Feedback.fromMatches(
           1,
-          <MatchEstimated>[
-            DictionaryMatchEstimated(
-              i: 0,
-              j: 4,
-              token: 'tests',
+          <BaseMatch>[
+            DictionaryMatchTest(
+              password: 'tests',
+              start: 0,
+              end: 5,
               matchedWord: 'tests',
               rank: 10,
               dictionary: Dictionary.wikipedia,
               guesses: 10000,
-              guessesLog10: 4,
-              baseGuesses: 10,
               uppercaseVariations: 0,
               l33tVariations: 0,
+              options: options,
             ),
-            DictionaryMatchEstimated(
-              i: 0,
-              j: 4,
-              token: 'tests',
+            DictionaryMatchTest(
+              password: 'tests',
+              start: 0,
+              end: 5,
               matchedWord: 'tests',
               rank: 10,
               dictionary: Dictionary.wikipedia,
               guesses: 10000,
-              guessesLog10: 4,
-              baseGuesses: 10,
               uppercaseVariations: 0,
               l33tVariations: 0,
+              options: options,
             ),
           ],
           options,
@@ -364,19 +363,18 @@ void main() {
 
         feedback = Feedback.fromMatches(
           1,
-          <MatchEstimated>[
-            DictionaryMatchEstimated(
-              i: 0,
-              j: 4,
-              token: 'tests',
+          <BaseMatch>[
+            DictionaryMatchTest(
+              password: 'tests',
+              start: 0,
+              end: 5,
               matchedWord: 'tests',
               rank: 10,
               dictionary: Dictionary.commonWords,
               guesses: 10000,
-              guessesLog10: 4,
-              baseGuesses: 10,
               uppercaseVariations: 0,
               l33tVariations: 0,
+              options: options,
             ),
           ],
           options,
@@ -390,19 +388,18 @@ void main() {
 
         feedback = Feedback.fromMatches(
           1,
-          <MatchEstimated>[
-            DictionaryMatchEstimated(
-              i: 0,
-              j: 4,
-              token: 'tests',
+          <BaseMatch>[
+            DictionaryMatchTest(
+              password: 'tests',
+              start: 0,
+              end: 5,
               matchedWord: 'tests',
               rank: 10,
               dictionary: Dictionary.lastNames,
               guesses: 10000,
-              guessesLog10: 4,
-              baseGuesses: 10,
               uppercaseVariations: 0,
               l33tVariations: 0,
+              options: options,
             ),
           ],
           options,
@@ -417,19 +414,18 @@ void main() {
 
         feedback = Feedback.fromMatches(
           1,
-          <MatchEstimated>[
-            DictionaryMatchEstimated(
-              i: 0,
-              j: 4,
-              token: 'tests',
+          <BaseMatch>[
+            DictionaryMatchTest(
+              password: 'tests',
+              start: 0,
+              end: 5,
               matchedWord: 'tests',
               rank: 10,
               dictionary: Dictionary.firstNames,
               guesses: 10000,
-              guessesLog10: 4,
-              baseGuesses: 10,
               uppercaseVariations: 0,
               l33tVariations: 0,
+              options: options,
             ),
           ],
           options,
@@ -444,32 +440,30 @@ void main() {
 
         feedback = Feedback.fromMatches(
           1,
-          <MatchEstimated>[
-            DictionaryMatchEstimated(
-              i: 0,
-              j: 4,
-              token: 'tests',
+          <BaseMatch>[
+            DictionaryMatchTest(
+              password: 'tests',
+              start: 0,
+              end: 5,
               matchedWord: 'tests',
               rank: 10,
               dictionary: Dictionary.firstNames,
               guesses: 10000,
-              guessesLog10: 4,
-              baseGuesses: 10,
               uppercaseVariations: 0,
               l33tVariations: 0,
+              options: options,
             ),
-            DictionaryMatchEstimated(
-              i: 0,
-              j: 4,
-              token: 'tests',
+            DictionaryMatchTest(
+              password: 'tests',
+              start: 0,
+              end: 5,
               matchedWord: 'tests',
               rank: 10,
               dictionary: Dictionary.firstNames,
               guesses: 10000,
-              guessesLog10: 4,
-              baseGuesses: 10,
               uppercaseVariations: 0,
               l33tVariations: 0,
+              options: options,
             ),
           ],
           options,
@@ -484,19 +478,18 @@ void main() {
 
         feedback = Feedback.fromMatches(
           1,
-          <MatchEstimated>[
-            DictionaryMatchEstimated(
-              i: 0,
-              j: 4,
-              token: 'tests',
+          <BaseMatch>[
+            DictionaryMatchTest(
+              password: 'tests',
+              start: 0,
+              end: 5,
               matchedWord: 'tests',
               rank: 10,
               dictionary: Dictionary.userInputs,
               guesses: 10000,
-              guessesLog10: 4,
-              baseGuesses: 10,
               uppercaseVariations: 0,
               l33tVariations: 0,
+              options: options,
             ),
           ],
           options,
@@ -516,16 +509,16 @@ void main() {
       () {
         Feedback feedback = Feedback.fromMatches(
           2,
-          <MatchEstimated>[
-            SpatialMatchEstimated(
-              i: 0,
-              j: 4,
-              token: 'tests',
+          <BaseMatch>[
+            SpatialMatchTest(
+              password: 'tests',
+              start: 0,
+              end: 5,
               graph: 'qwerty',
               turns: 1,
               shiftedCount: 0,
               guesses: 1,
-              guessesLog10: 0,
+              options: options,
             ),
           ],
           options,
@@ -543,16 +536,16 @@ void main() {
 
         feedback = Feedback.fromMatches(
           2,
-          <MatchEstimated>[
-            SpatialMatchEstimated(
-              i: 0,
-              j: 4,
-              token: 'tests',
+          <BaseMatch>[
+            SpatialMatchTest(
+              password: 'tests',
+              start: 0,
+              end: 5,
               graph: 'qwerty',
               turns: 2,
               shiftedCount: 0,
               guesses: 1,
-              guessesLog10: 0,
+              options: options,
             ),
           ],
           options,
@@ -575,16 +568,16 @@ void main() {
       () {
         Feedback feedback = Feedback.fromMatches(
           2,
-          <MatchEstimated>[
-            RepeatMatchEstimated(
-              i: 0,
-              j: 4,
-              token: 'tests',
+          <BaseMatch>[
+            RepeatMatchTest(
+              password: 'tests',
+              start: 0,
+              end: 5,
               baseToken: 'a',
               baseGuesses: 1,
               repeatCount: 5,
               guesses: 1,
-              guessesLog10: 0,
+              options: options,
             ),
           ],
           options,
@@ -602,16 +595,16 @@ void main() {
 
         feedback = Feedback.fromMatches(
           2,
-          <MatchEstimated>[
-            RepeatMatchEstimated(
-              i: 0,
-              j: 4,
-              token: 'tests',
+          <BaseMatch>[
+            RepeatMatchTest(
+              password: 'tests',
+              start: 0,
+              end: 5,
               baseToken: 'aa',
               baseGuesses: 1,
               repeatCount: 2,
               guesses: 1,
-              guessesLog10: 0,
+              options: options,
             ),
           ],
           options,
@@ -634,16 +627,16 @@ void main() {
       () {
         final Feedback feedback = Feedback.fromMatches(
           1,
-          <MatchEstimated>[
-            SequenceMatchEstimated(
-              i: 0,
-              j: 4,
-              token: 'tests',
+          <BaseMatch>[
+            SequenceMatchTest(
+              password: 'tests',
+              start: 0,
+              end: 5,
               sequenceName: '',
               sequenceSpace: 0,
               ascending: false,
               guesses: 1,
-              guessesLog10: 0,
+              options: options,
             ),
           ],
           options,
@@ -666,15 +659,15 @@ void main() {
       () {
         final Feedback feedback = Feedback.fromMatches(
           1,
-          <MatchEstimated>[
-            RegexMatchEstimated(
-              i: 0,
-              j: 4,
-              token: 'tests',
+          <BaseMatch>[
+            RegexMatchTest(
+              password: 'tests',
+              start: 0,
+              end: 5,
               regexName: 'recentYear',
               regexMatch: RegExp('.*').firstMatch('tests')!,
               guesses: 1,
-              guessesLog10: 0,
+              options: options,
             ),
           ],
           options,
@@ -698,17 +691,17 @@ void main() {
       () {
         final Feedback feedback = Feedback.fromMatches(
           1,
-          <MatchEstimated>[
-            DateMatchEstimated(
-              i: 0,
-              j: 4,
-              token: 'tests',
+          <BaseMatch>[
+            DateMatchTest(
+              password: 'tests',
+              start: 0,
+              end: 5,
               separator: '',
               year: 2000,
               month: 1,
               day: 1,
               guesses: 1,
-              guessesLog10: 0,
+              options: options,
             ),
           ],
           options,

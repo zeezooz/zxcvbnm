@@ -1,10 +1,10 @@
 import 'dart:math';
 
 import '../../../../data/const.dart';
+import '../../../../matchers/base_matcher.dart';
 import '../../../../scoring/utils.dart';
-import '../../../../types.dart';
 
-double uppercaseScoring(Match match) {
+double uppercaseScoring(BaseMatch match) {
   // Clean words of non alpha characters to remove the reward effect to
   // capitalize the first letter https://github.com/dropbox/zxcvbn/issues/232
   final String cleanedWord = match.token.replaceAll(alphaInverted, '');

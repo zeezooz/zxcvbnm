@@ -12,12 +12,13 @@ void main() {
       'No turns or shifts.',
       () {
         final SpatialMatch match = SpatialMatch(
-          i: 0,
-          j: 5,
-          token: 'zxcvbn',
+          password: 'zxcvbn',
+          start: 0,
+          end: 6,
           graph: 'qwerty',
           turns: 1,
           shiftedCount: 0,
+          options: options,
         );
         expect(
           spatialScoring(match, options),
@@ -30,12 +31,13 @@ void main() {
       'Shifted keys.',
       () {
         final SpatialMatch match = SpatialMatch(
-          i: 0,
-          j: 5,
-          token: 'ZxCvbn',
+          password: 'ZxCvbn',
+          start: 0,
+          end: 6,
           graph: 'qwerty',
           turns: 1,
           shiftedCount: 2,
+          options: options,
         );
         expect(
           spatialScoring(match, options),
@@ -48,12 +50,13 @@ void main() {
       'Everything is shifted.',
       () {
         final SpatialMatch match = SpatialMatch(
-          i: 0,
-          j: 5,
-          token: 'ZXCVBN',
+          password: 'ZXCVBN',
+          start: 0,
+          end: 6,
           graph: 'qwerty',
           turns: 1,
           shiftedCount: 6,
+          options: options,
         );
         expect(
           spatialScoring(match, options),
@@ -66,12 +69,13 @@ void main() {
       'Turns.',
       () {
         final SpatialMatch match = SpatialMatch(
-          i: 0,
-          j: 7,
-          token: 'zxcft6yh',
+          password: 'zxcft6yh',
+          start: 0,
+          end: 8,
           graph: 'qwerty',
           turns: 3,
           shiftedCount: 0,
+          options: options,
         );
         expect(
           spatialScoring(match, options),

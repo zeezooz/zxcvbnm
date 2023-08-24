@@ -1,10 +1,12 @@
 import 'package:test/test.dart';
 import 'package:zxcvbnm/src/matcher/dictionary/variants/scoring/uppercase.dart';
+import 'package:zxcvbnm/src/options.dart';
 import 'package:zxcvbnm/src/scoring/utils.dart';
 import 'package:zxcvbnm/src/types.dart';
 
 void main() {
   group('Uppercase scoring.', () {
+    final Options options = Options();
     final List<List<Object>> data = <List<Object>>[
       <Object>['', 1],
       <Object>['a', 1],
@@ -26,12 +28,13 @@ void main() {
         "Guess multiplier of '$token'.",
         () {
           final DictionaryMatch match = DictionaryMatch(
-            i: 0,
-            j: token.length - 1,
-            token: token,
+            password: token,
+            start: 0,
+            end: token.length,
             matchedWord: token,
             rank: 1,
             dictionary: Dictionary.commonWords,
+            options: options,
           );
           expect(
             uppercaseScoring(match),

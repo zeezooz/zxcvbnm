@@ -6,31 +6,41 @@ import 'package:zxcvbnm/src/types.dart';
 
 class SpatialMatchTest extends SpatialMatch {
   SpatialMatchTest({
-    required int i,
-    required int j,
-    required String token,
+    required String password,
+    required int start,
+    required int end,
     required String graph,
     required int turns,
     required int shiftedCount,
-  }) : super(
-          i: i,
-          j: j,
-          token: token,
+    double? guesses,
+    Options? options,
+  })  : guessesTest = guesses,
+        super(
+          password: password,
+          start: start,
+          end: end,
           graph: graph,
           turns: turns,
           shiftedCount: shiftedCount,
+          options: options ?? Options(),
         );
+
+  final double? guessesTest;
+
+  @override
+  double get guesses => guessesTest ?? super.guesses;
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
   bool operator ==(Object other) =>
       other is SpatialMatch &&
-      i == other.i &&
-      j == other.j &&
-      token == other.token &&
+      password == other.password &&
+      start == other.start &&
+      end == other.end &&
       graph == other.graph &&
       turns == other.turns &&
-      shiftedCount == other.shiftedCount;
+      shiftedCount == other.shiftedCount &&
+      (guessesTest == null || guessesTest == other.guesses);
 }
 
 void main() {
@@ -64,9 +74,9 @@ void main() {
           <List<SpatialMatchTest>>[
             <SpatialMatchTest>[
               SpatialMatchTest(
-                i: 3,
-                j: 3 + token.length - 1,
-                token: token,
+                password: 'rz!$token%z',
+                start: 3,
+                end: 3 + token.length,
                 graph: 'qwerty',
                 turns: 2,
                 shiftedCount: 3,
@@ -112,9 +122,9 @@ void main() {
             <List<SpatialMatchTest>>[
               <SpatialMatchTest>[
                 SpatialMatchTest(
-                  i: 0,
-                  j: password.length - 1,
-                  token: password,
+                  password: password,
+                  start: 0,
+                  end: password.length,
                   graph: graph,
                   turns: turns,
                   shiftedCount: shiftedCount,

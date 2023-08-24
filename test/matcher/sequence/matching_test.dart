@@ -1,41 +1,53 @@
 import 'package:test/test.dart';
 import 'package:zxcvbnm/src/matcher/sequence/matching.dart';
+import 'package:zxcvbnm/src/options.dart';
 import 'package:zxcvbnm/src/types.dart';
 
 import '../../helper/generate_passwords.dart';
 
 class SequenceMatchTest extends SequenceMatch {
   SequenceMatchTest({
-    required int i,
-    required int j,
-    required String token,
+    required String password,
+    required int start,
+    required int end,
     required String sequenceName,
     required int sequenceSpace,
     required bool ascending,
-  }) : super(
-          i: i,
-          j: j,
-          token: token,
+    double? guesses,
+    Options? options,
+  })  : guessesTest = guesses,
+        super(
+          password: password,
+          start: start,
+          end: end,
           sequenceName: sequenceName,
           sequenceSpace: sequenceSpace,
           ascending: ascending,
+          options: options ?? Options(),
         );
+
+  final double? guessesTest;
+
+  @override
+  double get guesses => guessesTest ?? super.guesses;
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
   bool operator ==(Object other) =>
       other is SequenceMatch &&
-      i == other.i &&
-      j == other.j &&
-      token == other.token &&
+      password == other.password &&
+      start == other.start &&
+      end == other.end &&
       sequenceName == other.sequenceName &&
       sequenceSpace == other.sequenceSpace &&
-      ascending == other.ascending;
+      ascending == other.ascending &&
+      (guessesTest == null || guessesTest == other.guesses);
 }
 
 void main() {
   group('Sequence matching.', () {
-    final MatchSequence matchSequence = MatchSequence();
+    final Options options = Options();
+    final MatchSequence matchSequence = MatchSequence(options);
 
     test(
       "Doesn't match without sequences.",
@@ -57,25 +69,25 @@ void main() {
         <List<SequenceMatchTest>>[
           <SequenceMatchTest>[
             SequenceMatchTest(
-              i: 0,
-              j: 2,
-              token: 'abc',
+              password: 'abcbabc',
+              start: 0,
+              end: 3,
               sequenceName: 'lower',
               sequenceSpace: 26,
               ascending: true,
             ),
             SequenceMatchTest(
-              i: 2,
-              j: 4,
-              token: 'cba',
+              password: 'abcbabc',
+              start: 2,
+              end: 5,
               sequenceName: 'lower',
               sequenceSpace: 26,
               ascending: false,
             ),
             SequenceMatchTest(
-              i: 4,
-              j: 6,
-              token: 'abc',
+              password: 'abcbabc',
+              start: 4,
+              end: 7,
               sequenceName: 'lower',
               sequenceSpace: 26,
               ascending: true,
@@ -98,9 +110,9 @@ void main() {
           <List<SequenceMatchTest>>[
             <SequenceMatchTest>[
               SequenceMatchTest(
-                i: password.i,
-                j: password.j,
-                token: token,
+                password: password.password,
+                start: password.i,
+                end: password.j,
                 sequenceName: 'lower',
                 sequenceSpace: 26,
                 ascending: false,
@@ -138,9 +150,9 @@ void main() {
           <List<SequenceMatchTest>>[
             <SequenceMatchTest>[
               SequenceMatchTest(
-                i: 0,
-                j: password.length - 1,
-                token: password,
+                password: password,
+                start: 0,
+                end: password.length,
                 sequenceName: sequenceName,
                 sequenceSpace: sequenceSpace,
                 ascending: ascending,

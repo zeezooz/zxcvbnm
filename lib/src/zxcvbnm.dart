@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'feedback.dart';
 import 'helper.dart';
+import 'matchers/base_matcher.dart';
 import 'matching.dart';
 import 'options.dart';
 import 'scoring/index.dart';
@@ -29,14 +30,15 @@ class Zxcvbnm {
         password.substring(0, min(options.maxLength, password.length));
     final Options runOptions = options.copyWith(userInputs: userInputs);
     final OmniMatch omniMatch = OmniMatch(runOptions);
-    final List<FutureOr<List<Match>>> result = omniMatch.match(usedPassword);
-    final List<Match> matches = synchronousMatches(result);
-    final List<Future<List<Match>>> futures = asynchronousMatches(result);
+    final List<FutureOr<List<BaseMatch>>> result =
+        omniMatch.match(usedPassword);
+    final List<BaseMatch> matches = synchronousMatches(result);
+    final List<Future<List<BaseMatch>>> futures = asynchronousMatches(result);
     if (futures.isEmpty) {
       return _returnValue(runOptions, matches, usedPassword, startTime);
     }
-    return Future.wait(futures).then((List<List<Match>> results) {
-      for (final List<Match> result in results) {
+    return Future.wait(futures).then((List<List<BaseMatch>> results) {
+      for (final List<BaseMatch> result in results) {
         matches.addAll(result);
       }
       return _returnValue(runOptions, matches, usedPassword, startTime);
@@ -47,7 +49,7 @@ class Zxcvbnm {
 
   Result _returnValue(
     Options options,
-    List<Match> matches,
+    List<BaseMatch> matches,
     String password,
     int startTime,
   ) {

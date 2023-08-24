@@ -1,11 +1,11 @@
 import '../../feedback.dart';
+import '../../matchers/base_matcher.dart';
 import '../../options.dart';
-import '../../types.dart';
 
 Feedback? dateFeedback({
-  required MatchEstimated match,
+  required BaseMatch match,
   required Options options,
-  bool? isSoleMatch,
+  required bool isSoleMatch,
 }) {
   return Feedback(
     warning: options.translation.warnings.dates,

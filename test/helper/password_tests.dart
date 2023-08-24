@@ -1,227 +1,15 @@
 import 'package:zxcvbnm/src/feedback.dart';
+import 'package:zxcvbnm/src/matchers/base_matcher.dart';
 import 'package:zxcvbnm/src/types.dart';
 
+import '../matcher/dictionary/matching_test.dart';
+import '../matcher/dictionary/variants/matching/l33t_test.dart';
+import '../matcher/regex/matching_test.dart';
+import '../matcher/repeat/matching_test.dart';
+import '../matcher/sequence/matching_test.dart';
+import '../matcher/spatial/matching_test.dart';
+import '../scoring/search_test.dart';
 import '../zxcvbnm_test.dart';
-
-class SequenceMatchEstimatedTest extends SequenceMatchEstimated {
-  SequenceMatchEstimatedTest({
-    required int i,
-    required int j,
-    required String token,
-    required String sequenceName,
-    required int sequenceSpace,
-    required bool ascending,
-    required double guesses,
-    required double guessesLog10,
-  }) : super(
-          i: i,
-          j: j,
-          token: token,
-          sequenceName: sequenceName,
-          sequenceSpace: sequenceSpace,
-          ascending: ascending,
-          guesses: guesses,
-          guessesLog10: guessesLog10,
-        );
-
-  @override
-  // ignore: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
-  bool operator ==(Object other) =>
-      other is SequenceMatchEstimated &&
-      i == other.i &&
-      j == other.j &&
-      token == other.token &&
-      sequenceName == other.sequenceName &&
-      sequenceSpace == other.sequenceSpace &&
-      guesses == other.guesses &&
-      guessesLog10 == other.guessesLog10;
-}
-
-class BruteForceMatchEstimatedTest extends BruteForceMatchEstimated {
-  BruteForceMatchEstimatedTest({
-    required int i,
-    required int j,
-    required String token,
-    required double guesses,
-    required double guessesLog10,
-  }) : super(
-          i: i,
-          j: j,
-          token: token,
-          guesses: guesses,
-          guessesLog10: guessesLog10,
-        );
-
-  @override
-  // ignore: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
-  bool operator ==(Object other) =>
-      other is BruteForceMatchEstimated &&
-      i == other.i &&
-      j == other.j &&
-      token == other.token &&
-      guesses == other.guesses &&
-      guessesLog10 == other.guessesLog10;
-}
-
-class RepeatMatchEstimatedTest extends RepeatMatchEstimated {
-  RepeatMatchEstimatedTest({
-    required int i,
-    required int j,
-    required String token,
-    required String baseToken,
-    required double baseGuesses,
-    required int repeatCount,
-    required double guesses,
-    required double guessesLog10,
-  }) : super(
-          i: i,
-          j: j,
-          token: token,
-          baseToken: baseToken,
-          baseGuesses: baseGuesses,
-          repeatCount: repeatCount,
-          guesses: guesses,
-          guessesLog10: guessesLog10,
-        );
-
-  @override
-  // ignore: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
-  bool operator ==(Object other) =>
-      other is RepeatMatchEstimated &&
-      i == other.i &&
-      j == other.j &&
-      token == other.token &&
-      baseToken == other.baseToken &&
-      baseGuesses == other.baseGuesses &&
-      repeatCount == other.repeatCount &&
-      guesses == other.guesses &&
-      guessesLog10 == other.guessesLog10;
-}
-
-class RegexMatchEstimatedTest extends RegexMatchEstimated {
-  RegexMatchEstimatedTest({
-    required int i,
-    required int j,
-    required String token,
-    required String regexName,
-    required RegExpMatch regexMatch,
-    required double guesses,
-    required double guessesLog10,
-  }) : super(
-          i: i,
-          j: j,
-          token: token,
-          regexName: regexName,
-          regexMatch: regexMatch,
-          guesses: guesses,
-          guessesLog10: guessesLog10,
-        );
-
-  @override
-  // ignore: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
-  bool operator ==(Object other) =>
-      other is RegexMatchEstimated &&
-      i == other.i &&
-      j == other.j &&
-      token == other.token &&
-      regexName == other.regexName &&
-      regexMatch.start == other.regexMatch.start &&
-      regexMatch.end == other.regexMatch.end &&
-      regexMatch[0] == other.regexMatch[0] &&
-      guesses == other.guesses &&
-      guessesLog10 == other.guessesLog10;
-}
-
-class SpatialMatchEstimatedTest extends SpatialMatchEstimated {
-  SpatialMatchEstimatedTest({
-    required int i,
-    required int j,
-    required String token,
-    required String graph,
-    required int turns,
-    required int shiftedCount,
-    required double guesses,
-    required double guessesLog10,
-  }) : super(
-          i: i,
-          j: j,
-          token: token,
-          graph: graph,
-          turns: turns,
-          shiftedCount: shiftedCount,
-          guesses: guesses,
-          guessesLog10: guessesLog10,
-        );
-
-  @override
-  // ignore: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
-  bool operator ==(Object other) =>
-      other is SpatialMatchEstimated &&
-      i == other.i &&
-      j == other.j &&
-      token == other.token &&
-      graph == other.graph &&
-      turns == other.turns &&
-      shiftedCount == other.shiftedCount &&
-      guesses == other.guesses &&
-      guessesLog10 == other.guessesLog10;
-}
-
-class L33tMatchEstimatedTest extends L33tMatchEstimated {
-  L33tMatchEstimatedTest({
-    required int i,
-    required int j,
-    required String token,
-    required String matchedWord,
-    required int rank,
-    required Dictionary dictionary,
-    int? levenshteinDistance,
-    String? levenshteinDistanceEntry,
-    required List<PasswordChange> changes,
-    required String changesDisplay,
-    required double guesses,
-    required double guessesLog10,
-    required int baseGuesses,
-    required double uppercaseVariations,
-    required double l33tVariations,
-  }) : super(
-          i: i,
-          j: j,
-          token: token,
-          matchedWord: matchedWord,
-          rank: rank,
-          dictionary: dictionary,
-          levenshteinDistance: levenshteinDistance,
-          levenshteinDistanceEntry: levenshteinDistanceEntry,
-          changes: changes,
-          changesDisplay: changesDisplay,
-          guesses: guesses,
-          guessesLog10: guessesLog10,
-          baseGuesses: baseGuesses,
-          uppercaseVariations: uppercaseVariations,
-          l33tVariations: l33tVariations,
-        );
-
-  @override
-  // ignore: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
-  bool operator ==(Object other) =>
-      other is L33tMatchEstimated &&
-      i == other.i &&
-      j == other.j &&
-      token == other.token &&
-      matchedWord == other.matchedWord &&
-      rank == other.rank &&
-      dictionary == other.dictionary &&
-      levenshteinDistance == other.levenshteinDistance &&
-      levenshteinDistanceEntry == other.levenshteinDistanceEntry &&
-      changes.join(',') == other.changes.join(',') &&
-      changesDisplay == other.changesDisplay &&
-      guesses == other.guesses &&
-      guessesLog10 == other.guessesLog10 &&
-      baseGuesses == other.baseGuesses &&
-      uppercaseVariations == other.uppercaseVariations &&
-      l33tVariations == other.l33tVariations;
-}
 
 final List<ResultTest> passwordTests = <ResultTest>[
   ResultTest(
@@ -245,17 +33,15 @@ final List<ResultTest> passwordTests = <ResultTest>[
     password: '1q2w3e4r5t',
     guesses: 364,
     guessesLog10: 2.5611013836490555,
-    sequence: <MatchEstimated>[
-      DictionaryMatchEstimatedTest(
-        i: 0,
-        j: 9,
-        token: '1q2w3e4r5t',
+    sequence: <BaseMatch>[
+      DictionaryMatchTest(
+        password: '1q2w3e4r5t',
+        start: 0,
+        end: 10,
         matchedWord: '1q2w3e4r5t',
         rank: 363,
         dictionary: Dictionary.passwords,
         guesses: 363,
-        guessesLog10: 2.559906625036112,
-        baseGuesses: 363,
         uppercaseVariations: 1,
         l33tVariations: 1,
       ),
@@ -282,17 +68,15 @@ final List<ResultTest> passwordTests = <ResultTest>[
     password: '1Q2w3e4r5t',
     guesses: 727,
     guessesLog10: 2.8615344108590377,
-    sequence: <MatchEstimated>[
-      DictionaryMatchEstimatedTest(
-        i: 0,
-        j: 9,
-        token: '1Q2w3e4r5t',
+    sequence: <BaseMatch>[
+      DictionaryMatchTest(
+        password: '1Q2w3e4r5t',
+        start: 0,
+        end: 10,
         matchedWord: '1q2w3e4r5t',
         rank: 363,
         dictionary: Dictionary.passwords,
         guesses: 726,
-        guessesLog10: 2.8609366207000932,
-        baseGuesses: 363,
         uppercaseVariations: 2,
         l33tVariations: 1,
       ),
@@ -319,17 +103,15 @@ final List<ResultTest> passwordTests = <ResultTest>[
     password: '1q2w3e4r5T',
     guesses: 727,
     guessesLog10: 2.8615344108590377,
-    sequence: <MatchEstimated>[
-      DictionaryMatchEstimatedTest(
-        i: 0,
-        j: 9,
-        token: '1q2w3e4r5T',
+    sequence: <BaseMatch>[
+      DictionaryMatchTest(
+        password: '1q2w3e4r5T',
+        start: 0,
+        end: 10,
         matchedWord: '1q2w3e4r5t',
         rank: 363,
         dictionary: Dictionary.passwords,
         guesses: 726,
-        guessesLog10: 2.8609366207000932,
-        baseGuesses: 363,
         uppercaseVariations: 2,
         l33tVariations: 1,
       ),
@@ -359,26 +141,24 @@ final List<ResultTest> passwordTests = <ResultTest>[
     password: 'abcdefg123',
     guesses: 15000,
     guessesLog10: 4.176091259055681,
-    sequence: <MatchEstimated>[
-      SequenceMatchEstimatedTest(
-        i: 0,
-        j: 6,
-        token: 'abcdefg',
+    sequence: <BaseMatch>[
+      SequenceMatchTest(
+        password: 'abcdefg123',
+        start: 0,
+        end: 7,
         sequenceName: 'lower',
         sequenceSpace: 26,
         ascending: true,
         guesses: 50,
-        guessesLog10: 1.6989700043360185,
       ),
-      SequenceMatchEstimatedTest(
-        i: 7,
-        j: 9,
-        token: '123',
+      SequenceMatchTest(
+        password: 'abcdefg123',
+        start: 7,
+        end: 10,
         sequenceName: 'digits',
         sequenceSpace: 10,
         ascending: true,
         guesses: 50,
-        guessesLog10: 1.6989700043360185,
       ),
     ],
   ),
@@ -406,26 +186,23 @@ final List<ResultTest> passwordTests = <ResultTest>[
     password: 'TESTERINO',
     guesses: 2486000,
     guessesLog10: 6.395501124305626,
-    sequence: <MatchEstimated>[
-      DictionaryMatchEstimatedTest(
-        i: 0,
-        j: 5,
-        token: 'TESTER',
+    sequence: <BaseMatch>[
+      DictionaryMatchTest(
+        password: 'TESTERINO',
+        start: 0,
+        end: 6,
         matchedWord: 'tester',
         rank: 619,
         dictionary: Dictionary.passwords,
         guesses: 1238,
-        guessesLog10: 3.092720644684099,
-        baseGuesses: 619,
         uppercaseVariations: 2,
         l33tVariations: 1,
       ),
-      BruteForceMatchEstimatedTest(
-        i: 6,
-        j: 8,
-        token: 'INO',
+      BruteForceMatchTest(
+        password: 'TESTERINO',
+        start: 6,
+        end: 9,
         guesses: 1000,
-        guessesLog10: 2.9999999999999996,
       ),
     ],
   ),
@@ -453,16 +230,15 @@ final List<ResultTest> passwordTests = <ResultTest>[
     password: 'aaaaaaa',
     guesses: 85,
     guessesLog10: 1.9294189257142926,
-    sequence: <MatchEstimated>[
-      RepeatMatchEstimatedTest(
-        i: 0,
-        j: 6,
-        token: 'aaaaaaa',
+    sequence: <BaseMatch>[
+      RepeatMatchTest(
+        password: 'aaaaaaa',
+        start: 0,
+        end: 7,
         baseToken: 'a',
         baseGuesses: 12,
         repeatCount: 7,
         guesses: 84,
-        guessesLog10: 1.9242792860618814,
       ),
     ],
   ),
@@ -490,17 +266,15 @@ final List<ResultTest> passwordTests = <ResultTest>[
     password: 'Daniel',
     guesses: 109,
     guessesLog10: 2.0374264979406234,
-    sequence: <MatchEstimated>[
-      DictionaryMatchEstimatedTest(
-        i: 0,
-        j: 5,
-        token: 'Daniel',
+    sequence: <BaseMatch>[
+      DictionaryMatchTest(
+        password: 'Daniel',
+        start: 0,
+        end: 6,
         matchedWord: 'daniel',
         rank: 54,
         dictionary: Dictionary.passwords,
         guesses: 108,
-        guessesLog10: 2.0334237554869494,
-        baseGuesses: 54,
         uppercaseVariations: 2,
         l33tVariations: 1,
       ),
@@ -527,17 +301,15 @@ final List<ResultTest> passwordTests = <ResultTest>[
     password: '1234qwer',
     guesses: 105,
     guessesLog10: 2.021189299069938,
-    sequence: <MatchEstimated>[
-      DictionaryMatchEstimatedTest(
-        i: 0,
-        j: 7,
-        token: '1234qwer',
+    sequence: <BaseMatch>[
+      DictionaryMatchTest(
+        password: '1234qwer',
+        start: 0,
+        end: 8,
         matchedWord: '1234qwer',
         rank: 104,
         dictionary: Dictionary.passwords,
         guesses: 104,
-        guessesLog10: 2.0170333392987803,
-        baseGuesses: 104,
         uppercaseVariations: 1,
         l33tVariations: 1,
       ),
@@ -564,17 +336,15 @@ final List<ResultTest> passwordTests = <ResultTest>[
     password: '1234qwe',
     guesses: 2978,
     guessesLog10: 3.473924693416157,
-    sequence: <MatchEstimated>[
-      DictionaryMatchEstimatedTest(
-        i: 0,
-        j: 6,
-        token: '1234qwe',
+    sequence: <BaseMatch>[
+      DictionaryMatchTest(
+        password: '1234qwe',
+        start: 0,
+        end: 7,
         matchedWord: '1234qwe',
         rank: 2977,
         dictionary: Dictionary.passwords,
         guesses: 2977,
-        guessesLog10: 3.4737788346467244,
-        baseGuesses: 2977,
         uppercaseVariations: 1,
         l33tVariations: 1,
       ),
@@ -601,26 +371,23 @@ final List<ResultTest> passwordTests = <ResultTest>[
     password: '1234qwert',
     guesses: 12288,
     guessesLog10: 4.089481202687437,
-    sequence: <MatchEstimated>[
-      DictionaryMatchEstimatedTest(
-        i: 0,
-        j: 7,
-        token: '1234qwer',
+    sequence: <BaseMatch>[
+      DictionaryMatchTest(
+        password: '1234qwert',
+        start: 0,
+        end: 8,
         matchedWord: '1234qwer',
         rank: 104,
         dictionary: Dictionary.passwords,
         guesses: 104,
-        guessesLog10: 2.0170333392987803,
-        baseGuesses: 104,
         uppercaseVariations: 1,
         l33tVariations: 1,
       ),
-      BruteForceMatchEstimatedTest(
-        i: 8,
-        j: 8,
-        token: 't',
+      BruteForceMatchTest(
+        password: '1234qwert',
+        start: 8,
+        end: 9,
         guesses: 11,
-        guessesLog10: 1.041392685158225,
       ),
     ],
   ),
@@ -645,17 +412,15 @@ final List<ResultTest> passwordTests = <ResultTest>[
     password: 'password',
     guesses: 3,
     guessesLog10: 0.47712125471966244,
-    sequence: <MatchEstimated>[
-      DictionaryMatchEstimatedTest(
-        i: 0,
-        j: 7,
-        token: 'password',
+    sequence: <BaseMatch>[
+      DictionaryMatchTest(
+        password: 'password',
+        start: 0,
+        end: 8,
         matchedWord: 'password',
         rank: 2,
         dictionary: Dictionary.passwords,
         guesses: 2,
-        guessesLog10: 0.30102999566398114,
-        baseGuesses: 2,
         uppercaseVariations: 1,
         l33tVariations: 1,
       ),
@@ -686,25 +451,23 @@ final List<ResultTest> passwordTests = <ResultTest>[
     password: '2010abc',
     guesses: 15000,
     guessesLog10: 4.176091259055681,
-    sequence: <MatchEstimated>[
-      RegexMatchEstimatedTest(
-        i: 0,
-        j: 3,
-        token: '2010',
+    sequence: <BaseMatch>[
+      RegexMatchTest(
+        password: '2010abc',
+        start: 0,
+        end: 4,
         regexName: 'recentYear',
         regexMatch: RegExp('.*').firstMatch('2010')!,
         guesses: 50,
-        guessesLog10: 1.6989700043360185,
       ),
-      SequenceMatchEstimatedTest(
-        i: 4,
-        j: 6,
-        token: 'abc',
+      SequenceMatchTest(
+        password: '2010abc',
+        start: 4,
+        end: 7,
         sequenceName: 'lower',
         sequenceSpace: 26,
         ascending: true,
         guesses: 50,
-        guessesLog10: 1.6989700043360185,
       ),
     ],
   ),
@@ -733,16 +496,15 @@ final List<ResultTest> passwordTests = <ResultTest>[
     password: 'abcabcabcabc',
     guesses: 53,
     guessesLog10: 1.724275869600789,
-    sequence: <MatchEstimated>[
-      RepeatMatchEstimatedTest(
-        i: 0,
-        j: 11,
-        token: 'abcabcabcabc',
+    sequence: <BaseMatch>[
+      RepeatMatchTest(
+        password: 'abcabcabcabc',
+        start: 0,
+        end: 12,
         baseToken: 'abc',
         baseGuesses: 13,
         repeatCount: 4,
         guesses: 52,
-        guessesLog10: 1.716003343634799,
       ),
     ],
   ),
@@ -770,16 +532,15 @@ final List<ResultTest> passwordTests = <ResultTest>[
     password: 'qwer',
     guesses: 1297,
     guessesLog10: 3.1129399760840797,
-    sequence: <MatchEstimated>[
-      SpatialMatchEstimatedTest(
-        i: 0,
-        j: 3,
-        token: 'qwer',
+    sequence: <BaseMatch>[
+      SpatialMatchTest(
+        password: 'qwer',
+        start: 0,
+        end: 4,
         graph: 'qwerty',
         turns: 1,
         shiftedCount: 0,
         guesses: 1296,
-        guessesLog10: 3.112605001534574,
       ),
     ],
   ),
@@ -808,11 +569,11 @@ final List<ResultTest> passwordTests = <ResultTest>[
     password: r'P4$$w0rd',
     guesses: 33,
     guessesLog10: 1.5185139398778873,
-    sequence: <MatchEstimated>[
-      L33tMatchEstimatedTest(
-        i: 0,
-        j: 7,
-        token: r'P4$$w0rd',
+    sequence: <BaseMatch>[
+      L33tMatchTest(
+        password: r'P4$$w0rd',
+        start: 0,
+        end: 8,
         matchedWord: 'password',
         rank: 2,
         dictionary: Dictionary.passwords,
@@ -823,8 +584,6 @@ final List<ResultTest> passwordTests = <ResultTest>[
         ],
         changesDisplay: r'4 -> a, $ -> s, 0 -> o',
         guesses: 32,
-        guessesLog10: 1.5051499783199058,
-        baseGuesses: 2,
         uppercaseVariations: 2,
         l33tVariations: 8,
       ),
@@ -850,13 +609,12 @@ final List<ResultTest> passwordTests = <ResultTest>[
     password: 'aA!1',
     guesses: 10001,
     guessesLog10: 4.000043427276863,
-    sequence: <MatchEstimated>[
-      BruteForceMatchEstimatedTest(
-        i: 0,
-        j: 3,
-        token: 'aA!1',
+    sequence: <BaseMatch>[
+      BruteForceMatchTest(
+        password: 'aA!1',
+        start: 0,
+        end: 4,
         guesses: 10000,
-        guessesLog10: 4,
       ),
     ],
   ),
@@ -878,56 +636,49 @@ final List<ResultTest> passwordTests = <ResultTest>[
     password: 'dgo9dsghasdoghi8/!&IT%§(ihsdhf8o7o',
     guesses: 2.34e33,
     guessesLog10: 33.36921585741014,
-    sequence: <MatchEstimated>[
-      BruteForceMatchEstimatedTest(
-        i: 0,
-        j: 6,
-        token: 'dgo9dsg',
+    sequence: <BaseMatch>[
+      BruteForceMatchTest(
+        password: 'dgo9dsghasdoghi8/!&IT%§(ihsdhf8o7o',
+        start: 0,
+        end: 7,
         guesses: 10000000,
-        guessesLog10: 7,
       ),
-      DictionaryMatchEstimatedTest(
-        i: 7,
-        j: 9,
-        token: 'has',
+      DictionaryMatchTest(
+        password: 'dgo9dsghasdoghi8/!&IT%§(ihsdhf8o7o',
+        start: 7,
+        end: 10,
         matchedWord: 'has',
         rank: 24,
         dictionary: Dictionary.wikipedia,
         guesses: 50,
-        guessesLog10: 1.6989700043360185,
-        baseGuesses: 24,
         uppercaseVariations: 1,
         l33tVariations: 1,
       ),
-      DictionaryMatchEstimatedTest(
-        i: 10,
-        j: 11,
-        token: 'do',
+      DictionaryMatchTest(
+        password: 'dgo9dsghasdoghi8/!&IT%§(ihsdhf8o7o',
+        start: 10,
+        end: 12,
         matchedWord: 'do',
         rank: 22,
         dictionary: Dictionary.commonWords,
         guesses: 50,
-        guessesLog10: 1.6989700043360185,
-        baseGuesses: 22,
         uppercaseVariations: 1,
         l33tVariations: 1,
       ),
-      SequenceMatchEstimatedTest(
-        i: 12,
-        j: 14,
-        token: 'ghi',
+      SequenceMatchTest(
+        password: 'dgo9dsghasdoghi8/!&IT%§(ihsdhf8o7o',
+        start: 12,
+        end: 15,
         sequenceName: 'lower',
         sequenceSpace: 26,
         ascending: true,
         guesses: 78,
-        guessesLog10: 1.8920946026904801,
       ),
-      BruteForceMatchEstimatedTest(
-        i: 15,
-        j: 33,
-        token: '8/!&IT%§(ihsdhf8o7o',
+      BruteForceMatchTest(
+        password: 'dgo9dsghasdoghi8/!&IT%§(ihsdhf8o7o',
+        start: 15,
+        end: 34,
         guesses: 10000000000000000000,
-        guessesLog10: 19,
       ),
     ],
   ),
@@ -955,23 +706,21 @@ final List<ResultTest> passwordTests = <ResultTest>[
     password: 'AZERYT',
     guesses: 538000,
     guessesLog10: 5.730782275666389,
-    sequence: <MatchEstimated>[
-      SpatialMatchEstimatedTest(
-        i: 0,
-        j: 3,
-        token: 'AZER',
+    sequence: <BaseMatch>[
+      SpatialMatchTest(
+        password: 'AZERYT',
+        start: 0,
+        end: 4,
         graph: 'azerty',
         turns: 1,
         shiftedCount: 4,
         guesses: 2640,
-        guessesLog10: 3.421603926869831,
       ),
-      BruteForceMatchEstimatedTest(
-        i: 4,
-        j: 5,
-        token: 'YT',
+      BruteForceMatchTest(
+        password: 'AZERYT',
+        start: 4,
+        end: 6,
         guesses: 100,
-        guessesLog10: 2,
       ),
     ],
   ),
@@ -999,23 +748,21 @@ final List<ResultTest> passwordTests = <ResultTest>[
     password: 'zxcftzuio',
     guesses: 12790064,
     guessesLog10: 7.106872717643415,
-    sequence: <MatchEstimated>[
-      BruteForceMatchEstimatedTest(
-        i: 0,
-        j: 0,
-        token: 'z',
+    sequence: <BaseMatch>[
+      BruteForceMatchTest(
+        password: 'zxcftzuio',
+        start: 0,
+        end: 1,
         guesses: 11,
-        guessesLog10: 1.041392685158225,
       ),
-      SpatialMatchEstimatedTest(
-        i: 1,
-        j: 8,
-        token: 'xcftzuio',
+      SpatialMatchTest(
+        password: 'zxcftzuio',
+        start: 1,
+        end: 9,
         graph: 'qwertz',
         turns: 3,
         shiftedCount: 0,
         guesses: 580912,
-        guessesLog10: 5.7641103478653735,
       ),
     ],
   ),
@@ -1037,30 +784,27 @@ final List<ResultTest> passwordTests = <ResultTest>[
     password: 'buy by beer',
     guesses: 1301200000,
     guessesLog10: 9.114344054609814,
-    sequence: <MatchEstimated>[
-      BruteForceMatchEstimatedTest(
-        i: 0,
-        j: 1,
-        token: 'bu',
+    sequence: <BaseMatch>[
+      BruteForceMatchTest(
+        password: 'buy by beer',
+        start: 0,
+        end: 2,
         guesses: 100,
-        guessesLog10: 2,
       ),
-      RepeatMatchEstimatedTest(
-        i: 2,
-        j: 7,
-        token: 'y by b',
+      RepeatMatchTest(
+        password: 'buy by beer',
+        start: 2,
+        end: 8,
         baseToken: 'y b',
         baseGuesses: 1001,
         repeatCount: 2,
         guesses: 2002,
-        guessesLog10: 3.3014640731432996,
       ),
-      BruteForceMatchEstimatedTest(
-        i: 8,
-        j: 10,
-        token: 'eer',
+      BruteForceMatchTest(
+        password: 'buy by beer',
+        start: 8,
+        end: 11,
         guesses: 1000,
-        guessesLog10: 2.9999999999999996,
       ),
     ],
   ),
@@ -1082,37 +826,32 @@ final List<ResultTest> passwordTests = <ResultTest>[
     password: 'horse stable battery',
     guesses: 1128013300000000,
     guessesLog10: 15.052314220287887,
-    sequence: <MatchEstimated>[
-      DictionaryMatchEstimatedTest(
-        i: 0,
-        j: 4,
-        token: 'horse',
+    sequence: <BaseMatch>[
+      DictionaryMatchTest(
+        password: 'horse stable battery',
+        start: 0,
+        end: 5,
         matchedWord: 'horse',
         rank: 862,
         dictionary: Dictionary.commonWords,
         guesses: 862,
-        guessesLog10: 2.9355072658247123,
-        baseGuesses: 862,
         uppercaseVariations: 1,
         l33tVariations: 1,
       ),
-      BruteForceMatchEstimatedTest(
-        i: 5,
-        j: 12,
-        token: ' stable ',
+      BruteForceMatchTest(
+        password: 'horse stable battery',
+        start: 5,
+        end: 13,
         guesses: 100000000,
-        guessesLog10: 8,
       ),
-      DictionaryMatchEstimatedTest(
-        i: 13,
-        j: 19,
-        token: 'battery',
+      DictionaryMatchTest(
+        password: 'horse stable battery',
+        start: 13,
+        end: 20,
         matchedWord: 'battery',
         rank: 2181,
         dictionary: Dictionary.wikipedia,
         guesses: 2181,
-        guessesLog10: 3.3386556655787,
-        baseGuesses: 2181,
         uppercaseVariations: 1,
         l33tVariations: 1,
       ),
@@ -1136,13 +875,12 @@ final List<ResultTest> passwordTests = <ResultTest>[
     password: 'a65a54cf-eadb-4f7c-893c-9d4a6f81f8c2',
     guesses: 1e36,
     guessesLog10: 35.99999999999999,
-    sequence: <MatchEstimated>[
-      BruteForceMatchEstimatedTest(
-        i: 0,
-        j: 35,
-        token: 'a65a54cf-eadb-4f7c-893c-9d4a6f81f8c2',
+    sequence: <BaseMatch>[
+      BruteForceMatchTest(
+        password: 'a65a54cf-eadb-4f7c-893c-9d4a6f81f8c2',
+        start: 0,
+        end: 36,
         guesses: 1e36,
-        guessesLog10: 35.99999999999999,
       ),
     ],
   ),
@@ -1169,6 +907,6 @@ final List<ResultTest> passwordTests = <ResultTest>[
     password: '',
     guesses: 1,
     guessesLog10: 0,
-    sequence: <MatchEstimated>[],
+    sequence: <BaseMatch>[],
   ),
 ];

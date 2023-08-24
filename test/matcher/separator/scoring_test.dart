@@ -10,7 +10,9 @@ void main() {
         "The separator pattern '$token'.",
         () {
           expect(
-            separatorScoring(SeparatorMatch(i: 0, j: 0, token: token)),
+            separatorScoring(
+              SeparatorMatch(password: token, start: 0, end: 1),
+            ),
             separatorCharCount,
           );
         },

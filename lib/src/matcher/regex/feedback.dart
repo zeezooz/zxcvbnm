@@ -3,9 +3,9 @@ import '../../options.dart';
 import '../../types.dart';
 
 Feedback? regexFeedback({
-  required RegexMatchEstimated match,
+  required RegexMatch match,
   required Options options,
-  bool? isSoleMatch,
+  required bool isSoleMatch,
 }) {
   if (match.regexName == 'recentYear') {
     return Feedback(
@@ -16,5 +16,5 @@ Feedback? regexFeedback({
       ],
     );
   }
-  return Feedback();
+  return null;
 }

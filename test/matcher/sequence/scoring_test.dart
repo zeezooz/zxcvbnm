@@ -1,9 +1,11 @@
 import 'package:test/test.dart';
 import 'package:zxcvbnm/src/matcher/sequence/scoring.dart';
+import 'package:zxcvbnm/src/options.dart';
 import 'package:zxcvbnm/src/types.dart';
 
 void main() {
   group('Sequence scoring.', () {
+    final Options options = Options();
     const List<List<Object>> data = <List<Object>>[
       <Object>['ab', true, 4 * 2], // obvious start * len-2
       <Object>['XYZ', true, 26 * 3], // base26 * len-3
@@ -19,12 +21,13 @@ void main() {
         "The sequence pattern '$token'.",
         () {
           final SequenceMatch match = SequenceMatch(
-            i: 0,
-            j: token.length - 1,
-            token: token,
+            password: token,
+            start: 0,
+            end: token.length,
             sequenceName: '',
             sequenceSpace: 0,
             ascending: ascending,
+            options: options,
           );
           expect(
             sequenceScoring(match),

@@ -1,8 +1,14 @@
 import '../../data/const.dart';
+import '../../matchers/base_matcher.dart';
+import '../../options.dart';
 import '../../types.dart';
 
 /// Regex matching.
-class MatchRegex extends MatchingType {
+class MatchRegex extends BaseMatcher {
+  MatchRegex(this.options);
+
+  final Options options;
+
   @override
   List<List<RegexMatch>> match(
     String password, {
@@ -14,11 +20,12 @@ class MatchRegex extends MatchingType {
       for (final RegExpMatch match in regex.allMatches(password)) {
         matches.add(
           RegexMatch(
-            i: match.start,
-            j: match.end - 1,
-            token: match[0]!,
+            password: password,
+            start: match.start,
+            end: match.end,
             regexName: name,
             regexMatch: match,
+            options: options,
           ),
         );
       }

@@ -1,21 +1,21 @@
 import 'dart:async';
 
-import 'types.dart';
+import 'matchers/base_matcher.dart';
 
-List<Match> synchronousMatches(List<FutureOr<List<Match>>> matches) {
-  final List<Match> result = <Match>[];
-  for (final FutureOr<List<Match>> item in matches) {
-    if (item is List<Match>) result.addAll(item);
+List<BaseMatch> synchronousMatches(List<FutureOr<List<BaseMatch>>> matches) {
+  final List<BaseMatch> result = <BaseMatch>[];
+  for (final FutureOr<List<BaseMatch>> item in matches) {
+    if (item is List<BaseMatch>) result.addAll(item);
   }
   return result;
 }
 
-List<Future<List<Match>>> asynchronousMatches(
-  List<FutureOr<List<Match>>> matches,
+List<Future<List<BaseMatch>>> asynchronousMatches(
+  List<FutureOr<List<BaseMatch>>> matches,
 ) {
-  final List<Future<List<Match>>> result = <Future<List<Match>>>[];
-  for (final FutureOr<List<Match>> item in matches) {
-    if (item is Future<List<Match>>) result.add(item);
+  final List<Future<List<BaseMatch>>> result = <Future<List<BaseMatch>>>[];
+  for (final FutureOr<List<BaseMatch>> item in matches) {
+    if (item is Future<List<BaseMatch>>) result.add(item);
   }
   return result;
 }

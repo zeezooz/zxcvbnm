@@ -1,8 +1,14 @@
 import '../../data/const.dart';
+import '../../matchers/base_matcher.dart';
+import '../../options.dart';
 import '../../types.dart';
 
 /// Sequences (abcdef).
-class MatchSequence extends MatchingType {
+class MatchSequence extends BaseMatcher {
+  MatchSequence(this.options);
+
+  final Options options;
+
   static const int _maxDelta = 5;
 
   @override
@@ -23,11 +29,10 @@ class MatchSequence extends MatchingType {
     int i = 0;
     int? lastDelta;
     final int passwordLength = password.length;
-    for (int k = 1; k < passwordLength; k++) {
-      final int delta = password.codeUnitAt(k) - password.codeUnitAt(k - 1);
+    for (int j = 1; j < passwordLength; j++) {
+      final int delta = password.codeUnitAt(j) - password.codeUnitAt(j - 1);
       lastDelta ??= delta;
       if (delta != lastDelta) {
-        final int j = k - 1;
         update(
           i: i,
           j: j,
@@ -35,14 +40,14 @@ class MatchSequence extends MatchingType {
           password: password,
           result: result,
         );
-        i = j;
+        i = j - 1;
         lastDelta = delta;
       }
     }
     if (lastDelta != null) {
       update(
         i: i,
-        j: passwordLength - 1,
+        j: passwordLength,
         delta: lastDelta,
         password: password,
         result: result,
@@ -59,9 +64,9 @@ class MatchSequence extends MatchingType {
     required List<SequenceMatch> result,
   }) {
     final int absoluteDelta = delta.abs();
-    if (j - i > 1 || absoluteDelta == 1) {
+    if (j - i > 2 || absoluteDelta == 1) {
       if (absoluteDelta > 0 && absoluteDelta <= _maxDelta) {
-        final String token = password.substring(i, j + 1);
+        final String token = password.substring(i, j);
         // TODO: Conservatively stick with roman alphabet size.
         // (This could be improved)
         String sequenceName = 'unicode';
@@ -78,12 +83,13 @@ class MatchSequence extends MatchingType {
         }
         return result.add(
           SequenceMatch(
-            i: i,
-            j: j,
-            token: token,
+            password: password,
+            start: i,
+            end: j,
             sequenceName: sequenceName,
             sequenceSpace: sequenceSpace,
             ascending: delta > 0,
+            options: options,
           ),
         );
       }

@@ -1,12 +1,13 @@
 import 'data/l33t_table.dart';
 import 'data/translation_keys.dart';
 import 'matcher/dictionary/variants/matching/unmunger/trie_node.dart';
+import 'matchers/base_matcher.dart';
 import 'types.dart';
 
 class Options {
   Options({
     this.translation = translationKeys,
-    List<MatchingType>? matchers,
+    List<BaseMatcher>? matchers,
     Dictionaries? dictionaries,
     L33tTable? l33tTable,
     this.graph = const <String, GraphEntry>{},
@@ -14,7 +15,7 @@ class Options {
     this.levenshteinThreshold = 2,
     this.l33tMaxSubstitutions = 512,
     this.maxLength = 256,
-  })  : matchers = matchers ?? <MatchingType>[],
+  })  : matchers = matchers ?? <BaseMatcher>[],
         _dictionaries = dictionaries ?? <Dictionary, List<Object>>{},
         _l33tTable = l33tTable ?? l33tTableDefault,
         _trieNodeRoot = TrieNode.fromL33tTable(l33tTable ?? l33tTableDefault) {
@@ -27,7 +28,7 @@ class Options {
   /// found with something like @zxcvbn-ts/language-en.
   Translation translation;
 
-  final List<MatchingType> matchers;
+  final List<BaseMatcher> matchers;
 
   /// Define dictionary that should be used to check against. The matcher will
   /// search the dictionaries for similar password with l33t speak and reversed
@@ -93,7 +94,7 @@ class Options {
 
   Options copyWith({
     Translation? translation,
-    List<MatchingType>? matchers,
+    List<BaseMatcher>? matchers,
     Dictionaries? dictionaries,
     List<Object>? userInputs,
     L33tTable? l33tTable,

@@ -4,9 +4,9 @@ import '../../options.dart';
 import '../../types.dart';
 
 Feedback? dictionaryFeedback({
-  required DictionaryMatchEstimated match,
+  required DictionaryMatch match,
   required Options options,
-  bool? isSoleMatch,
+  required bool isSoleMatch,
 }) {
   final String? warning = _dictionaryWarning(
     match: match,
@@ -14,13 +14,13 @@ Feedback? dictionaryFeedback({
     isSoleMatch: isSoleMatch,
   );
   final List<String> suggestions = <String>[];
-  if (startUpper.hasMatch(match.token)) {
+  final String token = match.token;
+  if (startUpper.hasMatch(token)) {
     suggestions.add(options.translation.suggestions.capitalization);
-  } else if (allUpperInverted.hasMatch(match.token) &&
-      match.token.toLowerCase() != match.token) {
+  } else if (allUpperInverted.hasMatch(token) && token.toLowerCase() != token) {
     suggestions.add(options.translation.suggestions.allUppercase);
   }
-  if (match is ReverseMatch && match.token.length >= 4) {
+  if (match is ReverseMatch && match.length >= 4) {
     suggestions.add(options.translation.suggestions.reverseWords);
   }
   if (match is L33tMatch) suggestions.add(options.translation.suggestions.l33t);
@@ -28,9 +28,9 @@ Feedback? dictionaryFeedback({
 }
 
 String? _dictionaryWarning({
-  required DictionaryMatchEstimated match,
+  required DictionaryMatch match,
   required Options options,
-  bool? isSoleMatch,
+  required bool isSoleMatch,
 }) {
   if (match.dictionary == Dictionary.passwords) {
     return _passwordDictionaryWarning(
@@ -61,36 +61,36 @@ String? _dictionaryWarning({
 }
 
 String? _passwordDictionaryWarning({
-  required DictionaryMatchEstimated match,
+  required DictionaryMatch match,
   required Options options,
-  bool? isSoleMatch,
+  required bool isSoleMatch,
 }) {
-  if ((isSoleMatch ?? false) && match is! L33tMatch && match is! ReverseMatch) {
+  if (isSoleMatch && match is! L33tMatch && match is! ReverseMatch) {
     if (match.rank <= 10) return options.translation.warnings.topTen;
     if (match.rank <= 100) return options.translation.warnings.topHundred;
     return options.translation.warnings.common;
   }
-  if (match.guessesLog10 <= 4) {
+  if (match.guesses <= 1e4) {
     return options.translation.warnings.similarToCommon;
   }
   return null;
 }
 
 String? _wikipediaDictionaryWarning({
-  required DictionaryMatchEstimated match,
+  required DictionaryMatch match,
   required Options options,
-  bool? isSoleMatch,
+  required bool isSoleMatch,
 }) {
-  if (isSoleMatch ?? false) return options.translation.warnings.wordByItself;
+  if (isSoleMatch) return options.translation.warnings.wordByItself;
   return null;
 }
 
 String _namesDictionaryWarning({
-  required DictionaryMatchEstimated match,
+  required DictionaryMatch match,
   required Options options,
-  bool? isSoleMatch,
+  required bool isSoleMatch,
 }) {
-  if (isSoleMatch ?? false) {
+  if (isSoleMatch) {
     return options.translation.warnings.namesByThemselves;
   }
   return options.translation.warnings.commonNames;

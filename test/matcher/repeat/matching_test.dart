@@ -8,38 +8,48 @@ import '../../helper/generate_passwords.dart';
 
 class RepeatMatchTest extends RepeatMatch {
   RepeatMatchTest({
-    required int i,
-    required int j,
-    required String token,
+    required String password,
+    required int start,
+    required int end,
     required String baseToken,
     required double baseGuesses,
     required int repeatCount,
-  }) : super(
-          i: i,
-          j: j,
-          token: token,
+    double? guesses,
+    Options? options,
+  })  : guessesTest = guesses,
+        super(
+          password: password,
+          start: start,
+          end: end,
           baseToken: baseToken,
           baseGuesses: baseGuesses,
           repeatCount: repeatCount,
+          options: options ?? Options(),
         );
+
+  final double? guessesTest;
+
+  @override
+  double get guesses => guessesTest ?? super.guesses;
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
   bool operator ==(Object other) =>
       other is RepeatMatch &&
-      i == other.i &&
-      j == other.j &&
-      token == other.token &&
+      password == other.password &&
+      start == other.start &&
+      end == other.end &&
       baseToken == other.baseToken &&
       baseGuesses == other.baseGuesses &&
-      repeatCount == other.repeatCount;
+      repeatCount == other.repeatCount &&
+      (guessesTest == null || guessesTest == other.guesses);
 }
 
 void main() {
   group('Repeat matching.', () {
     final Options options = Options();
     final OmniMatch omniMatch = OmniMatch(options);
-    final MatchRepeat matchRepeat = MatchRepeat(omniMatch);
+    final MatchRepeat matchRepeat = MatchRepeat(options, omniMatch);
 
     test("Doesn't match without repeats.", () {
       const List<String> passwords = <String>['', '#'];
@@ -65,9 +75,9 @@ void main() {
             <List<RepeatMatchTest>>[
               <RepeatMatchTest>[
                 RepeatMatchTest(
-                  i: password.i,
-                  j: password.j,
-                  token: token,
+                  password: password.password,
+                  start: password.i,
+                  end: password.j,
                   baseToken: '&',
                   baseGuesses: 12,
                   repeatCount: token.length,
@@ -92,9 +102,9 @@ void main() {
               <List<RepeatMatchTest>>[
                 <RepeatMatchTest>[
                   RepeatMatchTest(
-                    i: 0,
-                    j: password.length - 1,
-                    token: password,
+                    password: password,
+                    start: 0,
+                    end: password.length,
                     baseToken: character,
                     baseGuesses: 12,
                     repeatCount: length,
@@ -114,33 +124,33 @@ void main() {
         <List<RepeatMatchTest>>[
           <RepeatMatchTest>[
             RepeatMatchTest(
-              i: 0,
-              j: 2,
-              token: 'BBB',
+              password: 'BBB1111aaaaa@@@@@@',
+              start: 0,
+              end: 3,
               baseToken: 'B',
               baseGuesses: 12,
               repeatCount: 3,
             ),
             RepeatMatchTest(
-              i: 3,
-              j: 6,
-              token: '1111',
+              password: 'BBB1111aaaaa@@@@@@',
+              start: 3,
+              end: 7,
               baseToken: '1',
               baseGuesses: 12,
               repeatCount: 4,
             ),
             RepeatMatchTest(
-              i: 7,
-              j: 11,
-              token: 'aaaaa',
+              password: 'BBB1111aaaaa@@@@@@',
+              start: 7,
+              end: 12,
               baseToken: 'a',
               baseGuesses: 12,
               repeatCount: 5,
             ),
             RepeatMatchTest(
-              i: 12,
-              j: 17,
-              token: '@@@@@@',
+              password: 'BBB1111aaaaa@@@@@@',
+              start: 12,
+              end: 18,
               baseToken: '@',
               baseGuesses: 12,
               repeatCount: 6,
@@ -157,33 +167,33 @@ void main() {
         <List<RepeatMatchTest>>[
           <RepeatMatchTest>[
             RepeatMatchTest(
-              i: 4,
-              j: 6,
-              token: 'BBB',
+              password: '2818BBBbzsdf1111@*&@!aaaaaEUDA@@@@@@1729',
+              start: 4,
+              end: 7,
               baseToken: 'B',
               baseGuesses: 12,
               repeatCount: 3,
             ),
             RepeatMatchTest(
-              i: 12,
-              j: 15,
-              token: '1111',
+              password: '2818BBBbzsdf1111@*&@!aaaaaEUDA@@@@@@1729',
+              start: 12,
+              end: 16,
               baseToken: '1',
               baseGuesses: 12,
               repeatCount: 4,
             ),
             RepeatMatchTest(
-              i: 21,
-              j: 25,
-              token: 'aaaaa',
+              password: '2818BBBbzsdf1111@*&@!aaaaaEUDA@@@@@@1729',
+              start: 21,
+              end: 26,
               baseToken: 'a',
               baseGuesses: 12,
               repeatCount: 5,
             ),
             RepeatMatchTest(
-              i: 30,
-              j: 35,
-              token: '@@@@@@',
+              password: '2818BBBbzsdf1111@*&@!aaaaaEUDA@@@@@@1729',
+              start: 30,
+              end: 36,
               baseToken: '@',
               baseGuesses: 12,
               repeatCount: 6,
@@ -202,9 +212,9 @@ void main() {
           <List<RepeatMatchTest>>[
             <RepeatMatchTest>[
               RepeatMatchTest(
-                i: 0,
-                j: password.length - 1,
-                token: password,
+                password: password,
+                start: 0,
+                end: password.length,
                 baseToken: 'ab',
                 baseGuesses: 9,
                 repeatCount: 2,
@@ -224,9 +234,9 @@ void main() {
           <List<RepeatMatchTest>>[
             <RepeatMatchTest>[
               RepeatMatchTest(
-                i: 0,
-                j: password.length - 1,
-                token: password,
+                password: password,
+                start: 0,
+                end: password.length,
                 baseToken: 'aab',
                 baseGuesses: 1001,
                 repeatCount: 2,
@@ -246,9 +256,9 @@ void main() {
           <List<RepeatMatchTest>>[
             <RepeatMatchTest>[
               RepeatMatchTest(
-                i: 0,
-                j: password.length - 1,
-                token: password,
+                password: password,
+                start: 0,
+                end: password.length,
                 baseToken: 'ab',
                 baseGuesses: 9,
                 repeatCount: 4,

@@ -8,15 +8,21 @@ void main() {
       'Token length.',
       () {
         expect(
-          bruteforceScoring(BruteForceMatch(i: 0, j: 0, token: 'a' * 2)),
+          bruteforceScoring(
+            BruteForceMatch(password: 'a' * 2, start: 0, end: 2),
+          ),
           1e2,
         );
         expect(
-          bruteforceScoring(BruteForceMatch(i: 0, j: 0, token: 'a' * 123)),
+          bruteforceScoring(
+            BruteForceMatch(password: 'a' * 123, start: 0, end: 123),
+          ),
           1e123,
         );
         expect(
-          bruteforceScoring(BruteForceMatch(i: 0, j: 0, token: 'a' * 308)),
+          bruteforceScoring(
+            BruteForceMatch(password: 'a' * 308, start: 0, end: 308),
+          ),
           1e308,
         );
       },
@@ -25,7 +31,9 @@ void main() {
     test(
       'Overflow.',
       () => expect(
-        bruteforceScoring(BruteForceMatch(i: 0, j: 0, token: 'a' * 309)),
+        bruteforceScoring(
+          BruteForceMatch(password: 'a' * 309, start: 0, end: 309),
+        ),
         double.maxFinite,
       ),
     );
@@ -33,7 +41,9 @@ void main() {
     test(
       'Min guesses for single character.',
       () => expect(
-        bruteforceScoring(BruteForceMatch(i: 0, j: 0, token: 'a')),
+        bruteforceScoring(
+          BruteForceMatch(password: 'a', start: 0, end: 1),
+        ),
         11,
       ),
     );
@@ -41,7 +51,9 @@ void main() {
     test(
       'Min guesses for multiple characters.',
       () => expect(
-        bruteforceScoring(BruteForceMatch(i: 0, j: 0, token: 'ab')),
+        bruteforceScoring(
+          BruteForceMatch(password: 'ab', start: 0, end: 2),
+        ),
         51,
       ),
       skip: "This can't be reached because min guesses is 51 and with"

@@ -1,8 +1,9 @@
+import '../../matchers/base_matcher.dart';
 import '../../options.dart';
 import '../../types.dart';
 
 /// Spatial match (qwerty/dvorak/keypad and so on).
-class MatchSpatial extends MatchingType {
+class MatchSpatial extends BaseMatcher {
   MatchSpatial(this.options);
 
   final Options options;
@@ -77,12 +78,13 @@ class MatchSpatial extends MatchingType {
           if (j - i > 2) {
             matches.add(
               SpatialMatch(
-                i: i,
-                j: j - 1,
-                token: password.substring(i, j),
+                password: password,
+                start: i,
+                end: j,
                 graph: graphName,
                 turns: turns,
                 shiftedCount: shiftedCount,
+                options: options,
               ),
             );
           }

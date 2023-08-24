@@ -1,10 +1,11 @@
+import '../../../../matchers/base_matcher.dart';
 import '../../../../options.dart';
 import '../../../../types.dart';
 import '../../types.dart';
 import 'unmunger/clean_password.dart';
 
 /// Dictionary l33t matching.
-class MatchL33t extends MatchingType {
+class MatchL33t extends BaseMatcher {
   MatchL33t(this.defaultMatch, this.options);
 
   final DefaultMatch defaultMatch;
@@ -30,25 +31,25 @@ class MatchL33t extends MatchingType {
       isFullSubstitution = false;
       for (final DictionaryMatch match in dictionaryMatches) {
         if (!hasFullMatch) {
-          hasFullMatch = match.i == 0 && match.j == password.length - 1;
+          hasFullMatch = match.start == 0 && match.end == password.length;
         }
         final Iterable<IndexedPasswordChange> previousChanges =
             cleanedPassword.changes.where((IndexedPasswordChange changes) {
-          return changes.i < match.i;
+          return changes.i < match.start;
         });
-        final int i = previousChanges.fold(match.i,
+        final int i = previousChanges.fold(match.start,
             (int val, IndexedPasswordChange change) {
           return val - change.clean.length + change.l33t.length;
         });
         final Iterable<IndexedPasswordChange> usedChanges =
             cleanedPassword.changes.where((IndexedPasswordChange changes) {
-          return changes.i >= match.i && changes.i <= match.j;
+          return changes.i >= match.start && changes.i < match.end;
         });
-        final int j = usedChanges.fold(match.j - match.i + i,
+        final int j = usedChanges.fold(match.end - match.start + i,
             (int val, IndexedPasswordChange change) {
           return val - change.clean.length + change.l33t.length;
         });
-        final String token = password.substring(i, j + 1);
+        final String token = password.substring(i, j);
         final Set<String> seen = <String>{};
         // Filter duplicates.
         final List<PasswordChange> changes = <PasswordChange>[
@@ -60,9 +61,9 @@ class MatchL33t extends MatchingType {
               ),
         ];
         final L33tMatch newMatch = match.toL33tMatch(
-          i: i,
-          j: j,
-          token: token,
+          password: password,
+          start: i,
+          end: j,
           changes: changes,
           changesDisplay: changes.join(', '),
         );

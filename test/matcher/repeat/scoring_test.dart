@@ -30,12 +30,13 @@ void main() {
             options,
           ).guesses;
           final RepeatMatch match = RepeatMatch(
-            i: 0,
-            j: token.length - 1,
-            token: token,
+            password: token,
+            start: 0,
+            end: token.length,
             baseToken: baseToken,
             baseGuesses: baseGuesses,
             repeatCount: repeatCount,
+            options: options,
           );
           expect(
             repeatScoring(match),

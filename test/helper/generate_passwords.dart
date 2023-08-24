@@ -14,7 +14,7 @@ List<IndexedPassword> generatePasswords(
         IndexedPassword(
           password: prefix + token + suffix,
           i: prefix.length,
-          j: prefix.length + token.length - 1,
+          j: prefix.length + token.length,
         ),
       );
     }

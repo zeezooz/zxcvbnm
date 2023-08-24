@@ -28,5 +28,5 @@ double sequenceScoring(SequenceMatch match) {
   if (!match.ascending) {
     baseGuesses *= 2;
   }
-  return baseGuesses * match.token.length;
+  return baseGuesses * match.length;
 }

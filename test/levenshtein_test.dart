@@ -1,10 +1,12 @@
 import 'package:test/test.dart';
 import 'package:zxcvbnm/languages/en.dart';
 import 'package:zxcvbnm/src/feedback.dart';
+import 'package:zxcvbnm/src/matchers/base_matcher.dart';
 import 'package:zxcvbnm/src/options.dart';
 import 'package:zxcvbnm/src/types.dart';
 import 'package:zxcvbnm/zxcvbnm.dart';
 
+import 'matcher/dictionary/matching_test.dart';
 import 'zxcvbnm_test.dart';
 
 void main() {
@@ -42,19 +44,17 @@ void main() {
           password: 'ishduehlduod83h4mfs8',
           guesses: 2,
           guessesLog10: 0.30102999566398114,
-          sequence: <DictionaryMatchEstimatedTest>[
-            DictionaryMatchEstimatedTest(
-              i: 0,
-              j: 19,
-              token: 'ishduehlduod83h4mfs8',
+          sequence: <DictionaryMatchTest>[
+            DictionaryMatchTest(
+              password: 'ishduehlduod83h4mfs8',
+              start: 0,
+              end: 20,
               matchedWord: 'ishduehlduod83h4mfs8',
               rank: 1,
               dictionary: Dictionary.userInputs,
               levenshteinDistance: 3,
               levenshteinDistanceEntry: 'ishduehgldueod83h4mfis8',
               guesses: 1,
-              guessesLog10: 0,
-              baseGuesses: 1,
               uppercaseVariations: 1,
               l33tVariations: 1,
             ),
@@ -88,19 +88,17 @@ void main() {
           password: 'alaphant',
           guesses: 345,
           guessesLog10: 2.537819095073274,
-          sequence: <DictionaryMatchEstimatedTest>[
-            DictionaryMatchEstimatedTest(
-              i: 0,
-              j: 7,
-              token: 'alaphant',
+          sequence: <DictionaryMatchTest>[
+            DictionaryMatchTest(
+              password: 'alaphant',
+              start: 0,
+              end: 8,
               matchedWord: 'alaphant',
               rank: 344,
               dictionary: Dictionary.passwords,
               levenshteinDistance: 2,
               levenshteinDistanceEntry: 'elephant',
               guesses: 344,
-              guessesLog10: 2.53655844257153,
-              baseGuesses: 344,
               uppercaseVariations: 1,
               l33tVariations: 1,
             ),
@@ -116,9 +114,8 @@ void main() {
             .sequence,
         everyElement(
           predicate(
-            (MatchEstimated match) =>
-                match is! DictionaryMatchEstimated ||
-                match.levenshteinDistance == null,
+            (BaseMatch match) =>
+                match is! DictionaryMatch || match.levenshteinDistance == null,
             'levenshteinDistance is null',
           ),
         ),
@@ -132,9 +129,8 @@ void main() {
             .sequence,
         containsOnce(
           predicate(
-            (MatchEstimated match) =>
-                match is DictionaryMatchEstimated &&
-                match.levenshteinDistance != null,
+            (BaseMatch match) =>
+                match is DictionaryMatch && match.levenshteinDistance != null,
             'levenshteinDistance is not null',
           ),
         ),

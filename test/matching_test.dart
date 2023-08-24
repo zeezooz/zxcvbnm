@@ -1,5 +1,6 @@
 import 'package:test/test.dart';
 import 'package:zxcvbnm/languages/en.dart';
+import 'package:zxcvbnm/src/matchers/base_matcher.dart';
 import 'package:zxcvbnm/src/matching.dart';
 import 'package:zxcvbnm/src/options.dart';
 import 'package:zxcvbnm/src/types.dart';
@@ -21,7 +22,7 @@ void main() {
       "Doesn't match ''.",
       () => expect(
         omniMatch.match(''),
-        <List<Match>>[<Match>[]],
+        <List<BaseMatch>>[<BaseMatch>[]],
       ),
     );
 
@@ -31,11 +32,11 @@ void main() {
         omniMatch.match('r0sebudmaelstrom11/20/91aaaa'),
         <Matcher>[
           containsAll(
-            <Match>[
+            <BaseMatch>[
               L33tMatchTest(
-                i: 0,
-                j: 6,
-                token: 'r0sebud',
+                password: 'r0sebudmaelstrom11/20/91aaaa',
+                start: 0,
+                end: 7,
                 matchedWord: 'rosebud',
                 rank: 339,
                 dictionary: Dictionary.passwords,
@@ -45,26 +46,26 @@ void main() {
                 changesDisplay: '0 -> o',
               ),
               DictionaryMatchTest(
-                i: 7,
-                j: 14,
-                token: 'maelstro',
+                password: 'r0sebudmaelstrom11/20/91aaaa',
+                start: 7,
+                end: 15,
                 matchedWord: 'maelstro',
                 rank: 47962,
                 dictionary: Dictionary.passwords,
               ),
               DateMatchTest(
-                i: 16,
-                j: 23,
-                token: '11/20/91',
+                password: 'r0sebudmaelstrom11/20/91aaaa',
+                start: 16,
+                end: 24,
                 separator: '/',
                 year: 1991,
                 month: 11,
                 day: 20,
               ),
               RepeatMatchTest(
-                i: 24,
-                j: 27,
-                token: 'aaaa',
+                password: 'r0sebudmaelstrom11/20/91aaaa',
+                start: 24,
+                end: 28,
                 baseToken: 'a',
                 baseGuesses: 12,
                 repeatCount: 4,

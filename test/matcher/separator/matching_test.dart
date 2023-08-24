@@ -4,22 +4,30 @@ import 'package:zxcvbnm/src/types.dart';
 
 class SeparatorMatchTest extends SeparatorMatch {
   SeparatorMatchTest({
-    required int i,
-    required int j,
-    required String token,
-  }) : super(
-          i: i,
-          j: j,
-          token: token,
+    required String password,
+    required int start,
+    required int end,
+    double? guesses,
+  })  : guessesTest = guesses,
+        super(
+          password: password,
+          start: start,
+          end: end,
         );
+
+  final double? guessesTest;
+
+  @override
+  double get guesses => guessesTest ?? super.guesses;
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
   bool operator ==(Object other) =>
       other is SeparatorMatch &&
-      i == other.i &&
-      j == other.j &&
-      token == other.token;
+      password == other.password &&
+      start == other.start &&
+      end == other.end &&
+      (guessesTest == null || guessesTest == other.guesses);
 }
 
 void main() {
@@ -40,8 +48,16 @@ void main() {
         matchSeparator.match('first second third'),
         <List<SeparatorMatchTest>>[
           <SeparatorMatchTest>[
-            SeparatorMatchTest(i: 5, j: 5, token: ' '),
-            SeparatorMatchTest(i: 12, j: 12, token: ' '),
+            SeparatorMatchTest(
+              password: 'first second third',
+              start: 5,
+              end: 6,
+            ),
+            SeparatorMatchTest(
+              password: 'first second third',
+              start: 12,
+              end: 13,
+            ),
           ],
         ],
       ),
@@ -53,8 +69,16 @@ void main() {
         matchSeparator.match('first-second-third,&'),
         <List<SeparatorMatchTest>>[
           <SeparatorMatchTest>[
-            SeparatorMatchTest(i: 5, j: 5, token: '-'),
-            SeparatorMatchTest(i: 12, j: 12, token: '-'),
+            SeparatorMatchTest(
+              password: 'first-second-third,&',
+              start: 5,
+              end: 6,
+            ),
+            SeparatorMatchTest(
+              password: 'first-second-third,&',
+              start: 12,
+              end: 13,
+            ),
           ],
         ],
       ),

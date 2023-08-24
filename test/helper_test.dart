@@ -2,33 +2,44 @@ import 'dart:async';
 
 import 'package:test/test.dart';
 import 'package:zxcvbnm/src/helper.dart';
+import 'package:zxcvbnm/src/matchers/base_matcher.dart';
 import 'package:zxcvbnm/src/types.dart';
 
 void main() {
   group('Filter matches.', () {
-    final Match match1 = BruteForceMatch(i: 3, j: 5, token: '937');
-    final Match match2 = BruteForceMatch(i: 0, j: 1, token: '46');
-    final Future<List<Match>> match3 = Future<List<Match>>.value(<Match>[]);
-    final Future<List<Match>> match4 = Future<List<Match>>.value(<Match>[]);
+    final BaseMatch match1 = BruteForceMatch(
+      password: '393937',
+      start: 3,
+      end: 6,
+    );
+    final BaseMatch match2 = BruteForceMatch(
+      password: '46',
+      start: 0,
+      end: 2,
+    );
+    final Future<List<BaseMatch>> match3 =
+        Future<List<BaseMatch>>.value(<BaseMatch>[]);
+    final Future<List<BaseMatch>> match4 =
+        Future<List<BaseMatch>>.value(<BaseMatch>[]);
 
     test(
       'Empty matches.',
       () {
         expect(
-          synchronousMatches(<FutureOr<List<Match>>>[]),
-          <Match>[],
+          synchronousMatches(<FutureOr<List<BaseMatch>>>[]),
+          <BaseMatch>[],
         );
         expect(
-          synchronousMatches(<FutureOr<List<Match>>>[<Match>[]]),
-          <Match>[],
+          synchronousMatches(<FutureOr<List<BaseMatch>>>[<BaseMatch>[]]),
+          <BaseMatch>[],
         );
         expect(
-          asynchronousMatches(<FutureOr<List<Match>>>[]),
-          <Future<List<Match>>>[],
+          asynchronousMatches(<FutureOr<List<BaseMatch>>>[]),
+          <Future<List<BaseMatch>>>[],
         );
         expect(
-          asynchronousMatches(<FutureOr<List<Match>>>[<Match>[]]),
-          <Future<List<Match>>>[],
+          asynchronousMatches(<FutureOr<List<BaseMatch>>>[<BaseMatch>[]]),
+          <Future<List<BaseMatch>>>[],
         );
       },
     );
@@ -37,19 +48,21 @@ void main() {
       'Ignores other type.',
       () {
         expect(
-          synchronousMatches(<FutureOr<List<Match>>>[match3]),
-          <Match>[],
+          synchronousMatches(<FutureOr<List<BaseMatch>>>[match3]),
+          <BaseMatch>[],
         );
         expect(
-          synchronousMatches(<FutureOr<List<Match>>>[<Match>[], match3]),
-          <Match>[],
+          synchronousMatches(
+            <FutureOr<List<BaseMatch>>>[<BaseMatch>[], match3],
+          ),
+          <BaseMatch>[],
         );
         expect(
-          asynchronousMatches(<FutureOr<List<Match>>>[
-            <Match>[match1],
-            <Match>[match2],
+          asynchronousMatches(<FutureOr<List<BaseMatch>>>[
+            <BaseMatch>[match1],
+            <BaseMatch>[match2],
           ]),
-          <Future<List<Match>>>[],
+          <Future<List<BaseMatch>>>[],
         );
       },
     );
@@ -58,38 +71,38 @@ void main() {
       'Returns right type.',
       () {
         expect(
-          synchronousMatches(<FutureOr<List<Match>>>[
-            <Match>[match1, match2],
+          synchronousMatches(<FutureOr<List<BaseMatch>>>[
+            <BaseMatch>[match1, match2],
             match3,
             match4,
           ]),
-          <Match>[match1, match2],
+          <BaseMatch>[match1, match2],
         );
         expect(
-          synchronousMatches(<FutureOr<List<Match>>>[
+          synchronousMatches(<FutureOr<List<BaseMatch>>>[
             match3,
-            <Match>[match1],
+            <BaseMatch>[match1],
             match4,
-            <Match>[match2],
+            <BaseMatch>[match2],
           ]),
-          <Match>[match1, match2],
+          <BaseMatch>[match1, match2],
         );
         expect(
-          asynchronousMatches(<FutureOr<List<Match>>>[
-            <Match>[match1, match2],
+          asynchronousMatches(<FutureOr<List<BaseMatch>>>[
+            <BaseMatch>[match1, match2],
             match3,
             match4,
           ]),
-          <Future<List<Match>>>[match3, match4],
+          <Future<List<BaseMatch>>>[match3, match4],
         );
         expect(
-          asynchronousMatches(<FutureOr<List<Match>>>[
-            <Match>[match1],
+          asynchronousMatches(<FutureOr<List<BaseMatch>>>[
+            <BaseMatch>[match1],
             match3,
-            <Match>[match2],
+            <BaseMatch>[match2],
             match4,
           ]),
-          <Future<List<Match>>>[match3, match4],
+          <Future<List<BaseMatch>>>[match3, match4],
         );
       },
     );

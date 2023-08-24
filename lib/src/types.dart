@@ -1,13 +1,11 @@
-import 'dart:async';
-import 'dart:math';
-
-import 'data/const.dart';
 import 'feedback.dart';
 import 'matcher/bruteforce/scoring.dart';
 import 'matcher/date/feedback.dart';
 import 'matcher/date/scoring.dart';
 import 'matcher/dictionary/feedback.dart';
 import 'matcher/dictionary/scoring.dart';
+import 'matcher/dictionary/variants/scoring/l33t.dart';
+import 'matcher/dictionary/variants/scoring/uppercase.dart';
 import 'matcher/regex/feedback.dart';
 import 'matcher/regex/scoring.dart';
 import 'matcher/repeat/feedback.dart';
@@ -17,8 +15,8 @@ import 'matcher/sequence/feedback.dart';
 import 'matcher/sequence/scoring.dart';
 import 'matcher/spatial/feedback.dart';
 import 'matcher/spatial/scoring.dart';
+import 'matchers/base_matcher.dart';
 import 'options.dart';
-import 'scoring/utils.dart';
 
 class Translation {
   const Translation({
@@ -198,86 +196,57 @@ enum Dictionary {
   userInputs,
 }
 
-abstract class Match {
-  const Match({
-    required this.i,
-    required this.j,
-    required this.token,
-  });
-
-  /// The start index of the token found in the password.
-  final int i;
-
-  /// The end index of the token found in the password.
-  final int j;
-
-  /// The token found in the password.
-  final String token;
-
-  @override
-  String toString() => '$runtimeType [$i, $j] "$token"';
-
-  double getMinGuesses(String password) {
-    int minGuesses = 1;
-    if (token.length < password.length) {
-      if (token.length == 1) {
-        minGuesses = minSubmatchGuessesSingleChar;
-      } else {
-        minGuesses = minSubmatchGuessesMultiChar;
-      }
-    }
-    return minGuesses.toDouble();
-  }
-
-  MatchEstimated estimate(String password, Options options);
-}
-
-class DictionaryMatch extends Match {
-  const DictionaryMatch({
-    required int i,
-    required int j,
-    required String token,
+class DictionaryMatch extends BaseMatch {
+  DictionaryMatch({
+    required String password,
+    required int start,
+    required int end,
     required this.matchedWord,
     required this.rank,
     required this.dictionary,
     this.levenshteinDistance,
     this.levenshteinDistanceEntry,
-  }) : super(i: i, j: j, token: token);
+    required this.options,
+  }) : super(password: password, start: start, end: end);
 
   final String matchedWord;
   final int rank;
   final Dictionary dictionary;
   final int? levenshteinDistance;
   final String? levenshteinDistanceEntry;
+  final Options options;
 
   @override
-  String toString() => '${super.toString()}, matchedWord: "$matchedWord", '
+  String toString() => '${super.toString()}, '
+      'uppercaseVariations: $uppercaseVariations, '
+      'l33tVariations: $l33tVariations, matchedWord: "$matchedWord", '
       'rank: $rank, dictionary: $dictionary, '
       'levenshteinDistance: $levenshteinDistance, '
       'levenshteinDistanceEntry: $levenshteinDistanceEntry';
 
-  ReverseMatch toReverseMatch(String password) => ReverseMatch(
-        i: password.length - 1 - j,
-        j: password.length - 1 - i,
-        token: token.split('').reversed.join(''),
+  ReverseMatch toReverseMatch() => ReverseMatch(
+        password: password.split('').reversed.join(''),
+        start: password.length - end,
+        end: password.length - start,
         matchedWord: matchedWord,
         rank: rank,
         dictionary: dictionary,
         levenshteinDistance: levenshteinDistance,
         levenshteinDistanceEntry: levenshteinDistanceEntry,
+        options: options,
       );
 
   L33tMatch toL33tMatch({
-    int? i,
-    int? j,
-    required String token,
+    required String password,
+    required int start,
+    required int end,
     required List<PasswordChange> changes,
     required String changesDisplay,
   }) =>
       L33tMatch(
-        i: i ?? this.i,
-        j: j ?? this.j,
-        token: token,
+        password: password,
+        start: start,
+        end: end,
         matchedWord: matchedWord,
         rank: rank,
         dictionary: dictionary,
@@ -285,82 +254,55 @@ class DictionaryMatch extends Match {
         levenshteinDistanceEntry: levenshteinDistanceEntry,
         changes: changes,
         changesDisplay: changesDisplay,
+        options: options,
       );
 
   @override
-  DictionaryMatchEstimated estimate(String password, Options options) {
-    if (this is DictionaryMatchEstimated) {
-      return this as DictionaryMatchEstimated;
-    }
-    final DictionaryReturn estimation = dictionaryScoring(this);
-    final double guesses = max(estimation.calculation, getMinGuesses(password));
-    return DictionaryMatchEstimated(
-      i: i,
-      j: j,
-      token: token,
-      matchedWord: matchedWord,
-      rank: rank,
-      dictionary: dictionary,
-      levenshteinDistance: levenshteinDistance,
-      levenshteinDistanceEntry: levenshteinDistanceEntry,
-      guesses: guesses,
-      guessesLog10: log10(guesses),
-      baseGuesses: estimation.baseGuesses,
-      uppercaseVariations: estimation.uppercaseVariations,
-      l33tVariations: estimation.l33tVariations,
+  double get estimatedGuesses => dictionaryScoring(this);
+
+  double get uppercaseVariations => uppercaseScoring(this);
+
+  double get l33tVariations => l33tScoring(this);
+
+  @override
+  Feedback? feedback({required bool isSoleMatch}) {
+    return dictionaryFeedback(
+      match: this,
+      options: options,
+      isSoleMatch: isSoleMatch,
     );
   }
 }
 
 class ReverseMatch extends DictionaryMatch {
-  const ReverseMatch({
-    required int i,
-    required int j,
-    required String token,
+  ReverseMatch({
+    required String password,
+    required int start,
+    required int end,
     required String matchedWord,
     required int rank,
     required Dictionary dictionary,
     int? levenshteinDistance,
     String? levenshteinDistanceEntry,
+    required Options options,
   }) : super(
-          i: i,
-          j: j,
-          token: token,
+          password: password,
+          start: start,
+          end: end,
           matchedWord: matchedWord,
           rank: rank,
           dictionary: dictionary,
           levenshteinDistance: levenshteinDistance,
           levenshteinDistanceEntry: levenshteinDistanceEntry,
+          options: options,
         );
-
-  @override
-  ReverseMatchEstimated estimate(String password, Options options) {
-    if (this is ReverseMatchEstimated) return this as ReverseMatchEstimated;
-    final DictionaryReturn estimation = dictionaryScoring(this);
-    final double guesses = max(estimation.calculation, getMinGuesses(password));
-    return ReverseMatchEstimated(
-      i: i,
-      j: j,
-      token: token,
-      matchedWord: matchedWord,
-      rank: rank,
-      dictionary: dictionary,
-      levenshteinDistance: levenshteinDistance,
-      levenshteinDistanceEntry: levenshteinDistanceEntry,
-      guesses: guesses,
-      guessesLog10: log10(guesses),
-      baseGuesses: estimation.baseGuesses,
-      uppercaseVariations: estimation.uppercaseVariations,
-      l33tVariations: estimation.l33tVariations,
-    );
-  }
 }
 
 class L33tMatch extends DictionaryMatch {
-  const L33tMatch({
-    required int i,
-    required int j,
-    required String token,
+  L33tMatch({
+    required String password,
+    required int start,
+    required int end,
     required String matchedWord,
     required int rank,
     required Dictionary dictionary,
@@ -368,15 +310,17 @@ class L33tMatch extends DictionaryMatch {
     String? levenshteinDistanceEntry,
     required this.changes,
     required this.changesDisplay,
+    required Options options,
   }) : super(
-          i: i,
-          j: j,
-          token: token,
+          password: password,
+          start: start,
+          end: end,
           matchedWord: matchedWord,
           rank: rank,
           dictionary: dictionary,
           levenshteinDistance: levenshteinDistance,
           levenshteinDistanceEntry: levenshteinDistanceEntry,
+          options: options,
         );
 
   final List<PasswordChange> changes;
@@ -389,464 +333,42 @@ class L33tMatch extends DictionaryMatch {
   // changes are ignored.
   bool isDuplicateOf(Object other) =>
       other is L33tMatch &&
-      i == other.i &&
-      j == other.j &&
-      token == other.token &&
+      password == other.password &&
+      start == other.start &&
+      end == other.end &&
       matchedWord == other.matchedWord &&
       rank == other.rank &&
       dictionary == other.dictionary &&
       levenshteinDistance == other.levenshteinDistance &&
       levenshteinDistanceEntry == other.levenshteinDistanceEntry &&
       changesDisplay == other.changesDisplay;
-
-  @override
-  L33tMatchEstimated estimate(String password, Options options) {
-    if (this is L33tMatchEstimated) return this as L33tMatchEstimated;
-    final DictionaryReturn estimation = dictionaryScoring(this);
-    final double guesses = max(estimation.calculation, getMinGuesses(password));
-    return L33tMatchEstimated(
-      i: i,
-      j: j,
-      token: token,
-      matchedWord: matchedWord,
-      rank: rank,
-      dictionary: dictionary,
-      levenshteinDistance: levenshteinDistance,
-      levenshteinDistanceEntry: levenshteinDistanceEntry,
-      changes: changes,
-      changesDisplay: changesDisplay,
-      guesses: guesses,
-      guessesLog10: log10(guesses),
-      baseGuesses: estimation.baseGuesses,
-      uppercaseVariations: estimation.uppercaseVariations,
-      l33tVariations: estimation.l33tVariations,
-    );
-  }
 }
 
-class SpatialMatch extends Match {
-  const SpatialMatch({
-    required int i,
-    required int j,
-    required String token,
+class SpatialMatch extends BaseMatch {
+  SpatialMatch({
+    required String password,
+    required int start,
+    required int end,
     required this.graph,
     required this.turns,
     required this.shiftedCount,
-  }) : super(i: i, j: j, token: token);
+    required this.options,
+  }) : super(password: password, start: start, end: end);
 
   final String graph;
   final int turns;
   final int shiftedCount;
+  final Options options;
 
   @override
   String toString() => '${super.toString()}, graph: "$graph", turns: $turns, '
       'shiftedCount: $shiftedCount';
 
   @override
-  SpatialMatchEstimated estimate(String password, Options options) {
-    if (this is SpatialMatchEstimated) return this as SpatialMatchEstimated;
-    final double guesses =
-        max(spatialScoring(this, options), getMinGuesses(password));
-    return SpatialMatchEstimated(
-      i: i,
-      j: j,
-      token: token,
-      graph: graph,
-      turns: turns,
-      shiftedCount: shiftedCount,
-      guesses: guesses,
-      guessesLog10: log10(guesses),
-    );
-  }
-}
-
-class RepeatMatch extends Match {
-  const RepeatMatch({
-    required int i,
-    required int j,
-    required String token,
-    required this.baseToken,
-    required this.baseGuesses,
-    required this.repeatCount,
-  }) : super(i: i, j: j, token: token);
-
-  final String baseToken;
-  final double baseGuesses;
-  final int repeatCount;
+  double get estimatedGuesses => spatialScoring(this, options);
 
   @override
-  String toString() => '${super.toString()}, baseToken: "$baseToken", '
-      'baseGuesses: $baseGuesses, repeatCount: $repeatCount';
-
-  @override
-  RepeatMatchEstimated estimate(String password, Options options) {
-    if (this is RepeatMatchEstimated) return this as RepeatMatchEstimated;
-    final double guesses = max(repeatScoring(this), getMinGuesses(password));
-    return RepeatMatchEstimated(
-      i: i,
-      j: j,
-      token: token,
-      baseToken: baseToken,
-      baseGuesses: baseGuesses,
-      repeatCount: repeatCount,
-      guesses: guesses,
-      guessesLog10: log10(guesses),
-    );
-  }
-}
-
-class SequenceMatch extends Match {
-  const SequenceMatch({
-    required int i,
-    required int j,
-    required String token,
-    required this.sequenceName,
-    required this.sequenceSpace,
-    required this.ascending,
-  }) : super(i: i, j: j, token: token);
-
-  final String sequenceName;
-  final int sequenceSpace;
-  final bool ascending;
-
-  @override
-  String toString() => '${super.toString()}, sequenceName: $sequenceName, '
-      'sequenceSpace: $sequenceSpace, ascending: $ascending';
-
-  @override
-  SequenceMatchEstimated estimate(String password, Options options) {
-    if (this is SequenceMatchEstimated) return this as SequenceMatchEstimated;
-    final double guesses = max(sequenceScoring(this), getMinGuesses(password));
-    return SequenceMatchEstimated(
-      i: i,
-      j: j,
-      token: token,
-      sequenceName: sequenceName,
-      sequenceSpace: sequenceSpace,
-      ascending: ascending,
-      guesses: guesses,
-      guessesLog10: log10(guesses),
-    );
-  }
-}
-
-class RegexMatch extends Match {
-  const RegexMatch({
-    required int i,
-    required int j,
-    required String token,
-    required this.regexName,
-    required this.regexMatch,
-  }) : super(i: i, j: j, token: token);
-
-  final String regexName;
-  final RegExpMatch regexMatch;
-
-  @override
-  String toString() => '${super.toString()}, regexName: $regexName, '
-      'regexMatch: [${regexMatch.start}, ${regexMatch.end}] "${regexMatch[0]}"';
-
-  @override
-  RegexMatchEstimated estimate(String password, Options options) {
-    if (this is RegexMatchEstimated) return this as RegexMatchEstimated;
-    final double guesses = max(regexScoring(this), getMinGuesses(password));
-    return RegexMatchEstimated(
-      i: i,
-      j: j,
-      token: token,
-      regexName: regexName,
-      regexMatch: regexMatch,
-      guesses: guesses,
-      guessesLog10: log10(guesses),
-    );
-  }
-}
-
-class DateMatch extends Match {
-  const DateMatch({
-    required int i,
-    required int j,
-    required String token,
-    required this.separator,
-    required this.year,
-    required this.month,
-    required this.day,
-  }) : super(i: i, j: j, token: token);
-
-  final String separator;
-  final int year;
-  final int month;
-  final int day;
-
-  @override
-  String toString() => '${super.toString()}, separator: "$separator", '
-      'date: $year-$month-$day';
-
-  @override
-  DateMatchEstimated estimate(String password, Options options) {
-    if (this is DateMatchEstimated) return this as DateMatchEstimated;
-    final double guesses = max(dateScoring(this), getMinGuesses(password));
-    return DateMatchEstimated(
-      i: i,
-      j: j,
-      token: token,
-      separator: separator,
-      year: year,
-      month: month,
-      day: day,
-      guesses: guesses,
-      guessesLog10: log10(guesses),
-    );
-  }
-}
-
-class BruteForceMatch extends Match {
-  const BruteForceMatch({
-    required int i,
-    required int j,
-    required String token,
-  }) : super(i: i, j: j, token: token);
-
-  @override
-  BruteForceMatchEstimated estimate(String password, Options options) {
-    if (this is BruteForceMatchEstimated) {
-      return this as BruteForceMatchEstimated;
-    }
-    final double guesses =
-        max(bruteforceScoring(this), getMinGuesses(password));
-    return BruteForceMatchEstimated(
-      i: i,
-      j: j,
-      token: token,
-      guesses: guesses,
-      guessesLog10: log10(guesses),
-    );
-  }
-}
-
-class SeparatorMatch extends Match {
-  const SeparatorMatch({
-    required int i,
-    required int j,
-    required String token,
-  }) : super(i: i, j: j, token: token);
-
-  @override
-  SeparatorMatchEstimated estimate(String password, Options options) {
-    if (this is SeparatorMatchEstimated) return this as SeparatorMatchEstimated;
-    final double guesses = max(separatorScoring(this), getMinGuesses(password));
-    return SeparatorMatchEstimated(
-      i: i,
-      j: j,
-      token: token,
-      guesses: guesses,
-      guessesLog10: log10(guesses),
-    );
-  }
-}
-
-abstract class MatchEstimated extends Match {
-  const MatchEstimated({
-    required int i,
-    required int j,
-    required String token,
-    required this.guesses,
-    required this.guessesLog10,
-  }) : super(i: i, j: j, token: token);
-
-  final double guesses;
-  final double guessesLog10;
-
-  @override
-  String toString() => '${super.toString()}, guesses: $guesses, '
-      'guessesLog10: $guessesLog10';
-
-  Feedback? feedback(Options options, {bool? isSoleMatch});
-}
-
-class DictionaryMatchEstimated extends DictionaryMatch
-    implements MatchEstimated {
-  const DictionaryMatchEstimated({
-    required int i,
-    required int j,
-    required String token,
-    required String matchedWord,
-    required int rank,
-    required Dictionary dictionary,
-    int? levenshteinDistance,
-    String? levenshteinDistanceEntry,
-    required this.guesses,
-    required this.guessesLog10,
-    required this.baseGuesses,
-    required this.uppercaseVariations,
-    required this.l33tVariations,
-  }) : super(
-          i: i,
-          j: j,
-          token: token,
-          matchedWord: matchedWord,
-          rank: rank,
-          dictionary: dictionary,
-          levenshteinDistance: levenshteinDistance,
-          levenshteinDistanceEntry: levenshteinDistanceEntry,
-        );
-
-  @override
-  final double guesses;
-  @override
-  final double guessesLog10;
-  final int baseGuesses;
-  final double uppercaseVariations;
-  final double l33tVariations;
-
-  @override
-  String toString() => '${super.toString()}, guesses: $guesses, '
-      'guessesLog10: $guessesLog10, baseGuesses: $baseGuesses, '
-      'uppercaseVariations: $uppercaseVariations, '
-      'l33tVariations: $l33tVariations';
-
-  @override
-  Feedback? feedback(Options options, {bool? isSoleMatch}) {
-    return dictionaryFeedback(
-      match: this,
-      options: options,
-      isSoleMatch: isSoleMatch,
-    );
-  }
-}
-
-class ReverseMatchEstimated extends DictionaryMatchEstimated
-    implements ReverseMatch {
-  const ReverseMatchEstimated({
-    required int i,
-    required int j,
-    required String token,
-    required String matchedWord,
-    required int rank,
-    required Dictionary dictionary,
-    int? levenshteinDistance,
-    String? levenshteinDistanceEntry,
-    required double guesses,
-    required double guessesLog10,
-    required int baseGuesses,
-    required double uppercaseVariations,
-    required double l33tVariations,
-  }) : super(
-          i: i,
-          j: j,
-          token: token,
-          matchedWord: matchedWord,
-          rank: rank,
-          dictionary: dictionary,
-          levenshteinDistance: levenshteinDistance,
-          levenshteinDistanceEntry: levenshteinDistanceEntry,
-          guesses: guesses,
-          guessesLog10: guessesLog10,
-          baseGuesses: baseGuesses,
-          uppercaseVariations: uppercaseVariations,
-          l33tVariations: l33tVariations,
-        );
-
-  @override
-  ReverseMatchEstimated estimate(String password, Options options) => this;
-}
-
-class L33tMatchEstimated extends DictionaryMatchEstimated implements L33tMatch {
-  const L33tMatchEstimated({
-    required int i,
-    required int j,
-    required String token,
-    required String matchedWord,
-    required int rank,
-    required Dictionary dictionary,
-    int? levenshteinDistance,
-    String? levenshteinDistanceEntry,
-    required this.changes,
-    required this.changesDisplay,
-    required double guesses,
-    required double guessesLog10,
-    required int baseGuesses,
-    required double uppercaseVariations,
-    required double l33tVariations,
-  }) : super(
-          i: i,
-          j: j,
-          token: token,
-          matchedWord: matchedWord,
-          rank: rank,
-          dictionary: dictionary,
-          levenshteinDistance: levenshteinDistance,
-          levenshteinDistanceEntry: levenshteinDistanceEntry,
-          guesses: guesses,
-          guessesLog10: guessesLog10,
-          baseGuesses: baseGuesses,
-          uppercaseVariations: uppercaseVariations,
-          l33tVariations: l33tVariations,
-        );
-
-  @override
-  final List<PasswordChange> changes;
-  @override
-  final String changesDisplay;
-
-  @override
-  String toString() => '$runtimeType [$i, $j] "$token", '
-      'matchedWord: "$matchedWord", rank: $rank, dictionary: $dictionary, '
-      'levenshteinDistance: $levenshteinDistance, '
-      'levenshteinDistanceEntry: $levenshteinDistanceEntry, '
-      'changes: $changes, changesDisplay: $changesDisplay, '
-      'guesses: $guesses, guessesLog10: $guessesLog10, '
-      'baseGuesses: $baseGuesses, uppercaseVariations: $uppercaseVariations, '
-      'l33tVariations: $l33tVariations';
-
-  // changes are ignored.
-  @override
-  bool isDuplicateOf(Object other) =>
-      other is L33tMatch &&
-      i == other.i &&
-      j == other.j &&
-      token == other.token &&
-      matchedWord == other.matchedWord &&
-      rank == other.rank &&
-      dictionary == other.dictionary &&
-      levenshteinDistance == other.levenshteinDistance &&
-      levenshteinDistanceEntry == other.levenshteinDistanceEntry &&
-      changesDisplay == other.changesDisplay;
-
-  @override
-  L33tMatchEstimated estimate(String password, Options options) => this;
-}
-
-class SpatialMatchEstimated extends SpatialMatch implements MatchEstimated {
-  const SpatialMatchEstimated({
-    required int i,
-    required int j,
-    required String token,
-    required String graph,
-    required int turns,
-    required int shiftedCount,
-    required this.guesses,
-    required this.guessesLog10,
-  }) : super(
-          i: i,
-          j: j,
-          token: token,
-          graph: graph,
-          turns: turns,
-          shiftedCount: shiftedCount,
-        );
-
-  @override
-  final double guesses;
-  @override
-  final double guessesLog10;
-
-  @override
-  String toString() => '${super.toString()}, guesses: $guesses, '
-      'guessesLog10: $guessesLog10';
-
-  @override
-  Feedback? feedback(Options options, {bool? isSoleMatch}) {
+  Feedback? feedback({required bool isSoleMatch}) {
     return spatialFeedback(
       match: this,
       options: options,
@@ -855,36 +377,31 @@ class SpatialMatchEstimated extends SpatialMatch implements MatchEstimated {
   }
 }
 
-class RepeatMatchEstimated extends RepeatMatch implements MatchEstimated {
-  const RepeatMatchEstimated({
-    required int i,
-    required int j,
-    required String token,
-    required String baseToken,
-    required double baseGuesses,
-    required int repeatCount,
-    required this.guesses,
-    required this.guessesLog10,
-  }) : super(
-          i: i,
-          j: j,
-          token: token,
-          baseToken: baseToken,
-          baseGuesses: baseGuesses,
-          repeatCount: repeatCount,
-        );
+class RepeatMatch extends BaseMatch {
+  RepeatMatch({
+    required String password,
+    required int start,
+    required int end,
+    required this.baseToken,
+    required this.baseGuesses,
+    required this.repeatCount,
+    required this.options,
+  }) : super(password: password, start: start, end: end);
+
+  final String baseToken;
+  final double baseGuesses;
+  final int repeatCount;
+  final Options options;
 
   @override
-  final double guesses;
-  @override
-  final double guessesLog10;
+  String toString() => '${super.toString()}, baseToken: "$baseToken", '
+      'baseGuesses: $baseGuesses, repeatCount: $repeatCount';
 
   @override
-  String toString() => '${super.toString()}, guesses: $guesses, '
-      'guessesLog10: $guessesLog10';
+  double get estimatedGuesses => repeatScoring(this);
 
   @override
-  Feedback? feedback(Options options, {bool? isSoleMatch}) {
+  Feedback? feedback({required bool isSoleMatch}) {
     return repeatFeedback(
       match: this,
       options: options,
@@ -893,36 +410,31 @@ class RepeatMatchEstimated extends RepeatMatch implements MatchEstimated {
   }
 }
 
-class SequenceMatchEstimated extends SequenceMatch implements MatchEstimated {
-  const SequenceMatchEstimated({
-    required int i,
-    required int j,
-    required String token,
-    required String sequenceName,
-    required int sequenceSpace,
-    required bool ascending,
-    required this.guesses,
-    required this.guessesLog10,
-  }) : super(
-          i: i,
-          j: j,
-          token: token,
-          sequenceName: sequenceName,
-          sequenceSpace: sequenceSpace,
-          ascending: ascending,
-        );
+class SequenceMatch extends BaseMatch {
+  SequenceMatch({
+    required String password,
+    required int start,
+    required int end,
+    required this.sequenceName,
+    required this.sequenceSpace,
+    required this.ascending,
+    required this.options,
+  }) : super(password: password, start: start, end: end);
+
+  final String sequenceName;
+  final int sequenceSpace;
+  final bool ascending;
+  final Options options;
 
   @override
-  final double guesses;
-  @override
-  final double guessesLog10;
+  String toString() => '${super.toString()}, sequenceName: $sequenceName, '
+      'sequenceSpace: $sequenceSpace, ascending: $ascending';
 
   @override
-  String toString() => '${super.toString()}, guesses: $guesses, '
-      'guessesLog10: $guessesLog10';
+  double get estimatedGuesses => sequenceScoring(this);
 
   @override
-  Feedback? feedback(Options options, {bool? isSoleMatch}) {
+  Feedback? feedback({required bool isSoleMatch}) {
     return sequenceFeedback(
       match: this,
       options: options,
@@ -931,34 +443,29 @@ class SequenceMatchEstimated extends SequenceMatch implements MatchEstimated {
   }
 }
 
-class RegexMatchEstimated extends RegexMatch implements MatchEstimated {
-  const RegexMatchEstimated({
-    required int i,
-    required int j,
-    required String token,
-    required String regexName,
-    required RegExpMatch regexMatch,
-    required this.guesses,
-    required this.guessesLog10,
-  }) : super(
-          i: i,
-          j: j,
-          token: token,
-          regexName: regexName,
-          regexMatch: regexMatch,
-        );
+class RegexMatch extends BaseMatch {
+  RegexMatch({
+    required String password,
+    required int start,
+    required int end,
+    required this.regexName,
+    required this.regexMatch,
+    required this.options,
+  }) : super(password: password, start: start, end: end);
+
+  final String regexName;
+  final RegExpMatch regexMatch;
+  final Options options;
 
   @override
-  final double guesses;
-  @override
-  final double guessesLog10;
+  String toString() => '${super.toString()}, regexName: $regexName, '
+      'regexMatch: [${regexMatch.start}, ${regexMatch.end}] "${regexMatch[0]}"';
 
   @override
-  String toString() => '${super.toString()}, guesses: $guesses, '
-      'guessesLog10: $guessesLog10';
+  double get estimatedGuesses => regexScoring(this);
 
   @override
-  Feedback? feedback(Options options, {bool? isSoleMatch}) {
+  Feedback? feedback({required bool isSoleMatch}) {
     return regexFeedback(
       match: this,
       options: options,
@@ -967,38 +474,33 @@ class RegexMatchEstimated extends RegexMatch implements MatchEstimated {
   }
 }
 
-class DateMatchEstimated extends DateMatch implements MatchEstimated {
-  const DateMatchEstimated({
-    required int i,
-    required int j,
-    required String token,
-    required String separator,
-    required int year,
-    required int month,
-    required int day,
-    required this.guesses,
-    required this.guessesLog10,
-  }) : super(
-          i: i,
-          j: j,
-          token: token,
-          separator: separator,
-          year: year,
-          month: month,
-          day: day,
-        );
+class DateMatch extends BaseMatch {
+  DateMatch({
+    required String password,
+    required int start,
+    required int end,
+    required this.separator,
+    required this.year,
+    required this.month,
+    required this.day,
+    required this.options,
+  }) : super(password: password, start: start, end: end);
+
+  final String separator;
+  final int year;
+  final int month;
+  final int day;
+  final Options options;
 
   @override
-  final double guesses;
-  @override
-  final double guessesLog10;
+  String toString() => '${super.toString()}, separator: "$separator", '
+      'date: $year-$month-$day';
 
   @override
-  String toString() => '${super.toString()}, guesses: $guesses, '
-      'guessesLog10: $guessesLog10';
+  double get estimatedGuesses => dateScoring(this);
 
   @override
-  Feedback? feedback(Options options, {bool? isSoleMatch}) {
+  Feedback? feedback({required bool isSoleMatch}) {
     return dateFeedback(
       match: this,
       options: options,
@@ -1007,49 +509,32 @@ class DateMatchEstimated extends DateMatch implements MatchEstimated {
   }
 }
 
-class BruteForceMatchEstimated extends MatchEstimated
-    implements BruteForceMatch {
-  const BruteForceMatchEstimated({
-    required int i,
-    required int j,
-    required String token,
-    required double guesses,
-    required double guessesLog10,
-  }) : super(
-          i: i,
-          j: j,
-          token: token,
-          guesses: guesses,
-          guessesLog10: guessesLog10,
-        );
+class BruteForceMatch extends BaseMatch {
+  BruteForceMatch({
+    required String password,
+    required int start,
+    required int end,
+  }) : super(password: password, start: start, end: end);
 
   @override
-  BruteForceMatchEstimated estimate(String password, Options options) => this;
+  double get estimatedGuesses => bruteforceScoring(this);
 
   @override
-  Feedback? feedback(Options options, {bool? isSoleMatch}) => null;
+  Feedback? feedback({required bool isSoleMatch}) => null;
 }
 
-class SeparatorMatchEstimated extends MatchEstimated implements SeparatorMatch {
-  const SeparatorMatchEstimated({
-    required int i,
-    required int j,
-    required String token,
-    required double guesses,
-    required double guessesLog10,
-  }) : super(
-          i: i,
-          j: j,
-          token: token,
-          guesses: guesses,
-          guessesLog10: guessesLog10,
-        );
+class SeparatorMatch extends BaseMatch {
+  SeparatorMatch({
+    required String password,
+    required int start,
+    required int end,
+  }) : super(password: password, start: start, end: end);
 
   @override
-  SeparatorMatchEstimated estimate(String password, Options options) => this;
+  double get estimatedGuesses => separatorScoring(this);
 
   @override
-  Feedback? feedback(Options options, {bool? isSoleMatch}) => null;
+  Feedback? feedback({required bool isSoleMatch}) => null;
 }
 
 class Optimal {
@@ -1060,7 +545,7 @@ class Optimal {
   });
 
   // Match.
-  final MatchEstimated m;
+  final BaseMatch m;
 
   // Product term Prod(m.guesses for m in sequence).
   // Allows for fast (non-looping) updates to the minimization function.
@@ -1118,18 +603,6 @@ typedef RankedDictionary = Map<String, int>;
 
 typedef RankedDictionaries = Map<Dictionary, RankedDictionary>;
 
-typedef DefaultFeedbackFunction = Feedback? Function({
-  required MatchEstimated match,
-  required Options options,
-  bool? isSoleMatch,
-});
-
-typedef DefaultScoringFunction = DictionaryReturn Function(Match match);
-
-abstract class MatchingType {
-  List<FutureOr<List<Match>>> match(String password);
-}
-
 class Result {
   const Result({
     required this.feedback,
@@ -1150,7 +623,7 @@ class Result {
   final String password;
   final double guesses;
   final double guessesLog10;
-  final List<MatchEstimated> sequence;
+  final List<BaseMatch> sequence;
   final int calcTime;
 
   @override

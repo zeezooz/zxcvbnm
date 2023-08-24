@@ -1,9 +1,15 @@
 import '../../data/const.dart';
 import '../../data/date_splits.dart';
+import '../../matchers/base_matcher.dart';
+import '../../options.dart';
 import '../../types.dart';
 
 /// Date matching.
-class MatchDate extends MatchingType {
+class MatchDate extends BaseMatcher {
+  MatchDate(this.options);
+
+  final Options options;
+
   /// A "date" is recognized as:
   ///   - any 3-tuple that starts or ends with a 2- or 4-digit year,
   ///   - with 2 or 0 separator chars (1.1.91 or 1191),
@@ -38,8 +44,8 @@ class MatchDate extends MatchingType {
         RegExp(r'^(\d{1,4})([\s/\\_.-])(\d{1,2})\2(\d{1,4})$');
     // Dates with separators are between length 6 '1/1/91' and 10 '11/11/1991'.
     for (int i = 0; i <= password.length - 6; i++) {
-      for (int j = i + 5; j <= i + 9 && j < password.length; j++) {
-        final String token = password.substring(i, j + 1);
+      for (int j = i + 6; j <= i + 10 && j <= password.length; j++) {
+        final String token = password.substring(i, j);
         final RegExpMatch? match = maybeDateWithSeparator.firstMatch(token);
         if (match == null) continue;
         final DayMonthYear? dmy = _dayMonthYear(<int>[
@@ -50,13 +56,14 @@ class MatchDate extends MatchingType {
         if (dmy == null) continue;
         matches.add(
           DateMatch(
-            i: i,
-            j: j,
-            token: token,
+            password: password,
+            start: i,
+            end: j,
             separator: match[2]!,
             year: dmy.year,
             month: dmy.month,
             day: dmy.day,
+            options: options,
           ),
         );
       }
@@ -71,8 +78,8 @@ class MatchDate extends MatchingType {
     final RegExp maybeDateWithoutSeparator = RegExp(r'^\d{4,8}$');
     // Dates without separators are between length 4 '1191' and 8 '11111991'.
     for (int i = 0; i <= password.length - 4; i++) {
-      for (int j = i + 3; j <= i + 7 && j < password.length; j++) {
-        final String token = password.substring(i, j + 1);
+      for (int j = i + 4; j <= i + 8 && j <= password.length; j++) {
+        final String token = password.substring(i, j);
         if (maybeDateWithoutSeparator.hasMatch(token)) {
           final List<DayMonthYear> candidates = <DayMonthYear>[];
           final List<List<int>>? dateSplit = dateSplits[token.length];
@@ -105,13 +112,14 @@ class MatchDate extends MatchingType {
           }
           matches.add(
             DateMatch(
-              i: i,
-              j: j,
-              token: token,
+              password: password,
+              start: i,
+              end: j,
               separator: '',
               year: bestCandidate.year,
               month: bestCandidate.month,
               day: bestCandidate.day,
+              options: options,
             ),
           );
         }
@@ -133,8 +141,8 @@ class MatchDate extends MatchingType {
       for (int i = 0; i < matches.length; i++) {
         final DateMatch otherMatch = matches[i];
         if (match != otherMatch &&
-            otherMatch.i <= match.i &&
-            otherMatch.j >= match.j) {
+            otherMatch.start <= match.start &&
+            otherMatch.end >= match.end) {
           return false;
         }
       }

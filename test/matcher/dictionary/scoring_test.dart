@@ -2,52 +2,28 @@ import 'package:test/test.dart';
 import 'package:zxcvbnm/src/matcher/dictionary/scoring.dart';
 import 'package:zxcvbnm/src/matcher/dictionary/variants/scoring/l33t.dart';
 import 'package:zxcvbnm/src/matcher/dictionary/variants/scoring/uppercase.dart';
+import 'package:zxcvbnm/src/options.dart';
 import 'package:zxcvbnm/src/types.dart';
-
-class DictionaryReturnTest extends DictionaryReturn {
-  DictionaryReturnTest({
-    required int baseGuesses,
-    required double uppercaseVariations,
-    required double l33tVariations,
-    required double calculation,
-  }) : super(
-          baseGuesses: baseGuesses,
-          uppercaseVariations: uppercaseVariations,
-          l33tVariations: l33tVariations,
-          calculation: calculation,
-        );
-
-  @override
-  // ignore: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
-  bool operator ==(Object other) =>
-      other is DictionaryReturn &&
-      baseGuesses == other.baseGuesses &&
-      uppercaseVariations == other.uppercaseVariations &&
-      l33tVariations == other.l33tVariations &&
-      calculation == other.calculation;
-}
 
 void main() {
   group('Dictionary scoring.', () {
+    final Options options = Options();
+
     test(
       'Base guesses.',
       () {
-        const DictionaryMatch match = DictionaryMatch(
-          i: 0,
-          j: 4,
-          token: 'aaaaa',
+        final DictionaryMatch match = DictionaryMatch(
+          password: 'aaaaa',
+          start: 0,
+          end: 5,
           matchedWord: 'aaaaa',
           rank: 32,
           dictionary: Dictionary.commonWords,
+          options: options,
         );
         expect(
           dictionaryScoring(match),
-          DictionaryReturnTest(
-            baseGuesses: 32,
-            uppercaseVariations: 1,
-            l33tVariations: 1,
-            calculation: 32,
-          ),
+          32,
         );
       },
     );
@@ -55,23 +31,18 @@ void main() {
     test(
       'Capitalization.',
       () {
-        const DictionaryMatch match = DictionaryMatch(
-          i: 0,
-          j: 5,
-          token: 'AAAaaa',
+        final DictionaryMatch match = DictionaryMatch(
+          password: 'AAAaaa',
+          start: 0,
+          end: 6,
           matchedWord: 'aaaaaa',
           rank: 32,
           dictionary: Dictionary.commonWords,
+          options: options,
         );
-        final double uppercaseVariations = uppercaseScoring(match);
         expect(
           dictionaryScoring(match),
-          DictionaryReturnTest(
-            baseGuesses: 32,
-            uppercaseVariations: uppercaseVariations,
-            l33tVariations: 1,
-            calculation: 32 * uppercaseVariations,
-          ),
+          32 * uppercaseScoring(match),
         );
       },
     );
@@ -79,22 +50,18 @@ void main() {
     test(
       'Word is reversed.',
       () {
-        const ReverseMatch match = ReverseMatch(
-          i: 0,
-          j: 2,
-          token: 'aaa',
+        final ReverseMatch match = ReverseMatch(
+          password: 'aaa',
+          start: 0,
+          end: 3,
           matchedWord: 'aaa',
           rank: 32,
           dictionary: Dictionary.commonWords,
+          options: options,
         );
         expect(
           dictionaryScoring(match),
-          DictionaryReturnTest(
-            baseGuesses: 32,
-            uppercaseVariations: 1,
-            l33tVariations: 1,
-            calculation: 32 * 2,
-          ),
+          32 * 2,
         );
       },
     );
@@ -102,25 +69,20 @@ void main() {
     test(
       'Common l33t substitutions.',
       () {
-        const L33tMatch match = L33tMatch(
-          i: 0,
-          j: 5,
-          token: 'aaa@@@',
+        final L33tMatch match = L33tMatch(
+          password: 'aaa@@@',
+          start: 0,
+          end: 6,
           matchedWord: 'aaaaaa',
           rank: 32,
           dictionary: Dictionary.commonWords,
           changes: <PasswordChange>[PasswordChange(l33t: '@', clean: 'a')],
           changesDisplay: '@ -> a',
+          options: options,
         );
-        final double l33tVariations = l33tScoring(match);
         expect(
           dictionaryScoring(match),
-          DictionaryReturnTest(
-            baseGuesses: 32,
-            uppercaseVariations: 1,
-            l33tVariations: l33tVariations,
-            calculation: 32 * l33tVariations,
-          ),
+          32 * l33tScoring(match),
         );
       },
     );
@@ -128,26 +90,20 @@ void main() {
     test(
       'Both capitalization and common l33t substitutions.',
       () {
-        const L33tMatch match = L33tMatch(
-          i: 0,
-          j: 5,
-          token: 'AaA@@@',
+        final L33tMatch match = L33tMatch(
+          password: 'AaA@@@',
+          start: 0,
+          end: 6,
           matchedWord: 'aaaaaa',
           rank: 32,
           dictionary: Dictionary.commonWords,
           changes: <PasswordChange>[PasswordChange(l33t: '@', clean: 'a')],
           changesDisplay: '@ -> a',
+          options: options,
         );
-        final double uppercaseVariations = uppercaseScoring(match);
-        final double l33tVariations = l33tScoring(match);
         expect(
           dictionaryScoring(match),
-          DictionaryReturnTest(
-            baseGuesses: 32,
-            uppercaseVariations: uppercaseVariations,
-            l33tVariations: l33tVariations,
-            calculation: 32 * uppercaseVariations * l33tVariations,
-          ),
+          32 * uppercaseScoring(match) * l33tScoring(match),
         );
       },
     );
@@ -155,22 +111,18 @@ void main() {
     test(
       'Diceware findings.',
       () {
-        const DictionaryMatch match = DictionaryMatch(
-          i: 0,
-          j: 5,
-          token: 'AaA@@@',
+        final DictionaryMatch match = DictionaryMatch(
+          password: 'AaA@@@',
+          start: 0,
+          end: 6,
           matchedWord: 'AaA@@@',
           rank: 32,
           dictionary: Dictionary.diceware,
+          options: options,
         );
         expect(
           dictionaryScoring(match),
-          DictionaryReturnTest(
-            baseGuesses: 32,
-            uppercaseVariations: 3,
-            l33tVariations: 1,
-            calculation: 3888,
-          ),
+          3888,
         );
       },
     );

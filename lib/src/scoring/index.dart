@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import '../data/const.dart';
+import '../matchers/base_matcher.dart';
 import '../options.dart';
 import '../types.dart';
 import 'utils.dart';
@@ -35,7 +36,7 @@ import 'utils.dart';
 ///   Sum(D^i for i in [1..sequenceLength-1].
 MatchSequence mostGuessableMatchSequence(
   String password,
-  List<Match> matches,
+  List<BaseMatch> matches,
   Options options, {
   bool excludeAdditive = false,
 }) {
@@ -43,20 +44,22 @@ MatchSequence mostGuessableMatchSequence(
       ScoringHelper(password, options, excludeAdditive: excludeAdditive);
   final int passwordLength = password.length;
   // Partition matches into sublists according to ending index j.
-  final List<List<Match>> matchesByJ =
-      List<List<Match>>.generate(passwordLength, (int index) => <Match>[]);
-  for (final Match match in matches) {
-    matchesByJ[match.j].add(match);
+  final List<List<BaseMatch>> matchesByJ = List<List<BaseMatch>>.generate(
+    passwordLength + 1,
+    (int index) => <BaseMatch>[],
+  );
+  for (final BaseMatch match in matches) {
+    matchesByJ[match.end].add(match);
   }
   // Small detail: for deterministic output, sort each sublist by i.
-  for (final List<Match> matches in matchesByJ) {
-    matches.sort((Match m1, Match m2) => m1.i - m2.i);
+  for (final List<BaseMatch> matches in matchesByJ) {
+    matches.sort((BaseMatch m1, BaseMatch m2) => m1.start - m2.start);
   }
-  for (int j = 0; j < passwordLength; j++) {
-    for (final Match match in matchesByJ[j]) {
-      if (match.i > 0) {
+  for (int j = 1; j <= passwordLength; j++) {
+    for (final BaseMatch match in matchesByJ[j]) {
+      if (match.start > 0) {
         for (final int sequenceLength
-            in helper.optimal[match.i - 1]?.keys ?? <int>[]) {
+            in helper.optimal[match.start]?.keys ?? <int>[]) {
           helper.update(match, sequenceLength + 1);
         }
       } else {
@@ -65,14 +68,13 @@ MatchSequence mostGuessableMatchSequence(
     }
     helper.bruteforceUpdate(j);
   }
-  final List<MatchEstimated> optimalMatchSequence =
-      helper.unwind(passwordLength);
+  final List<BaseMatch> optimalMatchSequence = helper.unwind(passwordLength);
   final int optimalSequenceLength = optimalMatchSequence.length;
   double guesses;
   if (password.isEmpty) {
     guesses = 1;
   } else {
-    guesses = helper.optimal[passwordLength - 1]![optimalSequenceLength]!.g;
+    guesses = helper.optimal[passwordLength]![optimalSequenceLength]!.g;
   }
   return MatchSequence(
     password: password,
@@ -97,15 +99,14 @@ class ScoringHelper {
   // Helper: considers whether a length-sequenceLength
   // sequence ending at match is better (fewer guesses)
   // than previously encountered sequences, updating state if so.
-  void update(Match match, int sequenceLength) {
-    final int j = match.j;
-    final MatchEstimated matchEstimated = match.estimate(password, options);
+  void update(BaseMatch match, int sequenceLength) {
+    final int j = match.end;
     // We're considering a length-sequenceLength sequence ending with match:
     // obtain the product term in the minimization function by multiplying
     // match's guesses by the product of the length-(sequenceLength-1)
     // sequence ending just before match, at match.i - 1.
-    final double pi = matchEstimated.guesses *
-        (optimal[matchEstimated.i - 1]?[sequenceLength - 1]?.pi ?? 1);
+    final double pi =
+        match.guesses * (optimal[match.start]?[sequenceLength - 1]?.pi ?? 1);
     // Calculate the minimization function.
     double g = factorial(sequenceLength) * pi;
     if (!excludeAdditive) {
@@ -124,7 +125,7 @@ class ScoringHelper {
     if (!shouldSkip) {
       // This sequence might be part of the final optimal sequence.
       optimal.putIfAbsent(j, () => <int, Optimal>{})[sequenceLength] =
-          Optimal(m: matchEstimated, pi: pi, g: g);
+          Optimal(m: match, pi: pi, g: g);
     }
   }
 
@@ -135,19 +136,19 @@ class ScoringHelper {
     BruteForceMatch match = bruteforceMatch(0, passwordCharIndex);
     update(match, 1);
 
-    for (int j = 1; j <= passwordCharIndex; j++) {
-      optimal[j - 1]?.forEach((int sequenceLength, Optimal lastOptimal) {
+    for (int j = 1; j < passwordCharIndex; j++) {
+      optimal[j]?.forEach((int sequenceLength, Optimal lastOptimal) {
         // Corner: an optimal sequence will never have two adjacent bruteforce
         // matches. It is strictly better to have a single bruteforce match
         // spanning the same region:
         // same contribution to the guess product with a lower length.
         // --> safe to skip those cases.
-        if (lastOptimal.m is! BruteForceMatchEstimated) {
+        if (lastOptimal.m is! BruteForceMatch) {
           // Generate passwordCharIndex bruteforce matches, spanning from
           // (i=1, j=passwordCharIndex) up to
           // (i=passwordCharIndex, j=passwordCharIndex).
           // See if adding these new matches to any of the sequences in
-          // optimal[j-1] leads to new bests.
+          // optimal[j] leads to new bests.
           match = bruteforceMatch(j, passwordCharIndex);
           // Try adding m to this length-sequenceLength sequence.
           update(match, sequenceLength + 1);
@@ -157,14 +158,17 @@ class ScoringHelper {
   }
 
   // Helper: make bruteforce match objects spanning i to j, inclusive.
-  BruteForceMatch bruteforceMatch(int i, int j) =>
-      BruteForceMatch(i: i, j: j, token: password.substring(i, j + 1));
+  BruteForceMatch bruteforceMatch(int i, int j) => BruteForceMatch(
+        password: password,
+        start: i,
+        end: j,
+      );
 
   // Helper: step backwards through optimal.m starting at the end,
   // constructing the final optimal match sequence.
-  List<MatchEstimated> unwind(int passwordLength) {
-    final List<MatchEstimated> optimalMatchSequence = <MatchEstimated>[];
-    int j = passwordLength - 1;
+  List<BaseMatch> unwind(int passwordLength) {
+    final List<BaseMatch> optimalMatchSequence = <BaseMatch>[];
+    int j = passwordLength;
     // Find the final best sequence length and score.
     int sequenceLength = 0;
     double g = double.infinity;
@@ -175,10 +179,10 @@ class ScoringHelper {
         g = candidateOptimal.g;
       }
     });
-    while (j >= 0) {
-      final MatchEstimated match = optimal[j]![sequenceLength]!.m;
+    while (j > 0) {
+      final BaseMatch match = optimal[j]![sequenceLength]!.m;
       optimalMatchSequence.add(match);
-      j = match.i - 1;
+      j = match.start;
       sequenceLength--;
     }
     return optimalMatchSequence.reversed.toList();
@@ -196,5 +200,5 @@ class MatchSequence {
   final String password;
   final double guesses;
   final double guessesLog10;
-  final List<MatchEstimated> sequence;
+  final List<BaseMatch> sequence;
 }

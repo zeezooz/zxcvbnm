@@ -2,8 +2,6 @@ const int dateMaxYear = 2050;
 const int dateMinYear = 1000;
 const int bruteforceCardinality = 10;
 const int minGuessesBeforeGrowingSequence = 10000;
-const int minSubmatchGuessesSingleChar = 10;
-const int minSubmatchGuessesMultiChar = 50;
 const int minYearSpace = 20;
 // \xbf-\xdf is a range for almost all special uppercase letter like Ä and so on
 final RegExp startUpper = RegExp(r'^[A-Z\xbf-\xdf][^A-Z\xbf-\xdf]+$');

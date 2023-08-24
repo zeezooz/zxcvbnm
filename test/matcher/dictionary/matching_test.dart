@@ -8,38 +8,65 @@ import '../../helper/generate_passwords.dart';
 import 'variants/matching/reverse_test.dart';
 
 class DictionaryMatchTest extends DictionaryMatch {
-  const DictionaryMatchTest({
-    required int i,
-    required int j,
-    required String token,
+  DictionaryMatchTest({
+    required String password,
+    required int start,
+    required int end,
     required String matchedWord,
     required int rank,
     required Dictionary dictionary,
     int? levenshteinDistance,
     String? levenshteinDistanceEntry,
-  }) : super(
-          i: i,
-          j: j,
-          token: token,
+    double? guesses,
+    double? uppercaseVariations,
+    double? l33tVariations,
+    Options? options,
+  })  : guessesTest = guesses,
+        uppercaseVariationsTest = uppercaseVariations,
+        l33tVariationsTest = l33tVariations,
+        super(
+          password: password,
+          start: start,
+          end: end,
           matchedWord: matchedWord,
           rank: rank,
           dictionary: dictionary,
           levenshteinDistance: levenshteinDistance,
           levenshteinDistanceEntry: levenshteinDistanceEntry,
+          options: options ?? Options(),
         );
+
+  final double? guessesTest;
+  final double? uppercaseVariationsTest;
+  final double? l33tVariationsTest;
+
+  @override
+  double get guesses => guessesTest ?? super.guesses;
+
+  @override
+  double get uppercaseVariations =>
+      uppercaseVariationsTest ?? super.uppercaseVariations;
+
+  @override
+  double get l33tVariations => l33tVariationsTest ?? super.l33tVariations;
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
   bool operator ==(Object other) =>
       other is DictionaryMatch &&
-      i == other.i &&
-      j == other.j &&
-      token == other.token &&
+      password == other.password &&
+      start == other.start &&
+      end == other.end &&
       matchedWord == other.matchedWord &&
       rank == other.rank &&
       dictionary == other.dictionary &&
       levenshteinDistance == other.levenshteinDistance &&
-      levenshteinDistanceEntry == other.levenshteinDistanceEntry;
+      levenshteinDistanceEntry == other.levenshteinDistanceEntry &&
+      (guessesTest == null || guessesTest == other.guesses) &&
+      (uppercaseVariationsTest == null ||
+          uppercaseVariationsTest == other.uppercaseVariations) &&
+      (l33tVariationsTest == null ||
+          l33tVariationsTest == other.l33tVariations);
 }
 
 void main() {
@@ -55,9 +82,9 @@ void main() {
           <Matcher>[
             containsOnce(
               DictionaryMatchTest(
-                i: 0,
-                j: 1,
-                token: 'we',
+                password: 'we',
+                start: 0,
+                end: 2,
                 matchedWord: 'we',
                 rank: 13,
                 dictionary: Dictionary.commonWords,
@@ -74,33 +101,33 @@ void main() {
           <List<DictionaryMatch>>[
             <DictionaryMatch>[
               DictionaryMatchTest(
-                i: 0,
-                j: 1,
-                token: 'el',
+                password: 'elk',
+                start: 0,
+                end: 2,
                 matchedWord: 'el',
                 rank: 2967,
                 dictionary: Dictionary.commonWords,
               ),
               DictionaryMatchTest(
-                i: 0,
-                j: 2,
-                token: 'elk',
+                password: 'elk',
+                start: 0,
+                end: 3,
                 matchedWord: 'elk',
                 rank: 2167,
                 dictionary: Dictionary.diceware,
               ),
               DictionaryMatchTest(
-                i: 0,
-                j: 2,
-                token: 'elk',
+                password: 'elk',
+                start: 0,
+                end: 3,
                 matchedWord: 'elk',
                 rank: 16651,
                 dictionary: Dictionary.commonWords,
               ),
               ReverseMatchTest(
-                i: 0,
-                j: 1,
-                token: 'el',
+                password: 'elk',
+                start: 0,
+                end: 2,
                 matchedWord: 'le',
                 rank: 975,
                 dictionary: Dictionary.lastNames,
@@ -133,25 +160,25 @@ void main() {
           <List<DictionaryMatchTest>>[
             <DictionaryMatchTest>[
               DictionaryMatchTest(
-                i: 0,
-                j: 5,
-                token: 'mother',
+                password: 'motherboard',
+                start: 0,
+                end: 6,
                 matchedWord: 'mother',
                 rank: 2,
                 dictionary: Dictionary.commonWords,
               ),
               DictionaryMatchTest(
-                i: 0,
-                j: 10,
-                token: 'motherboard',
+                password: 'motherboard',
+                start: 0,
+                end: 11,
                 matchedWord: 'motherboard',
                 rank: 1,
                 dictionary: Dictionary.commonWords,
               ),
               DictionaryMatchTest(
-                i: 6,
-                j: 10,
-                token: 'board',
+                password: 'motherboard',
+                start: 6,
+                end: 11,
                 matchedWord: 'board',
                 rank: 3,
                 dictionary: Dictionary.commonWords,
@@ -168,17 +195,17 @@ void main() {
           <List<DictionaryMatchTest>>[
             <DictionaryMatchTest>[
               DictionaryMatchTest(
-                i: 0,
-                j: 3,
-                token: 'abcd',
+                password: 'abcdef',
+                start: 0,
+                end: 4,
                 matchedWord: 'abcd',
                 rank: 4,
                 dictionary: Dictionary.commonWords,
               ),
               DictionaryMatchTest(
-                i: 2,
-                j: 5,
-                token: 'cdef',
+                password: 'abcdef',
+                start: 2,
+                end: 6,
                 matchedWord: 'cdef',
                 rank: 5,
                 dictionary: Dictionary.commonWords,
@@ -195,17 +222,17 @@ void main() {
           <List<DictionaryMatchTest>>[
             <DictionaryMatchTest>[
               DictionaryMatchTest(
-                i: 0,
-                j: 4,
-                token: 'BoaRd',
+                password: 'BoaRdZ',
+                start: 0,
+                end: 5,
                 matchedWord: 'board',
                 rank: 3,
                 dictionary: Dictionary.commonWords,
               ),
               DictionaryMatchTest(
-                i: 5,
-                j: 5,
-                token: 'Z',
+                password: 'BoaRdZ',
+                start: 5,
+                end: 6,
                 matchedWord: 'z',
                 rank: 1,
                 dictionary: Dictionary.passwords,
@@ -229,9 +256,9 @@ void main() {
               <List<DictionaryMatchTest>>[
                 <DictionaryMatchTest>[
                   DictionaryMatchTest(
-                    i: password.i,
-                    j: password.j,
-                    token: token,
+                    password: password.password,
+                    start: password.i,
+                    end: password.j,
                     matchedWord: token,
                     rank: 5,
                     dictionary: Dictionary.passwords,
@@ -255,9 +282,9 @@ void main() {
                 <List<DictionaryMatchTest>>[
                   <DictionaryMatchTest>[
                     DictionaryMatchTest(
-                      i: 0,
-                      j: word.length - 1,
-                      token: word,
+                      password: word,
+                      start: 0,
+                      end: word.length,
                       matchedWord: word,
                       rank: rank,
                       dictionary: dictionary,
@@ -287,17 +314,17 @@ void main() {
             <List<DictionaryMatchTest>>[
               <DictionaryMatchTest>[
                 DictionaryMatchTest(
-                  i: 0,
-                  j: 2,
-                  token: 'foo',
+                  password: 'foobar',
+                  start: 0,
+                  end: 3,
                   matchedWord: 'foo',
                   rank: 1,
                   dictionary: Dictionary.userInputs,
                 ),
                 DictionaryMatchTest(
-                  i: 3,
-                  j: 5,
-                  token: 'bar',
+                  password: 'foobar',
+                  start: 3,
+                  end: 6,
                   matchedWord: 'bar',
                   rank: 2,
                   dictionary: Dictionary.userInputs,

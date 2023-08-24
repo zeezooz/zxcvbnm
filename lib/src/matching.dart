@@ -8,21 +8,21 @@ import 'matcher/repeat/matching.dart';
 import 'matcher/separator/matching.dart';
 import 'matcher/sequence/matching.dart';
 import 'matcher/spatial/matching.dart';
+import 'matchers/base_matcher.dart';
 import 'options.dart';
-import 'types.dart';
 
-typedef Matchers = List<MatchingType>;
+typedef Matchers = List<BaseMatcher>;
 
 /// Omnimatch combine matchers.
-class OmniMatch extends MatchingType {
+class OmniMatch extends BaseMatcher {
   OmniMatch(this.options) {
-    matchers = <MatchingType>[
-      MatchDate(),
+    matchers = <BaseMatcher>[
+      MatchDate(options),
       MatchDictionary(options),
-      MatchRegex(),
-      MatchRepeat(this),
+      MatchRegex(options),
+      MatchRepeat(options, this),
       MatchSeparator(),
-      MatchSequence(),
+      MatchSequence(options),
       MatchSpatial(options),
     ];
   }
@@ -31,18 +31,18 @@ class OmniMatch extends MatchingType {
   late final Matchers matchers;
 
   @override
-  List<FutureOr<List<Match>>> match(String password) {
-    final List<Match> matches = <Match>[];
-    final List<Future<List<Match>>> futures = <Future<List<Match>>>[];
-    final Matchers matchers = <MatchingType>[
+  List<FutureOr<List<BaseMatch>>> match(String password) {
+    final List<BaseMatch> matches = <BaseMatch>[];
+    final List<Future<List<BaseMatch>>> futures = <Future<List<BaseMatch>>>[];
+    final Matchers matchers = <BaseMatcher>[
       ...this.matchers,
       ...options.matchers,
     ];
-    for (final MatchingType matcher in matchers) {
-      final List<FutureOr<List<Match>>> result = matcher.match(password);
+    for (final BaseMatcher matcher in matchers) {
+      final List<FutureOr<List<BaseMatch>>> result = matcher.match(password);
       matches.addAll(synchronousMatches(result));
       futures.addAll(asynchronousMatches(result));
     }
-    return <FutureOr<List<Match>>>[matches, ...futures];
+    return <FutureOr<List<BaseMatch>>>[matches, ...futures];
   }
 }

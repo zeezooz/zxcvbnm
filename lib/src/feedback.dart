@@ -1,5 +1,5 @@
+import 'matchers/base_matcher.dart';
 import 'options.dart';
-import 'types.dart';
 
 class Feedback {
   const Feedback({
@@ -17,14 +17,14 @@ class Feedback {
 
   factory Feedback.fromMatches(
     int score,
-    List<MatchEstimated> matches,
+    List<BaseMatch> matches,
     Options options,
   ) {
     if (matches.isEmpty) return Feedback._default(options);
     if (score > 2) return Feedback();
     final String extraFeedback = options.translation.suggestions.anotherWord;
-    Feedback? feedback = _longestMatch(matches)
-        .feedback(options, isSoleMatch: matches.length == 1);
+    Feedback? feedback =
+        _longestMatch(matches).feedback(isSoleMatch: matches.length == 1);
     if (feedback != null) {
       feedback = Feedback(
         warning: feedback.warning,
@@ -42,10 +42,10 @@ class Feedback {
   @override
   String toString() => '$warning, $suggestions';
 
-  static MatchEstimated _longestMatch(List<MatchEstimated> sequence) {
-    MatchEstimated longestMatch = sequence[0];
-    for (final MatchEstimated match in sequence.skip(1)) {
-      if (match.token.length > longestMatch.token.length) {
+  static BaseMatch _longestMatch(List<BaseMatch> sequence) {
+    BaseMatch longestMatch = sequence[0];
+    for (final BaseMatch match in sequence.skip(1)) {
+      if (match.length > longestMatch.length) {
         longestMatch = match;
       }
     }

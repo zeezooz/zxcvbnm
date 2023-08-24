@@ -1,9 +1,10 @@
 import 'dart:math';
 
+import '../../../../matchers/base_matcher.dart';
 import '../../../../scoring/utils.dart';
 import '../../../../types.dart';
 
-double l33tScoring(Match match) {
+double l33tScoring(BaseMatch match) {
   if (match is! L33tMatch) return 1;
   double variations = 1;
   // Lower-case match.token before calculating: capitalization shouldn't affect

@@ -1,14 +1,17 @@
 import 'dart:async';
 
 import '../../helper.dart';
+import '../../matchers/base_matcher.dart';
 import '../../matching.dart';
+import '../../options.dart';
 import '../../scoring/index.dart';
 import '../../types.dart';
 
 /// Repeat matching (aaa, abcabcabc).
-class MatchRepeat extends MatchingType {
-  MatchRepeat(this.omniMatch);
+class MatchRepeat extends BaseMatcher {
+  MatchRepeat(this.options, this.omniMatch);
 
+  final Options options;
   final OmniMatch omniMatch;
 
   final RegExp greedyRegExp = RegExp(r'(.+)\1+');
@@ -49,16 +52,16 @@ class MatchRepeat extends MatchingType {
         baseToken = match[1]!;
       }
       final int i = lastIndex + match.start;
-      final int j = lastIndex + match.end - 1;
+      final int j = lastIndex + match.end;
       final FutureOr<RepeatMatch> repeatMatch =
           // ignore: discarded_futures
-          _repeatMatch(i, j, match[0]!, baseToken);
+          _repeatMatch(password, i, j, match[0]!, baseToken);
       if (repeatMatch is RepeatMatch) {
         matches.add(repeatMatch);
       } else {
         futures.add(repeatMatch);
       }
-      lastIndex = j + 1;
+      lastIndex = j;
     }
     return <FutureOr<List<RepeatMatch>>>[
       matches,
@@ -68,31 +71,47 @@ class MatchRepeat extends MatchingType {
   }
 
   FutureOr<RepeatMatch> _repeatMatch(
-    int i,
-    int j,
+    String password,
+    int start,
+    int end,
     String token,
     String baseToken,
   ) {
-    final List<FutureOr<List<Match>>> result = omniMatch.match(baseToken);
-    final List<Match> matches = synchronousMatches(result);
-    final List<Future<List<Match>>> futures = asynchronousMatches(result);
+    final List<FutureOr<List<BaseMatch>>> result = omniMatch.match(baseToken);
+    final List<BaseMatch> matches = synchronousMatches(result);
+    final List<Future<List<BaseMatch>>> futures = asynchronousMatches(result);
     if (futures.isEmpty) {
-      return _repeatMatchWithGuesses(matches, baseToken, token, i, j);
+      return _repeatMatchWithGuesses(
+        matches,
+        password,
+        baseToken,
+        token,
+        start,
+        end,
+      );
     }
-    return Future.wait(futures).then((List<List<Match>> results) {
-      for (final List<Match> result in results) {
+    return Future.wait(futures).then((List<List<BaseMatch>> results) {
+      for (final List<BaseMatch> result in results) {
         matches.addAll(result);
       }
-      return _repeatMatchWithGuesses(matches, baseToken, token, i, j);
+      return _repeatMatchWithGuesses(
+        matches,
+        password,
+        baseToken,
+        token,
+        start,
+        end,
+      );
     });
   }
 
   RepeatMatch _repeatMatchWithGuesses(
-    List<Match> matches,
+    List<BaseMatch> matches,
+    String password,
     String baseToken,
     String token,
-    int i,
-    int j,
+    int start,
+    int end,
   ) {
     final double baseGuesses = mostGuessableMatchSequence(
       baseToken,
@@ -101,12 +120,13 @@ class MatchRepeat extends MatchingType {
     ).guesses;
     final int repeatCount = token.length ~/ baseToken.length;
     return RepeatMatch(
-      i: i,
-      j: j,
-      token: token,
+      password: password,
+      start: start,
+      end: end,
       baseToken: baseToken,
       baseGuesses: baseGuesses,
       repeatCount: repeatCount,
+      options: options,
     );
   }
 }

@@ -3,9 +3,9 @@ import '../../options.dart';
 import '../../types.dart';
 
 Feedback? repeatFeedback({
-  required RepeatMatchEstimated match,
+  required RepeatMatch match,
   required Options options,
-  bool? isSoleMatch,
+  required bool isSoleMatch,
 }) {
   return Feedback(
     warning: match.baseToken.length == 1

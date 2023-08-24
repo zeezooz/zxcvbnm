@@ -10,7 +10,7 @@ double spatialScoring(SpatialMatch match, Options options) {
   // Math is similar to extra guesses of l33t substitutions in dictionary
   // matches.
   if (match.shiftedCount > 0) {
-    final int unShiftedCount = match.token.length - match.shiftedCount;
+    final int unShiftedCount = match.length - match.shiftedCount;
     if (unShiftedCount == 0) {
       guesses *= 2;
     } else {
@@ -30,7 +30,7 @@ double _estimatePossiblePatterns(SpatialMatch match, Options options) {
   final double averageDegree = _averageDegree(options.graph[match.graph]);
   // Estimate the number of possible patterns with token length or less with
   // turns or less.
-  for (int i = 2; i <= match.token.length; i++) {
+  for (int i = 2; i <= match.length; i++) {
     final int possibleTurns = min(match.turns, i - 1);
     for (int j = 1; j <= possibleTurns; j++) {
       guesses += nCk(i - 1, j - 1) * startingPosition * pow(averageDegree, j);

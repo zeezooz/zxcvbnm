@@ -1,8 +1,9 @@
 import '../../data/const.dart';
+import '../../matchers/base_matcher.dart';
 import '../../types.dart';
 
 /// Separators (any semi-repeated special character).
-class MatchSeparator extends MatchingType {
+class MatchSeparator extends BaseMatcher {
   final RegExp _separatorRegex = RegExp('[${separatorChars.join('')}]');
 
   @override
@@ -19,7 +20,13 @@ class MatchSeparator extends MatchingType {
       // separator.
       // https://github.com/zxcvbn-ts/zxcvbn/issues/202
       final int i = match.start + 1;
-      result.add(SeparatorMatch(i: i, j: i, token: mostUsedSeparator));
+      result.add(
+        SeparatorMatch(
+          password: password,
+          start: i,
+          end: i + 1,
+        ),
+      );
     }
     return <List<SeparatorMatch>>[result];
   }

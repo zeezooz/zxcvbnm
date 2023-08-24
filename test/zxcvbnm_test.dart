@@ -1,11 +1,13 @@
 import 'package:test/test.dart';
 import 'package:zxcvbnm/languages/en.dart';
 import 'package:zxcvbnm/src/feedback.dart';
+import 'package:zxcvbnm/src/matchers/base_matcher.dart';
 import 'package:zxcvbnm/src/options.dart';
 import 'package:zxcvbnm/src/types.dart';
 import 'package:zxcvbnm/zxcvbnm.dart';
 
 import 'helper/password_tests.dart';
+import 'matcher/dictionary/matching_test.dart';
 
 class ResultTest extends Result {
   ResultTest({
@@ -16,7 +18,7 @@ class ResultTest extends Result {
     required String password,
     required double guesses,
     required double guessesLog10,
-    required List<MatchEstimated> sequence,
+    required List<BaseMatch> sequence,
   }) : super(
           feedback: feedback,
           crackTimesSeconds: crackTimesSeconds,
@@ -58,56 +60,6 @@ class ResultTest extends Result {
       equals(sequence).matches(other.sequence, <dynamic, dynamic>{});
 }
 
-class DictionaryMatchEstimatedTest extends DictionaryMatchEstimated {
-  DictionaryMatchEstimatedTest({
-    required int i,
-    required int j,
-    required String token,
-    required String matchedWord,
-    required int rank,
-    required Dictionary dictionary,
-    int? levenshteinDistance,
-    String? levenshteinDistanceEntry,
-    required double guesses,
-    required double guessesLog10,
-    required int baseGuesses,
-    required double uppercaseVariations,
-    required double l33tVariations,
-  }) : super(
-          i: i,
-          j: j,
-          token: token,
-          matchedWord: matchedWord,
-          rank: rank,
-          dictionary: dictionary,
-          levenshteinDistance: levenshteinDistance,
-          levenshteinDistanceEntry: levenshteinDistanceEntry,
-          guesses: guesses,
-          guessesLog10: guessesLog10,
-          baseGuesses: baseGuesses,
-          uppercaseVariations: uppercaseVariations,
-          l33tVariations: l33tVariations,
-        );
-
-  @override
-  // ignore: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
-  bool operator ==(Object other) =>
-      other is DictionaryMatchEstimated &&
-      i == other.i &&
-      j == other.j &&
-      token == other.token &&
-      matchedWord == other.matchedWord &&
-      rank == other.rank &&
-      dictionary == other.dictionary &&
-      levenshteinDistance == other.levenshteinDistance &&
-      levenshteinDistanceEntry == other.levenshteinDistanceEntry &&
-      guesses == other.guesses &&
-      guessesLog10 == other.guessesLog10 &&
-      baseGuesses == other.baseGuesses &&
-      uppercaseVariations == other.uppercaseVariations &&
-      l33tVariations == other.l33tVariations;
-}
-
 void main() {
   group('Main.', () {
     test(
@@ -142,17 +94,15 @@ void main() {
             password: 'test',
             guesses: 116,
             guessesLog10: 2.064457989226918,
-            sequence: <DictionaryMatchEstimatedTest>[
-              DictionaryMatchEstimatedTest(
-                i: 0,
-                j: 3,
-                token: 'test',
+            sequence: <DictionaryMatchTest>[
+              DictionaryMatchTest(
+                password: 'test',
+                start: 0,
+                end: 4,
                 matchedWord: 'test',
                 rank: 115,
                 dictionary: Dictionary.passwords,
                 guesses: 115,
-                guessesLog10: 2.0606978403536114,
-                baseGuesses: 115,
                 uppercaseVariations: 1,
                 l33tVariations: 1,
               ),
@@ -197,17 +147,15 @@ void main() {
             password: 'test',
             guesses: 2,
             guessesLog10: 0.30102999566398114,
-            sequence: <DictionaryMatchEstimatedTest>[
-              DictionaryMatchEstimatedTest(
-                i: 0,
-                j: 3,
-                token: 'test',
+            sequence: <DictionaryMatchTest>[
+              DictionaryMatchTest(
+                password: 'test',
+                start: 0,
+                end: 4,
                 matchedWord: 'test',
                 rank: 1,
                 dictionary: Dictionary.userInputs,
                 guesses: 1,
-                guessesLog10: 0,
-                baseGuesses: 1,
                 uppercaseVariations: 1,
                 l33tVariations: 1,
               ),
@@ -249,17 +197,15 @@ void main() {
             password: 'onTheFly',
             guesses: 37,
             guessesLog10: 1.5682017240669948,
-            sequence: <DictionaryMatchEstimatedTest>[
-              DictionaryMatchEstimatedTest(
-                i: 0,
-                j: 7,
-                token: 'onTheFly',
+            sequence: <DictionaryMatchTest>[
+              DictionaryMatchTest(
+                password: 'onTheFly',
+                start: 0,
+                end: 8,
                 matchedWord: 'onthefly',
                 rank: 1,
                 dictionary: Dictionary.userInputs,
                 guesses: 36,
-                guessesLog10: 1.556302500767287,
-                baseGuesses: 1,
                 uppercaseVariations: 36,
                 l33tVariations: 1,
               ),
@@ -301,17 +247,15 @@ void main() {
             password: 'test',
             guesses: 2,
             guessesLog10: 0.30102999566398114,
-            sequence: <DictionaryMatchEstimatedTest>[
-              DictionaryMatchEstimatedTest(
-                i: 0,
-                j: 3,
-                token: 'test',
+            sequence: <DictionaryMatchTest>[
+              DictionaryMatchTest(
+                password: 'test',
+                start: 0,
+                end: 4,
                 matchedWord: 'test',
                 rank: 1,
                 dictionary: Dictionary.userInputs,
                 guesses: 1,
-                guessesLog10: 0,
-                baseGuesses: 1,
                 uppercaseVariations: 1,
                 l33tVariations: 1,
               ),
@@ -341,17 +285,15 @@ void main() {
             password: 'test',
             guesses: 116,
             guessesLog10: 2.064457989226918,
-            sequence: <DictionaryMatchEstimatedTest>[
-              DictionaryMatchEstimatedTest(
-                i: 0,
-                j: 3,
-                token: 'test',
+            sequence: <DictionaryMatchTest>[
+              DictionaryMatchTest(
+                password: 'test',
+                start: 0,
+                end: 4,
                 matchedWord: 'test',
                 rank: 115,
                 dictionary: Dictionary.passwords,
                 guesses: 115,
-                guessesLog10: 2.0606978403536114,
-                baseGuesses: 115,
                 uppercaseVariations: 1,
                 l33tVariations: 1,
               ),

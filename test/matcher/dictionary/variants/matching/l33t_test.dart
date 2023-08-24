@@ -5,10 +5,10 @@ import 'package:zxcvbnm/src/options.dart';
 import 'package:zxcvbnm/src/types.dart';
 
 class L33tMatchTest extends L33tMatch {
-  const L33tMatchTest({
-    required int i,
-    required int j,
-    required String token,
+  L33tMatchTest({
+    required String password,
+    required int start,
+    required int end,
     required String matchedWord,
     required int rank,
     required Dictionary dictionary,
@@ -16,10 +16,17 @@ class L33tMatchTest extends L33tMatch {
     String? levenshteinDistanceEntry,
     required List<PasswordChange> changes,
     required String changesDisplay,
-  }) : super(
-          i: i,
-          j: j,
-          token: token,
+    double? guesses,
+    double? uppercaseVariations,
+    double? l33tVariations,
+    Options? options,
+  })  : guessesTest = guesses,
+        uppercaseVariationsTest = uppercaseVariations,
+        l33tVariationsTest = l33tVariations,
+        super(
+          password: password,
+          start: start,
+          end: end,
           matchedWord: matchedWord,
           rank: rank,
           dictionary: dictionary,
@@ -27,22 +34,42 @@ class L33tMatchTest extends L33tMatch {
           levenshteinDistanceEntry: levenshteinDistanceEntry,
           changes: changes,
           changesDisplay: changesDisplay,
+          options: options ?? Options(),
         );
+
+  final double? guessesTest;
+  final double? uppercaseVariationsTest;
+  final double? l33tVariationsTest;
+
+  @override
+  double get guesses => guessesTest ?? super.guesses;
+
+  @override
+  double get uppercaseVariations =>
+      uppercaseVariationsTest ?? super.uppercaseVariations;
+
+  @override
+  double get l33tVariations => l33tVariationsTest ?? super.l33tVariations;
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
   bool operator ==(Object other) =>
       other is L33tMatch &&
-      i == other.i &&
-      j == other.j &&
-      token == other.token &&
+      password == other.password &&
+      start == other.start &&
+      end == other.end &&
       matchedWord == other.matchedWord &&
       rank == other.rank &&
       dictionary == other.dictionary &&
       levenshteinDistance == other.levenshteinDistance &&
       levenshteinDistanceEntry == other.levenshteinDistanceEntry &&
       changes.join(',') == other.changes.join(',') &&
-      changesDisplay == other.changesDisplay;
+      changesDisplay == other.changesDisplay &&
+      (guessesTest == null || guessesTest == other.guesses) &&
+      (uppercaseVariationsTest == null ||
+          uppercaseVariationsTest == other.uppercaseVariations) &&
+      (l33tVariationsTest == null ||
+          l33tVariationsTest == other.l33tVariations);
 }
 
 void main() {
@@ -109,9 +136,9 @@ void main() {
           <List<L33tMatchTest>>[
             <L33tMatchTest>[
               L33tMatchTest(
-                i: 0,
-                j: password.length - 1,
-                token: password,
+                password: password,
+                start: 0,
+                end: password.length,
                 matchedWord: 'paassword',
                 rank: 3,
                 dictionary: Dictionary.commonWords,
@@ -149,9 +176,9 @@ void main() {
           <List<L33tMatchTest>>[
             <L33tMatchTest>[
               L33tMatchTest(
-                i: 0,
-                j: 7,
-                token: 'p4ssword',
+                password: 'p4ssword',
+                start: 0,
+                end: 8,
                 matchedWord: 'password',
                 rank: 2,
                 dictionary: Dictionary.commonWords,
@@ -171,9 +198,9 @@ void main() {
           <List<L33tMatchTest>>[
             <L33tMatchTest>[
               L33tMatchTest(
-                i: 0,
-                j: 8,
-                token: 'p@@ssw0rd',
+                password: 'p@@ssw0rd',
+                start: 0,
+                end: 9,
                 matchedWord: 'paassword',
                 rank: 3,
                 dictionary: Dictionary.commonWords,
@@ -197,9 +224,9 @@ void main() {
           <List<L33tMatchTest>>[
             <L33tMatchTest>[
               L33tMatchTest(
-                i: 3,
-                j: 13,
-                token: '(()mp|_|ter',
+                password: '|_|(()mp|_|ter',
+                start: 3,
+                end: 14,
                 matchedWord: 'computer',
                 rank: 5,
                 dictionary: Dictionary.commonWords,
@@ -227,9 +254,9 @@ void main() {
           <List<L33tMatchTest>>[
             <L33tMatchTest>[
               L33tMatchTest(
-                i: 1,
-                j: 6,
-                token: 'p@ciﬁc',
+                password: 'ﬁp@ciﬁc',
+                start: 1,
+                end: 7,
                 matchedWord: 'pacific',
                 rank: 6,
                 dictionary: Dictionary.commonWords,
@@ -253,9 +280,9 @@ void main() {
           <List<L33tMatchTest>>[
             <L33tMatchTest>[
               L33tMatchTest(
-                i: 5,
-                j: 7,
-                token: '{G0',
+                password: 'aSdfO{G0asDfO',
+                start: 5,
+                end: 8,
                 matchedWord: 'cgo',
                 rank: 1,
                 dictionary: Dictionary.wikipedia,
@@ -284,9 +311,9 @@ void main() {
         <List<L33tMatchTest>>[
           <L33tMatchTest>[
             L33tMatchTest(
-              i: 0,
-              j: 2,
-              token: '@a(',
+              password: '@a(go{G0',
+              start: 0,
+              end: 3,
               matchedWord: 'aac',
               rank: 1,
               dictionary: Dictionary.commonWords,
@@ -303,9 +330,9 @@ void main() {
               changesDisplay: '@ -> a, ( -> c',
             ),
             L33tMatchTest(
-              i: 2,
-              j: 4,
-              token: '(go',
+              password: '@a(go{G0',
+              start: 2,
+              end: 5,
               matchedWord: 'cgo',
               rank: 1,
               dictionary: Dictionary.wikipedia,
@@ -318,9 +345,9 @@ void main() {
               changesDisplay: '( -> c',
             ),
             L33tMatchTest(
-              i: 5,
-              j: 7,
-              token: '{G0',
+              password: '@a(go{G0',
+              start: 5,
+              end: 8,
               matchedWord: 'cgo',
               rank: 1,
               dictionary: Dictionary.wikipedia,

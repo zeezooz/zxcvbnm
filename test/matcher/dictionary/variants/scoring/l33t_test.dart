@@ -1,20 +1,24 @@
 import 'package:test/test.dart';
 import 'package:zxcvbnm/src/matcher/dictionary/variants/scoring/l33t.dart';
+import 'package:zxcvbnm/src/options.dart';
 import 'package:zxcvbnm/src/scoring/utils.dart';
 import 'package:zxcvbnm/src/types.dart';
 
 void main() {
   group('L33t scoring.', () {
+    final Options options = Options();
+
     test(
       "Extra l33t guesses of ''.",
       () {
-        const DictionaryMatch match = DictionaryMatch(
-          i: 0,
-          j: 0,
-          token: '',
+        final DictionaryMatch match = DictionaryMatch(
+          password: '',
+          start: 0,
+          end: 0,
           matchedWord: '',
           rank: 1,
           dictionary: Dictionary.commonWords,
+          options: options,
         );
         expect(
           l33tScoring(match),
@@ -26,13 +30,14 @@ void main() {
     test(
       'Extra l33t guesses of a.',
       () {
-        const DictionaryMatch match = DictionaryMatch(
-          i: 0,
-          j: 1,
-          token: 'a',
+        final DictionaryMatch match = DictionaryMatch(
+          password: 'a',
+          start: 0,
+          end: 1,
           matchedWord: 'a',
           rank: 1,
           dictionary: Dictionary.commonWords,
+          options: options,
         );
         expect(
           l33tScoring(match),
@@ -44,15 +49,16 @@ void main() {
     test(
       'Extra l33t guesses of 4.',
       () {
-        const L33tMatch match = L33tMatch(
-          i: 0,
-          j: 1,
-          token: '4',
+        final L33tMatch match = L33tMatch(
+          password: '4',
+          start: 0,
+          end: 1,
           matchedWord: 'a',
           rank: 1,
           dictionary: Dictionary.commonWords,
           changes: <PasswordChange>[PasswordChange(l33t: '4', clean: 'a')],
           changesDisplay: '4 -> a',
+          options: options,
         );
         expect(
           l33tScoring(match),
@@ -64,15 +70,16 @@ void main() {
     test(
       'Extra l33t guesses of 4pple.',
       () {
-        const L33tMatch match = L33tMatch(
-          i: 0,
-          j: 4,
-          token: '4pple',
+        final L33tMatch match = L33tMatch(
+          password: '4pple',
+          start: 0,
+          end: 5,
           matchedWord: 'apple',
           rank: 1,
           dictionary: Dictionary.commonWords,
           changes: <PasswordChange>[PasswordChange(l33t: '4', clean: 'a')],
           changesDisplay: '4 -> a',
+          options: options,
         );
         expect(
           l33tScoring(match),
@@ -84,13 +91,14 @@ void main() {
     test(
       'Extra l33t guesses of abcet.',
       () {
-        const DictionaryMatch match = DictionaryMatch(
-          i: 0,
-          j: 4,
-          token: 'abcet',
+        final DictionaryMatch match = DictionaryMatch(
+          password: 'abcet',
+          start: 0,
+          end: 5,
           matchedWord: 'abcet',
           rank: 1,
           dictionary: Dictionary.commonWords,
+          options: options,
         );
         expect(
           l33tScoring(match),
@@ -102,15 +110,16 @@ void main() {
     test(
       'Extra l33t guesses of 4bcet.',
       () {
-        const L33tMatch match = L33tMatch(
-          i: 0,
-          j: 4,
-          token: '4bcet',
+        final L33tMatch match = L33tMatch(
+          password: '4bcet',
+          start: 0,
+          end: 5,
           matchedWord: 'abcet',
           rank: 1,
           dictionary: Dictionary.commonWords,
           changes: <PasswordChange>[PasswordChange(l33t: '4', clean: 'a')],
           changesDisplay: '4 -> a',
+          options: options,
         );
         expect(
           l33tScoring(match),
@@ -122,15 +131,16 @@ void main() {
     test(
       'Extra l33t guesses of a8cet.',
       () {
-        const L33tMatch match = L33tMatch(
-          i: 0,
-          j: 4,
-          token: 'a8cet',
+        final L33tMatch match = L33tMatch(
+          password: 'a8cet',
+          start: 0,
+          end: 5,
           matchedWord: 'abcet',
           rank: 1,
           dictionary: Dictionary.commonWords,
           changes: <PasswordChange>[PasswordChange(l33t: '8', clean: 'b')],
           changesDisplay: '8 -> b',
+          options: options,
         );
         expect(
           l33tScoring(match),
@@ -142,15 +152,16 @@ void main() {
     test(
       'Extra l33t guesses of abce+.',
       () {
-        const L33tMatch match = L33tMatch(
-          i: 0,
-          j: 4,
-          token: 'abce+',
+        final L33tMatch match = L33tMatch(
+          password: 'abce+',
+          start: 0,
+          end: 5,
           matchedWord: 'abcet',
           rank: 1,
           dictionary: Dictionary.commonWords,
           changes: <PasswordChange>[PasswordChange(l33t: '+', clean: 't')],
           changesDisplay: '+ -> t',
+          options: options,
         );
         expect(
           l33tScoring(match),
@@ -162,10 +173,10 @@ void main() {
     test(
       'Extra l33t guesses of 48cet.',
       () {
-        const L33tMatch match = L33tMatch(
-          i: 0,
-          j: 4,
-          token: '48cet',
+        final L33tMatch match = L33tMatch(
+          password: '48cet',
+          start: 0,
+          end: 5,
           matchedWord: 'abcet',
           rank: 1,
           dictionary: Dictionary.commonWords,
@@ -174,6 +185,7 @@ void main() {
             PasswordChange(l33t: '8', clean: 'b'),
           ],
           changesDisplay: '4 -> a, 8 -> b',
+          options: options,
         );
         expect(
           l33tScoring(match),
@@ -185,15 +197,16 @@ void main() {
     test(
       'Extra l33t guesses of a4a4aa.',
       () {
-        const L33tMatch match = L33tMatch(
-          i: 0,
-          j: 5,
-          token: 'a4a4aa',
+        final L33tMatch match = L33tMatch(
+          password: 'a4a4aa',
+          start: 0,
+          end: 6,
           matchedWord: 'aaaaaa',
           rank: 1,
           dictionary: Dictionary.commonWords,
           changes: <PasswordChange>[PasswordChange(l33t: '4', clean: 'a')],
           changesDisplay: '4 -> a',
+          options: options,
         );
         expect(
           l33tScoring(match),
@@ -205,15 +218,16 @@ void main() {
     test(
       'Extra l33t guesses of 4a4a44.',
       () {
-        const L33tMatch match = L33tMatch(
-          i: 0,
-          j: 5,
-          token: '4a4a44',
+        final L33tMatch match = L33tMatch(
+          password: '4a4a44',
+          start: 0,
+          end: 6,
           matchedWord: 'aaaaaa',
           rank: 1,
           dictionary: Dictionary.commonWords,
           changes: <PasswordChange>[PasswordChange(l33t: '4', clean: 'a')],
           changesDisplay: '4 -> a',
+          options: options,
         );
         expect(
           l33tScoring(match),
@@ -225,10 +239,10 @@ void main() {
     test(
       'Extra l33t guesses of a44att+.',
       () {
-        const L33tMatch match = L33tMatch(
-          i: 0,
-          j: 6,
-          token: 'a44att+',
+        final L33tMatch match = L33tMatch(
+          password: 'a44att+',
+          start: 0,
+          end: 7,
           matchedWord: 'aaaattt',
           rank: 1,
           dictionary: Dictionary.commonWords,
@@ -237,6 +251,7 @@ void main() {
             PasswordChange(l33t: '+', clean: 't'),
           ],
           changesDisplay: '4 -> a, + -> t',
+          options: options,
         );
         expect(
           l33tScoring(match),
@@ -248,15 +263,16 @@ void main() {
     test(
       'Extra l33t guesses of wwwpassvvord.',
       () {
-        const L33tMatch match = L33tMatch(
-          i: 0,
-          j: 11,
-          token: 'wwwpassvvord',
+        final L33tMatch match = L33tMatch(
+          password: 'wwwpassvvord',
+          start: 0,
+          end: 12,
           matchedWord: 'wwwpassword',
           rank: 1,
           dictionary: Dictionary.commonWords,
           changes: <PasswordChange>[PasswordChange(l33t: 'vv', clean: 'w')],
           changesDisplay: 'vv -> w',
+          options: options,
         );
         expect(
           l33tScoring(match),
@@ -268,15 +284,16 @@ void main() {
     test(
       "Capitalization doesn't affect extra l33t guesses.",
       () {
-        const L33tMatch match = L33tMatch(
-          i: 0,
-          j: 5,
-          token: 'Aa44aA',
+        final L33tMatch match = L33tMatch(
+          password: 'Aa44aA',
+          start: 0,
+          end: 6,
           matchedWord: 'AaaaaA',
           rank: 1,
           dictionary: Dictionary.commonWords,
           changes: <PasswordChange>[PasswordChange(l33t: '4', clean: 'a')],
           changesDisplay: '4 -> a',
+          options: options,
         );
         expect(
           l33tScoring(match),
