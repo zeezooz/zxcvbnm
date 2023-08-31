@@ -92,6 +92,12 @@ class Options {
   /// Default is 256.
   int maxLength;
 
+  /// The current year used to calculate date guesses.
+  final int currentYear = DateTime.now().year;
+
+  /// The minimum number of years used to calculate date guesses.
+  int get minYearSpace => 20;
+
   Options copyWith({
     Translation? translation,
     List<BaseMatcher>? matchers,

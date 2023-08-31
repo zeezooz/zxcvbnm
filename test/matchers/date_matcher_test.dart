@@ -1,56 +1,13 @@
 import 'package:test/test.dart';
-import 'package:zxcvbnm/src/matcher/date/matching.dart';
+import 'package:zxcvbnm/src/matchers/date_matcher.dart';
 import 'package:zxcvbnm/src/options.dart';
-import 'package:zxcvbnm/src/types.dart';
 
-import '../../helper/generate_passwords.dart';
-
-class DateMatchTest extends DateMatch {
-  DateMatchTest({
-    required String password,
-    required int start,
-    required int end,
-    required String separator,
-    required int year,
-    int month = -1,
-    int day = -1,
-    double? guesses,
-    Options? options,
-  })  : guessesTest = guesses,
-        super(
-          password: password,
-          start: start,
-          end: end,
-          separator: separator,
-          year: year,
-          month: month,
-          day: day,
-          options: options ?? Options(),
-        );
-
-  final double? guessesTest;
-
-  @override
-  double get guesses => guessesTest ?? super.guesses;
-
-  @override
-  // ignore: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
-  bool operator ==(Object other) =>
-      other is DateMatch &&
-      password == other.password &&
-      start == other.start &&
-      end == other.end &&
-      separator == other.separator &&
-      year == other.year &&
-      (month < 0 || month == other.month) &&
-      (day < 0 || day == other.day) &&
-      (guessesTest == null || guessesTest == other.guesses);
-}
+import '../helper/generate_passwords.dart';
 
 void main() {
-  group('Date matching.', () {
+  group('DateMatcher.', () {
     final Options options = Options();
-    final MatchDate matchDate = MatchDate(options);
+    final DateMatcher matchDate = DateMatcher(options);
 
     const List<String> separators = <String>['', ' ', '-', '/', r'\', '_', '.'];
     for (final String separator in separators) {
@@ -111,7 +68,7 @@ void main() {
     }
 
     test(
-      'Matches the date with year closest to referenceYear when ambiguous.',
+      'Matches the date with year closest to currentYear when ambiguous.',
       () {
         const String password = '111504';
         expect(
@@ -288,4 +245,90 @@ void main() {
       },
     );
   });
+
+  group('DateMatch guesses.', () {
+    final Options options = Options();
+
+    test(
+      'Guesses for 1123.',
+      () {
+        final DateMatch match = DateMatch(
+          password: '1123',
+          start: 0,
+          end: 4,
+          separator: '',
+          year: 1923,
+          month: 1,
+          day: 1,
+          options: options,
+        );
+        expect(
+          match.estimatedGuesses,
+          365 * (options.currentYear - match.year).abs(),
+        );
+      },
+    );
+
+    test(
+      'Recent years assume minYearSpace. Extra guesses are added for separators.',
+      () {
+        final DateMatch match = DateMatch(
+          password: '1/1/2020',
+          start: 0,
+          end: 8,
+          separator: '/',
+          year: 2020,
+          month: 1,
+          day: 1,
+          options: options,
+        );
+        expect(
+          match.estimatedGuesses,
+          365 * options.minYearSpace * 4,
+        );
+      },
+    );
+  });
+}
+
+class DateMatchTest extends DateMatch {
+  DateMatchTest({
+    required String password,
+    required int start,
+    required int end,
+    required String separator,
+    required int year,
+    int month = -1,
+    int day = -1,
+    double? guesses,
+    Options? options,
+  })  : guessesTest = guesses,
+        super(
+          password: password,
+          start: start,
+          end: end,
+          separator: separator,
+          year: year,
+          month: month,
+          day: day,
+          options: options ?? Options(),
+        );
+
+  final double? guessesTest;
+
+  @override
+  double get guesses => guessesTest ?? super.guesses;
+
+  @override
+  // ignore: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
+  bool operator ==(Object other) =>
+      other is DateMatch &&
+      password == other.password &&
+      start == other.start &&
+      end == other.end &&
+      separator == other.separator &&
+      year == other.year &&
+      (month < 0 || month == other.month) &&
+      (day < 0 || day == other.day) &&
+      (guessesTest == null || guessesTest == other.guesses);
 }

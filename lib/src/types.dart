@@ -1,6 +1,4 @@
 import 'feedback.dart';
-import 'matcher/date/feedback.dart';
-import 'matcher/date/scoring.dart';
 import 'matcher/dictionary/feedback.dart';
 import 'matcher/dictionary/scoring.dart';
 import 'matcher/dictionary/variants/scoring/l33t.dart';
@@ -461,46 +459,11 @@ class RegexMatch extends BaseMatch {
       'regexMatch: [${regexMatch.start}, ${regexMatch.end}] "${regexMatch[0]}"';
 
   @override
-  double get estimatedGuesses => regexScoring(this);
+  double get estimatedGuesses => regexScoring(this, options);
 
   @override
   Feedback? feedback({required bool isSoleMatch}) {
     return regexFeedback(
-      match: this,
-      options: options,
-      isSoleMatch: isSoleMatch,
-    );
-  }
-}
-
-class DateMatch extends BaseMatch {
-  DateMatch({
-    required String password,
-    required int start,
-    required int end,
-    required this.separator,
-    required this.year,
-    required this.month,
-    required this.day,
-    required this.options,
-  }) : super(password: password, start: start, end: end);
-
-  final String separator;
-  final int year;
-  final int month;
-  final int day;
-  final Options options;
-
-  @override
-  String toString() => '${super.toString()}, separator: "$separator", '
-      'date: $year-$month-$day';
-
-  @override
-  double get estimatedGuesses => dateScoring(this);
-
-  @override
-  Feedback? feedback({required bool isSoleMatch}) {
-    return dateFeedback(
       match: this,
       options: options,
       isSoleMatch: isSoleMatch,

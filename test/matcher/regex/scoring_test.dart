@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:test/test.dart';
-import 'package:zxcvbnm/src/data/const.dart';
 import 'package:zxcvbnm/src/matcher/regex/scoring.dart';
 import 'package:zxcvbnm/src/options.dart';
 import 'package:zxcvbnm/src/types.dart';
@@ -21,7 +20,7 @@ void main() {
         options: options,
       );
       expect(
-        regexScoring(match),
+        regexScoring(match, options),
         pow(26, token.length),
       );
     });
@@ -37,7 +36,7 @@ void main() {
         options: options,
       );
       expect(
-        regexScoring(match),
+        regexScoring(match, options),
         pow(2 * 26 + 10, token.length),
       );
     });
@@ -53,12 +52,12 @@ void main() {
         options: options,
       );
       expect(
-        regexScoring(match),
-        (referenceYear - 1972).abs(),
+        regexScoring(match, options),
+        (options.currentYear - 1972).abs(),
       );
     });
 
-    test('A year close to referenceYear.', () {
+    test('A year close to currentYear.', () {
       final String token = '2020';
       final RegexMatch match = RegexMatch(
         password: token,
@@ -69,8 +68,8 @@ void main() {
         options: options,
       );
       expect(
-        regexScoring(match),
-        minYearSpace,
+        regexScoring(match, options),
+        options.minYearSpace,
       );
     });
 
@@ -85,7 +84,7 @@ void main() {
         options: options,
       );
       expect(
-        regexScoring(match),
+        regexScoring(match, options),
         0,
       );
     });

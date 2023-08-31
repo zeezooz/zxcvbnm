@@ -1,9 +1,9 @@
 import 'dart:math';
 
-import '../../data/const.dart';
+import '../../options.dart';
 import '../../types.dart';
 
-double regexScoring(RegexMatch match) {
+double regexScoring(RegexMatch match, Options options) {
   const Map<String, int> charClassBases = <String, int>{
     'alphaLower': 26,
     'alphaUpper': 26,
@@ -19,11 +19,13 @@ double regexScoring(RegexMatch match) {
   // TODO: Add more regex types for example special dates like 09.11
   switch (match.regexName) {
     case 'recentYear':
-      // Conservative estimate of year space: num years from referenceYear.
-      // If year is close to referenceYear, estimate a year space of
+      // Conservative estimate of year space: num years from currentYear.
+      // If year is close to currentYear, estimate a year space of
       // minYearSpace.
-      return max((int.parse(match.token) - referenceYear).abs(), minYearSpace)
-          .toDouble();
+      return max(
+        (int.parse(match.token) - options.currentYear).abs(),
+        options.minYearSpace,
+      ).toDouble();
   }
   return 0;
 }

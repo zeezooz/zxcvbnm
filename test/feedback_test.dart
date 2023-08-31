@@ -6,7 +6,6 @@ import 'package:zxcvbnm/src/matchers/brute_force_matcher.dart';
 import 'package:zxcvbnm/src/options.dart';
 import 'package:zxcvbnm/src/types.dart';
 
-import 'matcher/date/matching_test.dart';
 import 'matcher/dictionary/matching_test.dart';
 import 'matcher/dictionary/variants/matching/l33t_test.dart';
 import 'matcher/dictionary/variants/matching/reverse_test.dart';
@@ -14,6 +13,7 @@ import 'matcher/regex/matching_test.dart';
 import 'matcher/repeat/matching_test.dart';
 import 'matcher/sequence/matching_test.dart';
 import 'matcher/spatial/matching_test.dart';
+import 'matchers/date_matcher_test.dart';
 
 class FeedbackTest extends Feedback {
   const FeedbackTest({
