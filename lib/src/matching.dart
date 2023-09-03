@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'helper.dart';
 import 'matcher/dictionary/matching.dart';
-import 'matcher/regex/matching.dart';
 import 'matcher/repeat/matching.dart';
 import 'matcher/separator/matching.dart';
 import 'matcher/sequence/matching.dart';
 import 'matcher/spatial/matching.dart';
 import 'matchers/base_matcher.dart';
 import 'matchers/date_matcher.dart';
+import 'matchers/reg_ex_matcher.dart';
 import 'options.dart';
 
 typedef Matchers = List<BaseMatcher>;
@@ -19,7 +19,7 @@ class OmniMatch extends BaseMatcher {
     matchers = <BaseMatcher>[
       DateMatcher(options),
       MatchDictionary(options),
-      MatchRegex(options),
+      RegExMatcher(options),
       MatchRepeat(options, this),
       MatchSeparator(),
       MatchSequence(options),

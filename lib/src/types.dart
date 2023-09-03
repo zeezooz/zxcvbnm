@@ -3,8 +3,6 @@ import 'matcher/dictionary/feedback.dart';
 import 'matcher/dictionary/scoring.dart';
 import 'matcher/dictionary/variants/scoring/l33t.dart';
 import 'matcher/dictionary/variants/scoring/uppercase.dart';
-import 'matcher/regex/feedback.dart';
-import 'matcher/regex/scoring.dart';
 import 'matcher/repeat/feedback.dart';
 import 'matcher/repeat/scoring.dart';
 import 'matcher/separator/scoring.dart';
@@ -433,37 +431,6 @@ class SequenceMatch extends BaseMatch {
   @override
   Feedback? feedback({required bool isSoleMatch}) {
     return sequenceFeedback(
-      match: this,
-      options: options,
-      isSoleMatch: isSoleMatch,
-    );
-  }
-}
-
-class RegexMatch extends BaseMatch {
-  RegexMatch({
-    required String password,
-    required int start,
-    required int end,
-    required this.regexName,
-    required this.regexMatch,
-    required this.options,
-  }) : super(password: password, start: start, end: end);
-
-  final String regexName;
-  final RegExpMatch regexMatch;
-  final Options options;
-
-  @override
-  String toString() => '${super.toString()}, regexName: $regexName, '
-      'regexMatch: [${regexMatch.start}, ${regexMatch.end}] "${regexMatch[0]}"';
-
-  @override
-  double get estimatedGuesses => regexScoring(this, options);
-
-  @override
-  Feedback? feedback({required bool isSoleMatch}) {
-    return regexFeedback(
       match: this,
       options: options,
       isSoleMatch: isSoleMatch,

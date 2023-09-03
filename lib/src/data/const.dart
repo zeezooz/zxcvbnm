@@ -12,9 +12,6 @@ final RegExp oneUpper = RegExp(r'[A-Z\xbf-\xdf]');
 final RegExp alphaInverted =
     RegExp(r'[^A-Za-z\xbf-\xdf]', caseSensitive: false);
 final RegExp allDigit = RegExp(r'^\d+$');
-final Map<String, RegExp> regexen = <String, RegExp>{
-  'recentYear': RegExp(r'19\d\d|200\d|201\d|202\d'),
-};
 // Separators
 const List<String> separatorChars = <String>[
   ' ',
