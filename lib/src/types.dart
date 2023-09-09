@@ -3,8 +3,6 @@ import 'matcher/dictionary/feedback.dart';
 import 'matcher/dictionary/scoring.dart';
 import 'matcher/dictionary/variants/scoring/l33t.dart';
 import 'matcher/dictionary/variants/scoring/uppercase.dart';
-import 'matcher/sequence/feedback.dart';
-import 'matcher/sequence/scoring.dart';
 import 'matcher/spatial/feedback.dart';
 import 'matcher/spatial/scoring.dart';
 import 'matchers/base_matcher.dart';
@@ -362,39 +360,6 @@ class SpatialMatch extends BaseMatch {
   @override
   Feedback? feedback({required bool isSoleMatch}) {
     return spatialFeedback(
-      match: this,
-      options: options,
-      isSoleMatch: isSoleMatch,
-    );
-  }
-}
-
-class SequenceMatch extends BaseMatch {
-  SequenceMatch({
-    required String password,
-    required int start,
-    required int end,
-    required this.sequenceName,
-    required this.sequenceSpace,
-    required this.ascending,
-    required this.options,
-  }) : super(password: password, start: start, end: end);
-
-  final String sequenceName;
-  final int sequenceSpace;
-  final bool ascending;
-  final Options options;
-
-  @override
-  String toString() => '${super.toString()}, sequenceName: $sequenceName, '
-      'sequenceSpace: $sequenceSpace, ascending: $ascending';
-
-  @override
-  double get estimatedGuesses => sequenceScoring(this);
-
-  @override
-  Feedback? feedback({required bool isSoleMatch}) {
-    return sequenceFeedback(
       match: this,
       options: options,
       isSoleMatch: isSoleMatch,

@@ -48,7 +48,7 @@ class RegExMatch extends BaseMatch {
     required this.options,
   }) : super(password: password, start: start, end: end);
 
-  /// The name of matched regular expression.
+  /// The name of the matched regular expression.
   final String regExName;
 
   /// Options and translation.

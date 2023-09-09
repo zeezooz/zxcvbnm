@@ -5,10 +5,10 @@ import 'package:zxcvbnm/src/types.dart';
 
 import '../matcher/dictionary/matching_test.dart';
 import '../matcher/dictionary/variants/matching/l33t_test.dart';
-import '../matcher/sequence/matching_test.dart';
 import '../matcher/spatial/matching_test.dart';
 import '../matchers/reg_ex_matcher_test.dart';
 import '../matchers/repeat_matcher_test.dart';
+import '../matchers/sequence_matcher_test.dart';
 import '../zxcvbnm_test.dart';
 
 final List<ResultTest> passwordTests = <ResultTest>[
@@ -146,8 +146,8 @@ final List<ResultTest> passwordTests = <ResultTest>[
         password: 'abcdefg123',
         start: 0,
         end: 7,
-        sequenceName: 'lower',
-        sequenceSpace: 26,
+        name: 'lower',
+        space: 26,
         ascending: true,
         guesses: 50,
       ),
@@ -155,8 +155,8 @@ final List<ResultTest> passwordTests = <ResultTest>[
         password: 'abcdefg123',
         start: 7,
         end: 10,
-        sequenceName: 'digits',
-        sequenceSpace: 10,
+        name: 'digits',
+        space: 10,
         ascending: true,
         guesses: 50,
       ),
@@ -463,8 +463,8 @@ final List<ResultTest> passwordTests = <ResultTest>[
         password: '2010abc',
         start: 4,
         end: 7,
-        sequenceName: 'lower',
-        sequenceSpace: 26,
+        name: 'lower',
+        space: 26,
         ascending: true,
         guesses: 50,
       ),
@@ -668,8 +668,8 @@ final List<ResultTest> passwordTests = <ResultTest>[
         password: 'dgo9dsghasdoghi8/!&IT%§(ihsdhf8o7o',
         start: 12,
         end: 15,
-        sequenceName: 'lower',
-        sequenceSpace: 26,
+        name: 'lower',
+        space: 26,
         ascending: true,
         guesses: 78,
       ),

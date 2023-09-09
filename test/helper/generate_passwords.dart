@@ -13,8 +13,8 @@ List<IndexedPassword> generatePasswords(
       result.add(
         IndexedPassword(
           password: prefix + token + suffix,
-          i: prefix.length,
-          j: prefix.length + token.length,
+          start: prefix.length,
+          end: prefix.length + token.length,
         ),
       );
     }
@@ -25,11 +25,11 @@ List<IndexedPassword> generatePasswords(
 class IndexedPassword {
   const IndexedPassword({
     required this.password,
-    required this.i,
-    required this.j,
+    required this.start,
+    required this.end,
   });
 
   final String password;
-  final int i;
-  final int j;
+  final int start;
+  final int end;
 }

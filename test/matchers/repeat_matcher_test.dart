@@ -38,8 +38,8 @@ void main() {
               <RepeatMatchTest>[
                 RepeatMatchTest(
                   password: password.password,
-                  start: password.i,
-                  end: password.j,
+                  start: password.start,
+                  end: password.end,
                   baseToken: '&',
                   baseGuesses: 12,
                   repeatCount: token.length,

@@ -257,8 +257,8 @@ void main() {
                 <DictionaryMatchTest>[
                   DictionaryMatchTest(
                     password: password.password,
-                    start: password.i,
-                    end: password.j,
+                    start: password.start,
+                    end: password.end,
                     matchedWord: token,
                     rank: 5,
                     dictionary: Dictionary.passwords,

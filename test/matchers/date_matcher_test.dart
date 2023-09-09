@@ -176,8 +176,8 @@ void main() {
               <DateMatchTest>[
                 DateMatchTest(
                   password: password.password,
-                  start: password.i,
-                  end: password.j,
+                  start: password.start,
+                  end: password.end,
                   separator: '/',
                   year: 1991,
                   month: 1,
