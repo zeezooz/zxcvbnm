@@ -1,22 +1,19 @@
 import 'dart:async';
 
-import '../../helper.dart';
-import '../../matchers/base_matcher.dart';
-import '../../matching.dart';
-import '../../options.dart';
-import '../../scoring/index.dart';
-import '../../types.dart';
+import '../feedback.dart';
+import '../helper.dart';
+import '../matching.dart';
+import '../options.dart';
+import '../scoring/index.dart';
+import 'base_matcher.dart';
 
-/// Repeat matching (aaa, abcabcabc).
-class MatchRepeat extends BaseMatcher {
-  MatchRepeat(this.options, this.omniMatch);
+/// Repeat matcher (aaa, abcabcabc).
+class RepeatMatcher extends BaseMatcher {
+  /// Creates a matcher.
+  RepeatMatcher(this.omniMatcher);
 
-  final Options options;
-  final OmniMatch omniMatch;
-
-  final RegExp greedyRegExp = RegExp(r'(.+)\1+');
-  final RegExp lazyRegExp = RegExp(r'(.+?)\1+');
-  final RegExp lazyAnchoredRegExp = RegExp(r'^(.+?)\1+$');
+  /// All matchers combined.
+  final OmniMatcher omniMatcher;
 
   @override
   List<FutureOr<List<RepeatMatch>>> match(String password) {
@@ -25,11 +22,11 @@ class MatchRepeat extends BaseMatcher {
     int lastIndex = 0;
     while (lastIndex < password.length) {
       final RegExpMatch? greedyMatch =
-          greedyRegExp.firstMatch(password.substring(lastIndex));
+          _greedyRegExp.firstMatch(password.substring(lastIndex));
       final RegExpMatch? lazyMatch =
-          lazyRegExp.firstMatch(password.substring(lastIndex));
+          _lazyRegExp.firstMatch(password.substring(lastIndex));
       if (greedyMatch == null || lazyMatch == null) break;
-      RegExpMatch? match;
+      RegExpMatch match;
       String baseToken = '';
       if (greedyMatch[0]!.length > lazyMatch[0]!.length) {
         // Greedy beats lazy for 'aabaab':
@@ -40,7 +37,7 @@ class MatchRepeat extends BaseMatcher {
         // aabaab in aabaabaabaab.
         // Run an anchored lazy match on greedy repeated string
         // to find the shortest repeated string.
-        final RegExpMatch? temp = lazyAnchoredRegExp.firstMatch(match[0]!);
+        final RegExpMatch? temp = _lazyAnchoredRegExp.firstMatch(match[0]!);
         if (temp != null) {
           baseToken = temp[1]!;
         }
@@ -51,17 +48,17 @@ class MatchRepeat extends BaseMatcher {
         match = lazyMatch;
         baseToken = match[1]!;
       }
-      final int i = lastIndex + match.start;
-      final int j = lastIndex + match.end;
+      final int start = lastIndex + match.start;
+      final int end = lastIndex + match.end;
       final FutureOr<RepeatMatch> repeatMatch =
           // ignore: discarded_futures
-          _repeatMatch(password, i, j, match[0]!, baseToken);
+          _repeatMatch(password, start, end, baseToken);
       if (repeatMatch is RepeatMatch) {
         matches.add(repeatMatch);
       } else {
         futures.add(repeatMatch);
       }
-      lastIndex = j;
+      lastIndex = end;
     }
     return <FutureOr<List<RepeatMatch>>>[
       matches,
@@ -70,24 +67,28 @@ class MatchRepeat extends BaseMatcher {
     ];
   }
 
+  final RegExp _greedyRegExp = RegExp(r'(.+)\1+');
+
+  final RegExp _lazyRegExp = RegExp(r'(.+?)\1+');
+
+  final RegExp _lazyAnchoredRegExp = RegExp(r'^(.+?)\1+$');
+
   FutureOr<RepeatMatch> _repeatMatch(
     String password,
     int start,
     int end,
-    String token,
     String baseToken,
   ) {
-    final List<FutureOr<List<BaseMatch>>> result = omniMatch.match(baseToken);
+    final List<FutureOr<List<BaseMatch>>> result = omniMatcher.match(baseToken);
     final List<BaseMatch> matches = synchronousMatches(result);
     final List<Future<List<BaseMatch>>> futures = asynchronousMatches(result);
     if (futures.isEmpty) {
       return _repeatMatchWithGuesses(
         matches,
         password,
-        baseToken,
-        token,
         start,
         end,
+        baseToken,
       );
     }
     return Future.wait(futures).then((List<List<BaseMatch>> results) {
@@ -97,10 +98,9 @@ class MatchRepeat extends BaseMatcher {
       return _repeatMatchWithGuesses(
         matches,
         password,
-        baseToken,
-        token,
         start,
         end,
+        baseToken,
       );
     });
   }
@@ -108,25 +108,64 @@ class MatchRepeat extends BaseMatcher {
   RepeatMatch _repeatMatchWithGuesses(
     List<BaseMatch> matches,
     String password,
-    String baseToken,
-    String token,
     int start,
     int end,
+    String baseToken,
   ) {
     final double baseGuesses = mostGuessableMatchSequence(
       baseToken,
       matches,
-      omniMatch.options,
+      omniMatcher.options,
     ).guesses;
-    final int repeatCount = token.length ~/ baseToken.length;
     return RepeatMatch(
       password: password,
       start: start,
       end: end,
       baseToken: baseToken,
       baseGuesses: baseGuesses,
-      repeatCount: repeatCount,
-      options: options,
+      options: omniMatcher.options,
     );
   }
+}
+
+/// A match for a repeating string.
+class RepeatMatch extends BaseMatch {
+  /// Creates a match.
+  RepeatMatch({
+    required String password,
+    required int start,
+    required int end,
+    required this.baseToken,
+    required this.baseGuesses,
+    required this.options,
+  }) : super(password: password, start: start, end: end);
+
+  /// The repeating string.
+  final String baseToken;
+
+  /// The number of guesses for the [baseToken].
+  final double baseGuesses;
+
+  /// Options and translation.
+  final Options options;
+
+  /// The number of repetitions of the [baseToken].
+  int get repeatCount => length ~/ baseToken.length;
+
+  @override
+  double get estimatedGuesses => baseGuesses * repeatCount;
+
+  @override
+  Feedback? feedback({required bool isSoleMatch}) {
+    return Feedback(
+      warning: baseToken.length == 1
+          ? options.translation.warnings.simpleRepeat
+          : options.translation.warnings.extendedRepeat,
+      suggestions: <String>[options.translation.suggestions.repeated],
+    );
+  }
+
+  @override
+  String toString() => '${super.toString()}, baseToken: "$baseToken", '
+      'baseGuesses: $baseGuesses, repeatCount: $repeatCount';
 }

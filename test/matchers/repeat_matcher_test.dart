@@ -1,61 +1,23 @@
 import 'package:test/test.dart';
-import 'package:zxcvbnm/src/matcher/repeat/matching.dart';
+import 'package:zxcvbnm/src/helper.dart';
+import 'package:zxcvbnm/src/matchers/repeat_matcher.dart';
 import 'package:zxcvbnm/src/matching.dart';
 import 'package:zxcvbnm/src/options.dart';
-import 'package:zxcvbnm/src/types.dart';
+import 'package:zxcvbnm/src/scoring/index.dart';
 
-import '../../helper/generate_passwords.dart';
-
-class RepeatMatchTest extends RepeatMatch {
-  RepeatMatchTest({
-    required String password,
-    required int start,
-    required int end,
-    required String baseToken,
-    required double baseGuesses,
-    required int repeatCount,
-    double? guesses,
-    Options? options,
-  })  : guessesTest = guesses,
-        super(
-          password: password,
-          start: start,
-          end: end,
-          baseToken: baseToken,
-          baseGuesses: baseGuesses,
-          repeatCount: repeatCount,
-          options: options ?? Options(),
-        );
-
-  final double? guessesTest;
-
-  @override
-  double get guesses => guessesTest ?? super.guesses;
-
-  @override
-  // ignore: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
-  bool operator ==(Object other) =>
-      other is RepeatMatch &&
-      password == other.password &&
-      start == other.start &&
-      end == other.end &&
-      baseToken == other.baseToken &&
-      baseGuesses == other.baseGuesses &&
-      repeatCount == other.repeatCount &&
-      (guessesTest == null || guessesTest == other.guesses);
-}
+import '../helper/generate_passwords.dart';
 
 void main() {
-  group('Repeat matching.', () {
+  group('RepeatMatcher.', () {
     final Options options = Options();
-    final OmniMatch omniMatch = OmniMatch(options);
-    final MatchRepeat matchRepeat = MatchRepeat(options, omniMatch);
+    final OmniMatcher omniMatcher = OmniMatcher(options);
+    final RepeatMatcher repeatMatcher = RepeatMatcher(omniMatcher);
 
     test("Doesn't match without repeats.", () {
       const List<String> passwords = <String>['', '#'];
       for (final String password in passwords) {
         expect(
-          matchRepeat.match(password),
+          repeatMatcher.match(password),
           <List<RepeatMatchTest>>[<RepeatMatchTest>[]],
         );
       }
@@ -71,7 +33,7 @@ void main() {
             generatePasswords(token, prefixes, suffixes);
         for (final IndexedPassword password in passwords) {
           expect(
-            matchRepeat.match(password.password),
+            repeatMatcher.match(password.password),
             <List<RepeatMatchTest>>[
               <RepeatMatchTest>[
                 RepeatMatchTest(
@@ -98,7 +60,7 @@ void main() {
           for (final int length in lengths) {
             final String password = character * length;
             expect(
-              matchRepeat.match(password),
+              repeatMatcher.match(password),
               <List<RepeatMatchTest>>[
                 <RepeatMatchTest>[
                   RepeatMatchTest(
@@ -120,7 +82,7 @@ void main() {
     test(
       'Matches multiple adjacent repeats.',
       () => expect(
-        matchRepeat.match('BBB1111aaaaa@@@@@@'),
+        repeatMatcher.match('BBB1111aaaaa@@@@@@'),
         <List<RepeatMatchTest>>[
           <RepeatMatchTest>[
             RepeatMatchTest(
@@ -163,7 +125,7 @@ void main() {
     test(
       'Matches multiple repeats with non-repeats in-between.',
       () => expect(
-        matchRepeat.match('2818BBBbzsdf1111@*&@!aaaaaEUDA@@@@@@1729'),
+        repeatMatcher.match('2818BBBbzsdf1111@*&@!aaaaaEUDA@@@@@@1729'),
         <List<RepeatMatchTest>>[
           <RepeatMatchTest>[
             RepeatMatchTest(
@@ -208,7 +170,7 @@ void main() {
       () {
         const String password = 'abab';
         expect(
-          matchRepeat.match(password),
+          repeatMatcher.match(password),
           <List<RepeatMatchTest>>[
             <RepeatMatchTest>[
               RepeatMatchTest(
@@ -230,7 +192,7 @@ void main() {
       () {
         const String password = 'aabaab';
         expect(
-          matchRepeat.match(password),
+          repeatMatcher.match(password),
           <List<RepeatMatchTest>>[
             <RepeatMatchTest>[
               RepeatMatchTest(
@@ -252,7 +214,7 @@ void main() {
       () {
         const String password = 'abababab';
         expect(
-          matchRepeat.match(password),
+          repeatMatcher.match(password),
           <List<RepeatMatchTest>>[
             <RepeatMatchTest>[
               RepeatMatchTest(
@@ -269,4 +231,86 @@ void main() {
       },
     );
   });
+
+  group('RepeatMatch guesses.', () {
+    final Options options = Options();
+    final OmniMatcher omniMatcher = OmniMatcher(options);
+    const List<List<Object>> data = <List<Object>>[
+      <Object>['a', 2],
+      <Object>['9', 3],
+      <Object>[r'$', 4],
+      <Object>['ab', 2],
+      <Object>['batterystaple', 3],
+    ];
+    for (final List<Object> item in data) {
+      final String baseToken = item[0] as String;
+      final int repeatCount = item[1] as int;
+      final String token = baseToken * repeatCount;
+      test(
+        "The repeat pattern '$token'.",
+        () {
+          final double baseGuesses = mostGuessableMatchSequence(
+            baseToken,
+            synchronousMatches(omniMatcher.match(baseToken)),
+            options,
+          ).guesses;
+          final RepeatMatch match = RepeatMatch(
+            password: token,
+            start: 0,
+            end: token.length,
+            baseToken: baseToken,
+            baseGuesses: baseGuesses,
+            options: options,
+          );
+          expect(
+            match.estimatedGuesses,
+            baseGuesses * repeatCount,
+          );
+        },
+      );
+    }
+  });
+}
+
+class RepeatMatchTest extends RepeatMatch {
+  RepeatMatchTest({
+    required String password,
+    required int start,
+    required int end,
+    required String baseToken,
+    required double baseGuesses,
+    int? repeatCount,
+    double? guesses,
+    Options? options,
+  })  : repeatCountTest = repeatCount,
+        guessesTest = guesses,
+        super(
+          password: password,
+          start: start,
+          end: end,
+          baseToken: baseToken,
+          baseGuesses: baseGuesses,
+          options: options ?? Options(),
+        );
+
+  final int? repeatCountTest;
+  final double? guessesTest;
+
+  @override
+  int get repeatCount => repeatCountTest ?? super.repeatCount;
+
+  @override
+  double get guesses => guessesTest ?? super.guesses;
+
+  @override
+  // ignore: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
+  bool operator ==(Object other) =>
+      other is RepeatMatch &&
+      password == other.password &&
+      start == other.start &&
+      end == other.end &&
+      baseToken == other.baseToken &&
+      baseGuesses == other.baseGuesses &&
+      (repeatCountTest == null || repeatCountTest == other.repeatCount) &&
+      (guessesTest == null || guessesTest == other.guesses);
 }

@@ -7,8 +7,8 @@ import 'package:zxcvbnm/src/types.dart';
 
 import 'matcher/dictionary/matching_test.dart';
 import 'matcher/dictionary/variants/matching/l33t_test.dart';
-import 'matcher/repeat/matching_test.dart';
 import 'matchers/date_matcher_test.dart';
+import 'matchers/repeat_matcher_test.dart';
 
 void main() {
   group('Omnimatch matching.', () {
@@ -16,12 +16,12 @@ void main() {
       translation: translation,
       dictionaries: dictionaries,
     );
-    final OmniMatch omniMatch = OmniMatch(options);
+    final OmniMatcher omniMatcher = OmniMatcher(options);
 
     test(
       "Doesn't match ''.",
       () => expect(
-        omniMatch.match(''),
+        omniMatcher.match(''),
         <List<BaseMatch>>[<BaseMatch>[]],
       ),
     );
@@ -29,7 +29,7 @@ void main() {
     test(
       'Match r0sebudmaelstrom11/20/91aaaa',
       () => expect(
-        omniMatch.match('r0sebudmaelstrom11/20/91aaaa'),
+        omniMatcher.match('r0sebudmaelstrom11/20/91aaaa'),
         <Matcher>[
           containsAll(
             <BaseMatch>[

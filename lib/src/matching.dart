@@ -2,25 +2,25 @@ import 'dart:async';
 
 import 'helper.dart';
 import 'matcher/dictionary/matching.dart';
-import 'matcher/repeat/matching.dart';
 import 'matcher/separator/matching.dart';
 import 'matcher/sequence/matching.dart';
 import 'matcher/spatial/matching.dart';
 import 'matchers/base_matcher.dart';
 import 'matchers/date_matcher.dart';
 import 'matchers/reg_ex_matcher.dart';
+import 'matchers/repeat_matcher.dart';
 import 'options.dart';
 
 typedef Matchers = List<BaseMatcher>;
 
-/// Omnimatch combine matchers.
-class OmniMatch extends BaseMatcher {
-  OmniMatch(this.options) {
+/// All matchers combined.
+class OmniMatcher extends BaseMatcher {
+  OmniMatcher(this.options) {
     matchers = <BaseMatcher>[
       DateMatcher(options),
       MatchDictionary(options),
       RegExMatcher(options),
-      MatchRepeat(options, this),
+      RepeatMatcher(this),
       MatchSeparator(),
       MatchSequence(options),
       MatchSpatial(options),

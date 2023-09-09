@@ -5,10 +5,10 @@ import 'package:zxcvbnm/src/types.dart';
 
 import '../matcher/dictionary/matching_test.dart';
 import '../matcher/dictionary/variants/matching/l33t_test.dart';
-import '../matcher/repeat/matching_test.dart';
 import '../matcher/sequence/matching_test.dart';
 import '../matcher/spatial/matching_test.dart';
 import '../matchers/reg_ex_matcher_test.dart';
+import '../matchers/repeat_matcher_test.dart';
 import '../zxcvbnm_test.dart';
 
 final List<ResultTest> passwordTests = <ResultTest>[

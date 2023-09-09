@@ -9,11 +9,11 @@ import 'package:zxcvbnm/src/types.dart';
 import 'matcher/dictionary/matching_test.dart';
 import 'matcher/dictionary/variants/matching/l33t_test.dart';
 import 'matcher/dictionary/variants/matching/reverse_test.dart';
-import 'matcher/repeat/matching_test.dart';
 import 'matcher/sequence/matching_test.dart';
 import 'matcher/spatial/matching_test.dart';
 import 'matchers/date_matcher_test.dart';
 import 'matchers/reg_ex_matcher_test.dart';
+import 'matchers/repeat_matcher_test.dart';
 
 class FeedbackTest extends Feedback {
   const FeedbackTest({
@@ -573,7 +573,6 @@ void main() {
               end: 5,
               baseToken: 'a',
               baseGuesses: 1,
-              repeatCount: 5,
               guesses: 1,
               options: options,
             ),
@@ -597,10 +596,9 @@ void main() {
             RepeatMatchTest(
               password: 'tests',
               start: 0,
-              end: 5,
+              end: 4,
               baseToken: 'aa',
               baseGuesses: 1,
-              repeatCount: 2,
               guesses: 1,
               options: options,
             ),

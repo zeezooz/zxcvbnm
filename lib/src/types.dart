@@ -3,8 +3,6 @@ import 'matcher/dictionary/feedback.dart';
 import 'matcher/dictionary/scoring.dart';
 import 'matcher/dictionary/variants/scoring/l33t.dart';
 import 'matcher/dictionary/variants/scoring/uppercase.dart';
-import 'matcher/repeat/feedback.dart';
-import 'matcher/repeat/scoring.dart';
 import 'matcher/separator/scoring.dart';
 import 'matcher/sequence/feedback.dart';
 import 'matcher/sequence/scoring.dart';
@@ -365,39 +363,6 @@ class SpatialMatch extends BaseMatch {
   @override
   Feedback? feedback({required bool isSoleMatch}) {
     return spatialFeedback(
-      match: this,
-      options: options,
-      isSoleMatch: isSoleMatch,
-    );
-  }
-}
-
-class RepeatMatch extends BaseMatch {
-  RepeatMatch({
-    required String password,
-    required int start,
-    required int end,
-    required this.baseToken,
-    required this.baseGuesses,
-    required this.repeatCount,
-    required this.options,
-  }) : super(password: password, start: start, end: end);
-
-  final String baseToken;
-  final double baseGuesses;
-  final int repeatCount;
-  final Options options;
-
-  @override
-  String toString() => '${super.toString()}, baseToken: "$baseToken", '
-      'baseGuesses: $baseGuesses, repeatCount: $repeatCount';
-
-  @override
-  double get estimatedGuesses => repeatScoring(this);
-
-  @override
-  Feedback? feedback({required bool isSoleMatch}) {
-    return repeatFeedback(
       match: this,
       options: options,
       isSoleMatch: isSoleMatch,

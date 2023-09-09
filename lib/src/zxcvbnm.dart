@@ -29,9 +29,9 @@ class Zxcvbnm {
     final String usedPassword =
         password.substring(0, min(options.maxLength, password.length));
     final Options runOptions = options.copyWith(userInputs: userInputs);
-    final OmniMatch omniMatch = OmniMatch(runOptions);
+    final OmniMatcher omniMatcher = OmniMatcher(runOptions);
     final List<FutureOr<List<BaseMatch>>> result =
-        omniMatch.match(usedPassword);
+        omniMatcher.match(usedPassword);
     final List<BaseMatch> matches = synchronousMatches(result);
     final List<Future<List<BaseMatch>>> futures = asynchronousMatches(result);
     if (futures.isEmpty) {
