@@ -4,7 +4,7 @@ import '../feedback.dart';
 import '../options.dart';
 import 'base_matcher.dart';
 
-/// Regular expression matcher.
+/// Matches regular expressions from [regExes].
 class RegExMatcher extends BaseMatcher {
   /// Creates a matcher.
   RegExMatcher(this.options);

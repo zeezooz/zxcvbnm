@@ -3,7 +3,6 @@ import 'matcher/dictionary/feedback.dart';
 import 'matcher/dictionary/scoring.dart';
 import 'matcher/dictionary/variants/scoring/l33t.dart';
 import 'matcher/dictionary/variants/scoring/uppercase.dart';
-import 'matcher/separator/scoring.dart';
 import 'matcher/sequence/feedback.dart';
 import 'matcher/sequence/scoring.dart';
 import 'matcher/spatial/feedback.dart';
@@ -401,20 +400,6 @@ class SequenceMatch extends BaseMatch {
       isSoleMatch: isSoleMatch,
     );
   }
-}
-
-class SeparatorMatch extends BaseMatch {
-  SeparatorMatch({
-    required String password,
-    required int start,
-    required int end,
-  }) : super(password: password, start: start, end: end);
-
-  @override
-  double get estimatedGuesses => separatorScoring(this);
-
-  @override
-  Feedback? feedback({required bool isSoleMatch}) => null;
 }
 
 class Optimal {

@@ -12,17 +12,3 @@ final RegExp oneUpper = RegExp(r'[A-Z\xbf-\xdf]');
 final RegExp alphaInverted =
     RegExp(r'[^A-Za-z\xbf-\xdf]', caseSensitive: false);
 final RegExp allDigit = RegExp(r'^\d+$');
-// Separators
-const List<String> separatorChars = <String>[
-  ' ',
-  ',',
-  ';',
-  ':',
-  '|',
-  '/',
-  r'\',
-  '_',
-  '.',
-  '-',
-];
-final int separatorCharCount = separatorChars.length;

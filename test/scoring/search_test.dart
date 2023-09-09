@@ -1,11 +1,11 @@
 import 'package:test/test.dart';
 import 'package:zxcvbnm/src/matchers/base_matcher.dart';
+import 'package:zxcvbnm/src/matchers/separator_matcher.dart';
 import 'package:zxcvbnm/src/options.dart';
 import 'package:zxcvbnm/src/scoring/index.dart';
-import 'package:zxcvbnm/src/types.dart';
 
 import '../helper/password_tests.dart';
-import '../matcher/separator/matching_test.dart';
+import '../matchers/separator_matcher_test.dart';
 
 void main() {
   group('Scoring search.', () {

@@ -7,7 +7,7 @@ import '../options.dart';
 import '../scoring/index.dart';
 import 'base_matcher.dart';
 
-/// Repeat matcher (aaa, abcabcabc).
+/// Matches repeats (aaa, abcabcabc).
 class RepeatMatcher extends BaseMatcher {
   /// Creates a matcher.
   RepeatMatcher(this.omniMatcher);

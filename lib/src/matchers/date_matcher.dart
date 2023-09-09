@@ -4,7 +4,7 @@ import '../feedback.dart';
 import '../matchers/base_matcher.dart';
 import '../options.dart';
 
-/// Date matcher.
+/// Matches dates.
 class DateMatcher extends BaseMatcher {
   /// Creates a matcher.
   DateMatcher(this.options);
