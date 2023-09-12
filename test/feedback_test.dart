@@ -9,11 +9,11 @@ import 'package:zxcvbnm/src/types.dart';
 import 'matcher/dictionary/matching_test.dart';
 import 'matcher/dictionary/variants/matching/l33t_test.dart';
 import 'matcher/dictionary/variants/matching/reverse_test.dart';
-import 'matcher/spatial/matching_test.dart';
 import 'matchers/date_matcher_test.dart';
 import 'matchers/reg_ex_matcher_test.dart';
 import 'matchers/repeat_matcher_test.dart';
 import 'matchers/sequence_matcher_test.dart';
+import 'matchers/spatial_matcher_test.dart';
 
 class FeedbackTest extends Feedback {
   const FeedbackTest({
@@ -512,7 +512,8 @@ void main() {
               password: 'tests',
               start: 0,
               end: 5,
-              graph: 'qwerty',
+              graph: adjacencyGraph['qwerty']!,
+              graphName: 'qwerty',
               turns: 1,
               shiftedCount: 0,
               guesses: 1,
@@ -539,7 +540,8 @@ void main() {
               password: 'tests',
               start: 0,
               end: 5,
-              graph: 'qwerty',
+              graph: adjacencyGraph['qwerty']!,
+              graphName: 'qwerty',
               turns: 2,
               shiftedCount: 0,
               guesses: 1,

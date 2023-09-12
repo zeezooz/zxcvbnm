@@ -1,3 +1,4 @@
+import 'package:zxcvbnm/languages/common.dart';
 import 'package:zxcvbnm/src/feedback.dart';
 import 'package:zxcvbnm/src/matchers/base_matcher.dart';
 import 'package:zxcvbnm/src/matchers/brute_force_matcher.dart';
@@ -5,10 +6,10 @@ import 'package:zxcvbnm/src/types.dart';
 
 import '../matcher/dictionary/matching_test.dart';
 import '../matcher/dictionary/variants/matching/l33t_test.dart';
-import '../matcher/spatial/matching_test.dart';
 import '../matchers/reg_ex_matcher_test.dart';
 import '../matchers/repeat_matcher_test.dart';
 import '../matchers/sequence_matcher_test.dart';
+import '../matchers/spatial_matcher_test.dart';
 import '../zxcvbnm_test.dart';
 
 final List<ResultTest> passwordTests = <ResultTest>[
@@ -536,7 +537,8 @@ final List<ResultTest> passwordTests = <ResultTest>[
         password: 'qwer',
         start: 0,
         end: 4,
-        graph: 'qwerty',
+        graph: adjacencyGraph['qwerty']!,
+        graphName: 'qwerty',
         turns: 1,
         shiftedCount: 0,
         guesses: 1296,
@@ -710,7 +712,8 @@ final List<ResultTest> passwordTests = <ResultTest>[
         password: 'AZERYT',
         start: 0,
         end: 4,
-        graph: 'azerty',
+        graph: adjacencyGraph['azerty']!,
+        graphName: 'azerty',
         turns: 1,
         shiftedCount: 4,
         guesses: 2640,
@@ -758,7 +761,8 @@ final List<ResultTest> passwordTests = <ResultTest>[
         password: 'zxcftzuio',
         start: 1,
         end: 9,
-        graph: 'qwertz',
+        graph: adjacencyGraph['qwertz']!,
+        graphName: 'qwertz',
         turns: 3,
         shiftedCount: 0,
         guesses: 580912,

@@ -3,8 +3,6 @@ import 'matcher/dictionary/feedback.dart';
 import 'matcher/dictionary/scoring.dart';
 import 'matcher/dictionary/variants/scoring/l33t.dart';
 import 'matcher/dictionary/variants/scoring/uppercase.dart';
-import 'matcher/spatial/feedback.dart';
-import 'matcher/spatial/scoring.dart';
 import 'matchers/base_matcher.dart';
 import 'options.dart';
 
@@ -332,39 +330,6 @@ class L33tMatch extends DictionaryMatch {
       levenshteinDistance == other.levenshteinDistance &&
       levenshteinDistanceEntry == other.levenshteinDistanceEntry &&
       changesDisplay == other.changesDisplay;
-}
-
-class SpatialMatch extends BaseMatch {
-  SpatialMatch({
-    required String password,
-    required int start,
-    required int end,
-    required this.graph,
-    required this.turns,
-    required this.shiftedCount,
-    required this.options,
-  }) : super(password: password, start: start, end: end);
-
-  final String graph;
-  final int turns;
-  final int shiftedCount;
-  final Options options;
-
-  @override
-  String toString() => '${super.toString()}, graph: "$graph", turns: $turns, '
-      'shiftedCount: $shiftedCount';
-
-  @override
-  double get estimatedGuesses => spatialScoring(this, options);
-
-  @override
-  Feedback? feedback({required bool isSoleMatch}) {
-    return spatialFeedback(
-      match: this,
-      options: options,
-      isSoleMatch: isSoleMatch,
-    );
-  }
 }
 
 class Optimal {
