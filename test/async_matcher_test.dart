@@ -38,7 +38,7 @@ class MatchAsync extends BaseMatcher {
   List<Future<List<BaseMatch>>> match(String password) {
     return <Future<List<BaseMatch>>>[
       Future<List<BaseMatch>>.delayed(
-        Duration(seconds: 2),
+        const Duration(seconds: 2),
         () => <BaseMatch>[
           AsyncMatch(
             password: password,
@@ -63,6 +63,6 @@ class AsyncMatch extends BaseMatch {
 
   @override
   Feedback? feedback({required bool isSoleMatch}) {
-    return Feedback(warning: 'So async.');
+    return const Feedback(warning: 'So async.');
   }
 }

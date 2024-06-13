@@ -24,17 +24,17 @@ void main() {
       () => expect(
         zxcvbnm('ishduehlduod83h4mfs8', <String>['ishduehgldueod83h4mfis8']),
         ResultTest(
-          feedback: Feedback(
+          feedback: const Feedback(
             warning: 'There should not be any personal or page related data.',
             suggestions: <String>['Add more words that are less common.'],
           ),
-          crackTimesSeconds: CrackTimesSeconds(
+          crackTimesSeconds: const CrackTimesSeconds(
             onlineThrottling100PerHour: 72,
             onlineNoThrottling10PerSecond: 0.2,
             offlineSlowHashing1e4PerSecond: 0.0002,
             offlineFastHashing1e10PerSecond: 2e-10,
           ),
-          crackTimesDisplay: CrackTimesDisplay(
+          crackTimesDisplay: const CrackTimesDisplay(
             onlineThrottling100PerHour: '1 minute',
             onlineNoThrottling10PerSecond: 'less than a second',
             offlineSlowHashing1e4PerSecond: 'less than a second',
@@ -68,17 +68,17 @@ void main() {
       () => expect(
         zxcvbnm('alaphant'),
         ResultTest(
-          feedback: Feedback(
+          feedback: const Feedback(
             warning: 'This is a commonly used password.',
             suggestions: <String>['Add more words that are less common.'],
           ),
-          crackTimesSeconds: CrackTimesSeconds(
+          crackTimesSeconds: const CrackTimesSeconds(
             onlineThrottling100PerHour: 12420,
             onlineNoThrottling10PerSecond: 34.5,
             offlineSlowHashing1e4PerSecond: 0.0345,
             offlineFastHashing1e10PerSecond: 3.45e-8,
           ),
-          crackTimesDisplay: CrackTimesDisplay(
+          crackTimesDisplay: const CrackTimesDisplay(
             onlineThrottling100PerHour: '3 hours',
             onlineNoThrottling10PerSecond: '35 seconds',
             offlineSlowHashing1e4PerSecond: 'less than a second',

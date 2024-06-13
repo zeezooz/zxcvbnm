@@ -74,17 +74,17 @@ void main() {
         expect(
           zxcvbnm('test'),
           ResultTest(
-            feedback: Feedback(
+            feedback: const Feedback(
               warning: 'This is a commonly used password.',
               suggestions: <String>['Add more words that are less common.'],
             ),
-            crackTimesSeconds: CrackTimesSeconds(
+            crackTimesSeconds: const CrackTimesSeconds(
               onlineThrottling100PerHour: 4176,
               onlineNoThrottling10PerSecond: 11.6,
               offlineSlowHashing1e4PerSecond: 0.0116,
               offlineFastHashing1e10PerSecond: 1.16e-8,
             ),
-            crackTimesDisplay: CrackTimesDisplay(
+            crackTimesDisplay: const CrackTimesDisplay(
               onlineThrottling100PerHour: '1 hour',
               onlineNoThrottling10PerSecond: '12 seconds',
               offlineSlowHashing1e4PerSecond: 'less than a second',
@@ -127,17 +127,17 @@ void main() {
         expect(
           zxcvbnm('test'),
           ResultTest(
-            feedback: Feedback(
+            feedback: const Feedback(
               warning: 'There should not be any personal or page related data.',
               suggestions: <String>['Add more words that are less common.'],
             ),
-            crackTimesSeconds: CrackTimesSeconds(
+            crackTimesSeconds: const CrackTimesSeconds(
               onlineThrottling100PerHour: 72,
               onlineNoThrottling10PerSecond: 0.2,
               offlineSlowHashing1e4PerSecond: 0.0002,
               offlineFastHashing1e10PerSecond: 2e-10,
             ),
-            crackTimesDisplay: CrackTimesDisplay(
+            crackTimesDisplay: const CrackTimesDisplay(
               onlineThrottling100PerHour: '1 minute',
               onlineNoThrottling10PerSecond: 'less than a second',
               offlineSlowHashing1e4PerSecond: 'less than a second',
@@ -177,17 +177,17 @@ void main() {
         expect(
           zxcvbnm('onTheFly', <String>['onTheFly']),
           ResultTest(
-            feedback: Feedback(
+            feedback: const Feedback(
               warning: 'There should not be any personal or page related data.',
               suggestions: <String>['Add more words that are less common.'],
             ),
-            crackTimesSeconds: CrackTimesSeconds(
+            crackTimesSeconds: const CrackTimesSeconds(
               onlineThrottling100PerHour: 1332,
               onlineNoThrottling10PerSecond: 3.7,
               offlineSlowHashing1e4PerSecond: 0.0037,
               offlineFastHashing1e10PerSecond: 3.7e-9,
             ),
-            crackTimesDisplay: CrackTimesDisplay(
+            crackTimesDisplay: const CrackTimesDisplay(
               onlineThrottling100PerHour: '22 minutes',
               onlineNoThrottling10PerSecond: '4 seconds',
               offlineSlowHashing1e4PerSecond: 'less than a second',
@@ -227,17 +227,17 @@ void main() {
         expect(
           zxcvbnm('test', <String>['test']),
           ResultTest(
-            feedback: Feedback(
+            feedback: const Feedback(
               warning: 'There should not be any personal or page related data.',
               suggestions: <String>['Add more words that are less common.'],
             ),
-            crackTimesSeconds: CrackTimesSeconds(
+            crackTimesSeconds: const CrackTimesSeconds(
               onlineThrottling100PerHour: 72,
               onlineNoThrottling10PerSecond: 0.2,
               offlineSlowHashing1e4PerSecond: 0.0002,
               offlineFastHashing1e10PerSecond: 2e-10,
             ),
-            crackTimesDisplay: CrackTimesDisplay(
+            crackTimesDisplay: const CrackTimesDisplay(
               onlineThrottling100PerHour: '1 minute',
               onlineNoThrottling10PerSecond: 'less than a second',
               offlineSlowHashing1e4PerSecond: 'less than a second',
@@ -265,17 +265,17 @@ void main() {
         expect(
           zxcvbnm('test'),
           ResultTest(
-            feedback: Feedback(
+            feedback: const Feedback(
               warning: 'This is a commonly used password.',
               suggestions: <String>['Add more words that are less common.'],
             ),
-            crackTimesSeconds: CrackTimesSeconds(
+            crackTimesSeconds: const CrackTimesSeconds(
               onlineThrottling100PerHour: 4176,
               onlineNoThrottling10PerSecond: 11.6,
               offlineSlowHashing1e4PerSecond: 0.0116,
               offlineFastHashing1e10PerSecond: 1.16e-8,
             ),
-            crackTimesDisplay: CrackTimesDisplay(
+            crackTimesDisplay: const CrackTimesDisplay(
               onlineThrottling100PerHour: '1 hour',
               onlineNoThrottling10PerSecond: '12 seconds',
               offlineSlowHashing1e4PerSecond: 'less than a second',
@@ -313,7 +313,8 @@ void main() {
     final Zxcvbnm zxcvbnm = Zxcvbnm(options);
 
     test(
-      'Should not die while processing and have a appropriate calcTime for l33t attack.',
+      'Should not die while processing and have a appropriate calcTime for '
+      'l33t attack.',
       () {
         return expect(
           zxcvbnm(r'4@8({[</369&#!1/|0$5+7%2/4@8({[</369&#!1/|0$5+7%2/"')
@@ -324,7 +325,8 @@ void main() {
     );
 
     test(
-      'Should not die while processing and have a appropriate calcTime for regex attacks.',
+      'Should not die while processing and have a appropriate calcTime for '
+      'regex attacks.',
       () {
         return expect(
           zxcvbnm('\x00\x00${'\x00' * 100}\n').calcTime,

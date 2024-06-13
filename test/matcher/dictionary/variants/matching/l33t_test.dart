@@ -128,7 +128,8 @@ void main() {
     );
 
     test(
-      'Should match when multiple l33t substitution are needed for the same letter.',
+      'Should match when multiple l33t substitution are needed for the same '
+      'letter.',
       () {
         const String password = 'p4@ssword';
         expect(
@@ -143,11 +144,11 @@ void main() {
                 rank: 3,
                 dictionary: Dictionary.commonWords,
                 changes: <PasswordChange>[
-                  PasswordChange(
+                  const PasswordChange(
                     l33t: '4',
                     clean: 'a',
                   ),
-                  PasswordChange(
+                  const PasswordChange(
                     l33t: '@',
                     clean: 'a',
                   ),
@@ -183,7 +184,7 @@ void main() {
                 rank: 2,
                 dictionary: Dictionary.commonWords,
                 changes: <PasswordChange>[
-                  PasswordChange(
+                  const PasswordChange(
                     l33t: '4',
                     clean: 'a',
                   ),
@@ -205,11 +206,11 @@ void main() {
                 rank: 3,
                 dictionary: Dictionary.commonWords,
                 changes: <PasswordChange>[
-                  PasswordChange(
+                  const PasswordChange(
                     l33t: '@',
                     clean: 'a',
                   ),
-                  PasswordChange(
+                  const PasswordChange(
                     l33t: '0',
                     clean: 'o',
                   ),
@@ -231,15 +232,15 @@ void main() {
                 rank: 5,
                 dictionary: Dictionary.commonWords,
                 changes: <PasswordChange>[
-                  PasswordChange(
+                  const PasswordChange(
                     l33t: '(',
                     clean: 'c',
                   ),
-                  PasswordChange(
+                  const PasswordChange(
                     l33t: '()',
                     clean: 'o',
                   ),
-                  PasswordChange(
+                  const PasswordChange(
                     l33t: '|_|',
                     clean: 'u',
                   ),
@@ -261,11 +262,11 @@ void main() {
                 rank: 6,
                 dictionary: Dictionary.commonWords,
                 changes: <PasswordChange>[
-                  PasswordChange(
+                  const PasswordChange(
                     l33t: '@',
                     clean: 'a',
                   ),
-                  PasswordChange(
+                  const PasswordChange(
                     l33t: 'ﬁ',
                     clean: 'fi',
                   ),
@@ -287,11 +288,11 @@ void main() {
                 rank: 1,
                 dictionary: Dictionary.wikipedia,
                 changes: <PasswordChange>[
-                  PasswordChange(
+                  const PasswordChange(
                     l33t: '{',
                     clean: 'c',
                   ),
-                  PasswordChange(
+                  const PasswordChange(
                     l33t: '0',
                     clean: 'o',
                   ),
@@ -318,11 +319,11 @@ void main() {
               rank: 1,
               dictionary: Dictionary.commonWords,
               changes: <PasswordChange>[
-                PasswordChange(
+                const PasswordChange(
                   l33t: '@',
                   clean: 'a',
                 ),
-                PasswordChange(
+                const PasswordChange(
                   l33t: '(',
                   clean: 'c',
                 ),
@@ -337,7 +338,7 @@ void main() {
               rank: 1,
               dictionary: Dictionary.wikipedia,
               changes: <PasswordChange>[
-                PasswordChange(
+                const PasswordChange(
                   l33t: '(',
                   clean: 'c',
                 ),
@@ -352,11 +353,11 @@ void main() {
               rank: 1,
               dictionary: Dictionary.wikipedia,
               changes: <PasswordChange>[
-                PasswordChange(
+                const PasswordChange(
                   l33t: '{',
                   clean: 'c',
                 ),
-                PasswordChange(
+                const PasswordChange(
                   l33t: '0',
                   clean: 'o',
                 ),

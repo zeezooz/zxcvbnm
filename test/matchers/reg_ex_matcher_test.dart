@@ -95,7 +95,7 @@ void main() {
     });
 
     test('Alphanumeric regex.', () {
-      final String token = 'ag7C8';
+      const String token = 'ag7C8';
       final RegExMatch match = RegExMatch(
         password: token,
         start: 0,
@@ -110,7 +110,7 @@ void main() {
     });
 
     test('Distant year matches.', () {
-      final String token = '1972';
+      const String token = '1972';
       final RegExMatch match = RegExMatch(
         password: token,
         start: 0,
@@ -125,7 +125,7 @@ void main() {
     });
 
     test('A year close to currentYear.', () {
-      final String token = '2020';
+      const String token = '2020';
       final RegExMatch match = RegExMatch(
         password: token,
         start: 0,
@@ -140,7 +140,7 @@ void main() {
     });
 
     test('Not found regex names.', () {
-      final String token = '';
+      const String token = '';
       final RegExMatch match = RegExMatch(
         password: token,
         start: 0,

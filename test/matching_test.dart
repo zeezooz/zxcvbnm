@@ -41,7 +41,7 @@ void main() {
                 rank: 339,
                 dictionary: Dictionary.passwords,
                 changes: <PasswordChange>[
-                  PasswordChange(l33t: '0', clean: 'o'),
+                  const PasswordChange(l33t: '0', clean: 'o'),
                 ],
                 changesDisplay: '0 -> o',
               ),

@@ -75,7 +75,7 @@ void main() {
               ),
             ],
           ),
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: r'Pau$m4rd',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -95,7 +95,7 @@ void main() {
               ),
             ],
           ),
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: r'Pau$nnard',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -115,7 +115,7 @@ void main() {
               ),
             ],
           ),
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: r'Pau$nn4rd',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -130,7 +130,7 @@ void main() {
               ),
             ],
           ),
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: r'Pa|_|$mard',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -150,7 +150,7 @@ void main() {
               ),
             ],
           ),
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: r'Pa|_|$m4rd',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -165,7 +165,7 @@ void main() {
               ),
             ],
           ),
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: r'Pa|_|$nnard',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -180,7 +180,7 @@ void main() {
               ),
             ],
           ),
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: r'Pa|_|$nn4rd',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -190,7 +190,7 @@ void main() {
               ),
             ],
           ),
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: r'P4u$mard',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -210,7 +210,7 @@ void main() {
               ),
             ],
           ),
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: r'P4u$m4rd',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -225,7 +225,7 @@ void main() {
               ),
             ],
           ),
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: r'P4u$nnard',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -240,7 +240,7 @@ void main() {
               ),
             ],
           ),
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: r'P4u$nn4rd',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -250,7 +250,7 @@ void main() {
               ),
             ],
           ),
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: r'P4|_|$mard',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -265,7 +265,7 @@ void main() {
               ),
             ],
           ),
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: r'P4|_|$m4rd',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -275,7 +275,7 @@ void main() {
               ),
             ],
           ),
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: r'P4|_|$nnard',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -285,7 +285,7 @@ void main() {
               ),
             ],
           ),
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: r'P4|_|$nn4rd',
             changes: <IndexedPasswordChangesTest>[],
           ),
@@ -298,7 +298,7 @@ void main() {
       () => expect(
         cleanPassword('vv', 100, trieNode),
         <PasswordWithChangesTest>[
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: 'w',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -308,7 +308,7 @@ void main() {
               ),
             ],
           ),
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: 'ff',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -323,7 +323,7 @@ void main() {
               ),
             ],
           ),
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: 'fu',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -338,7 +338,7 @@ void main() {
               ),
             ],
           ),
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: 'uf',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -353,7 +353,7 @@ void main() {
               ),
             ],
           ),
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: 'uu',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -368,7 +368,7 @@ void main() {
               ),
             ],
           ),
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: 'fv',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -378,7 +378,7 @@ void main() {
               ),
             ],
           ),
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: 'uv',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -388,7 +388,7 @@ void main() {
               ),
             ],
           ),
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: 'vf',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -398,7 +398,7 @@ void main() {
               ),
             ],
           ),
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: 'vu',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -408,7 +408,7 @@ void main() {
               ),
             ],
           ),
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: 'vv',
             changes: <IndexedPasswordChangesTest>[],
           ),
@@ -421,7 +421,7 @@ void main() {
       () => expect(
         cleanPassword('vv', 3, trieNode),
         <PasswordWithChangesTest>[
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: 'w',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -431,7 +431,7 @@ void main() {
               ),
             ],
           ),
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: 'ff',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -446,7 +446,7 @@ void main() {
               ),
             ],
           ),
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: 'fu',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -470,7 +470,7 @@ void main() {
       () => expect(
         cleanPassword('p@ciﬁc', 100, trieNode),
         <PasswordWithChangesTest>[
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: 'pacific',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -485,7 +485,7 @@ void main() {
               ),
             ],
           ),
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: 'paciﬁc',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -495,7 +495,7 @@ void main() {
               ),
             ],
           ),
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: 'p@cific',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -505,7 +505,7 @@ void main() {
               ),
             ],
           ),
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: 'p@ciﬁc',
             changes: <IndexedPasswordChangesTest>[],
           ),

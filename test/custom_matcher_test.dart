@@ -23,17 +23,17 @@ void main() {
         expect(
           zxcvbnm('ep8fkw8ds'),
           ResultTest(
-            feedback: Feedback(
+            feedback: const Feedback(
               warning: 'Your password is not long enough.',
               suggestions: <String>['Add more words that are less common.'],
             ),
-            crackTimesSeconds: CrackTimesSeconds(
+            crackTimesSeconds: const CrackTimesSeconds(
               onlineThrottling100PerHour: 3276,
               onlineNoThrottling10PerSecond: 9.1,
               offlineSlowHashing1e4PerSecond: 0.0091,
               offlineFastHashing1e10PerSecond: 9.1e-9,
             ),
-            crackTimesDisplay: CrackTimesDisplay(
+            crackTimesDisplay: const CrackTimesDisplay(
               onlineThrottling100PerHour: '55 minutes',
               onlineNoThrottling10PerSecond: '9 seconds',
               offlineSlowHashing1e4PerSecond: 'less than a second',
@@ -89,7 +89,7 @@ class MinLengthMatch extends BaseMatch {
 
   @override
   Feedback? feedback({required bool isSoleMatch}) {
-    return Feedback(warning: 'Your password is not long enough.');
+    return const Feedback(warning: 'Your password is not long enough.');
   }
 }
 

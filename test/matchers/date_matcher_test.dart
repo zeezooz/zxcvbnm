@@ -270,7 +270,8 @@ void main() {
     );
 
     test(
-      'Recent years assume minYearSpace. Extra guesses are added for separators.',
+      'Recent years assume minYearSpace. Extra guesses are added for '
+      'separators.',
       () {
         final DateMatch match = DateMatch(
           password: '1/1/2020',

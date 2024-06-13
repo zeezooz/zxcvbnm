@@ -76,7 +76,9 @@ void main() {
           matchedWord: 'aaaaaa',
           rank: 32,
           dictionary: Dictionary.commonWords,
-          changes: <PasswordChange>[PasswordChange(l33t: '@', clean: 'a')],
+          changes: <PasswordChange>[
+            const PasswordChange(l33t: '@', clean: 'a'),
+          ],
           changesDisplay: '@ -> a',
           options: options,
         );
@@ -97,7 +99,9 @@ void main() {
           matchedWord: 'aaaaaa',
           rank: 32,
           dictionary: Dictionary.commonWords,
-          changes: <PasswordChange>[PasswordChange(l33t: '@', clean: 'a')],
+          changes: <PasswordChange>[
+            const PasswordChange(l33t: '@', clean: 'a'),
+          ],
           changesDisplay: '@ -> a',
           options: options,
         );

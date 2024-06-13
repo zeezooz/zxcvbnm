@@ -1,4 +1,4 @@
-import 'package:zxcvbnm/languages/common.dart';
+import 'package:zxcvbnm/languages/en.dart';
 import 'package:zxcvbnm/src/feedback.dart';
 import 'package:zxcvbnm/src/matchers/base_matcher.dart';
 import 'package:zxcvbnm/src/matchers/brute_force_matcher.dart';
@@ -14,17 +14,17 @@ import '../zxcvbnm_test.dart';
 
 final List<ResultTest> passwordTests = <ResultTest>[
   ResultTest(
-    feedback: Feedback(
+    feedback: const Feedback(
       warning: 'This is a commonly used password.',
       suggestions: <String>['Add more words that are less common.'],
     ),
-    crackTimesSeconds: CrackTimesSeconds(
+    crackTimesSeconds: const CrackTimesSeconds(
       onlineThrottling100PerHour: 13104,
       onlineNoThrottling10PerSecond: 36.4,
       offlineSlowHashing1e4PerSecond: 0.0364,
       offlineFastHashing1e10PerSecond: 3.64e-8,
     ),
-    crackTimesDisplay: CrackTimesDisplay(
+    crackTimesDisplay: const CrackTimesDisplay(
       onlineThrottling100PerHour: '4 hours',
       onlineNoThrottling10PerSecond: '36 seconds',
       offlineSlowHashing1e4PerSecond: 'less than a second',
@@ -49,17 +49,17 @@ final List<ResultTest> passwordTests = <ResultTest>[
     ],
   ),
   ResultTest(
-    feedback: Feedback(
+    feedback: const Feedback(
       warning: 'This is a commonly used password.',
       suggestions: <String>['Add more words that are less common.'],
     ),
-    crackTimesSeconds: CrackTimesSeconds(
+    crackTimesSeconds: const CrackTimesSeconds(
       onlineThrottling100PerHour: 26172,
       onlineNoThrottling10PerSecond: 72.7,
       offlineSlowHashing1e4PerSecond: 0.0727,
       offlineFastHashing1e10PerSecond: 7.27e-8,
     ),
-    crackTimesDisplay: CrackTimesDisplay(
+    crackTimesDisplay: const CrackTimesDisplay(
       onlineThrottling100PerHour: '7 hours',
       onlineNoThrottling10PerSecond: '1 minute',
       offlineSlowHashing1e4PerSecond: 'less than a second',
@@ -84,17 +84,17 @@ final List<ResultTest> passwordTests = <ResultTest>[
     ],
   ),
   ResultTest(
-    feedback: Feedback(
+    feedback: const Feedback(
       warning: 'This is a commonly used password.',
       suggestions: <String>['Add more words that are less common.'],
     ),
-    crackTimesSeconds: CrackTimesSeconds(
+    crackTimesSeconds: const CrackTimesSeconds(
       onlineThrottling100PerHour: 26172,
       onlineNoThrottling10PerSecond: 72.7,
       offlineSlowHashing1e4PerSecond: 0.0727,
       offlineFastHashing1e10PerSecond: 7.27e-8,
     ),
-    crackTimesDisplay: CrackTimesDisplay(
+    crackTimesDisplay: const CrackTimesDisplay(
       onlineThrottling100PerHour: '7 hours',
       onlineNoThrottling10PerSecond: '1 minute',
       offlineSlowHashing1e4PerSecond: 'less than a second',
@@ -119,20 +119,20 @@ final List<ResultTest> passwordTests = <ResultTest>[
     ],
   ),
   ResultTest(
-    feedback: Feedback(
+    feedback: const Feedback(
       warning: 'Common character sequences like "abc" are easy to guess.',
       suggestions: <String>[
         'Add more words that are less common.',
         'Avoid common character sequences.',
       ],
     ),
-    crackTimesSeconds: CrackTimesSeconds(
+    crackTimesSeconds: const CrackTimesSeconds(
       onlineThrottling100PerHour: 540000,
       onlineNoThrottling10PerSecond: 1500,
       offlineSlowHashing1e4PerSecond: 1.5,
       offlineFastHashing1e10PerSecond: 0.0000015,
     ),
-    crackTimesDisplay: CrackTimesDisplay(
+    crackTimesDisplay: const CrackTimesDisplay(
       onlineThrottling100PerHour: '6 days',
       onlineNoThrottling10PerSecond: '25 minutes',
       offlineSlowHashing1e4PerSecond: '2 seconds',
@@ -164,20 +164,20 @@ final List<ResultTest> passwordTests = <ResultTest>[
     ],
   ),
   ResultTest(
-    feedback: Feedback(
+    feedback: const Feedback(
       warning: 'This is similar to a commonly used password.',
       suggestions: <String>[
         'Add more words that are less common.',
         'Capitalize some, but not all letters.',
       ],
     ),
-    crackTimesSeconds: CrackTimesSeconds(
+    crackTimesSeconds: const CrackTimesSeconds(
       onlineThrottling100PerHour: 89496000,
       onlineNoThrottling10PerSecond: 248600,
       offlineSlowHashing1e4PerSecond: 248.6,
       offlineFastHashing1e10PerSecond: 0.0002486,
     ),
-    crackTimesDisplay: CrackTimesDisplay(
+    crackTimesDisplay: const CrackTimesDisplay(
       onlineThrottling100PerHour: '3 years',
       onlineNoThrottling10PerSecond: '3 days',
       offlineSlowHashing1e4PerSecond: '4 minutes',
@@ -208,20 +208,20 @@ final List<ResultTest> passwordTests = <ResultTest>[
     ],
   ),
   ResultTest(
-    feedback: Feedback(
+    feedback: const Feedback(
       warning: 'Repeated characters like "aaa" are easy to guess.',
       suggestions: <String>[
         'Add more words that are less common.',
         'Avoid repeated words and characters.',
       ],
     ),
-    crackTimesSeconds: CrackTimesSeconds(
+    crackTimesSeconds: const CrackTimesSeconds(
       onlineThrottling100PerHour: 3060,
       onlineNoThrottling10PerSecond: 8.5,
       offlineSlowHashing1e4PerSecond: 0.0085,
       offlineFastHashing1e10PerSecond: 8.5e-9,
     ),
-    crackTimesDisplay: CrackTimesDisplay(
+    crackTimesDisplay: const CrackTimesDisplay(
       onlineThrottling100PerHour: '51 minutes',
       onlineNoThrottling10PerSecond: '9 seconds',
       offlineSlowHashing1e4PerSecond: 'less than a second',
@@ -244,20 +244,20 @@ final List<ResultTest> passwordTests = <ResultTest>[
     ],
   ),
   ResultTest(
-    feedback: Feedback(
+    feedback: const Feedback(
       warning: 'This is a frequently used password.',
       suggestions: <String>[
         'Add more words that are less common.',
         'Capitalize more than the first letter.',
       ],
     ),
-    crackTimesSeconds: CrackTimesSeconds(
+    crackTimesSeconds: const CrackTimesSeconds(
       onlineThrottling100PerHour: 3924,
       onlineNoThrottling10PerSecond: 10.9,
       offlineSlowHashing1e4PerSecond: 0.0109,
       offlineFastHashing1e10PerSecond: 1.09e-8,
     ),
-    crackTimesDisplay: CrackTimesDisplay(
+    crackTimesDisplay: const CrackTimesDisplay(
       onlineThrottling100PerHour: '1 hour',
       onlineNoThrottling10PerSecond: '11 seconds',
       offlineSlowHashing1e4PerSecond: 'less than a second',
@@ -282,17 +282,17 @@ final List<ResultTest> passwordTests = <ResultTest>[
     ],
   ),
   ResultTest(
-    feedback: Feedback(
+    feedback: const Feedback(
       warning: 'This is a commonly used password.',
       suggestions: <String>['Add more words that are less common.'],
     ),
-    crackTimesSeconds: CrackTimesSeconds(
+    crackTimesSeconds: const CrackTimesSeconds(
       onlineThrottling100PerHour: 3780,
       onlineNoThrottling10PerSecond: 10.5,
       offlineSlowHashing1e4PerSecond: 0.0105,
       offlineFastHashing1e10PerSecond: 1.05e-8,
     ),
-    crackTimesDisplay: CrackTimesDisplay(
+    crackTimesDisplay: const CrackTimesDisplay(
       onlineThrottling100PerHour: '1 hour',
       onlineNoThrottling10PerSecond: '11 seconds',
       offlineSlowHashing1e4PerSecond: 'less than a second',
@@ -317,17 +317,17 @@ final List<ResultTest> passwordTests = <ResultTest>[
     ],
   ),
   ResultTest(
-    feedback: Feedback(
+    feedback: const Feedback(
       warning: 'This is a commonly used password.',
       suggestions: <String>['Add more words that are less common.'],
     ),
-    crackTimesSeconds: CrackTimesSeconds(
+    crackTimesSeconds: const CrackTimesSeconds(
       onlineThrottling100PerHour: 107208,
       onlineNoThrottling10PerSecond: 297.8,
       offlineSlowHashing1e4PerSecond: 0.2978,
       offlineFastHashing1e10PerSecond: 2.978e-7,
     ),
-    crackTimesDisplay: CrackTimesDisplay(
+    crackTimesDisplay: const CrackTimesDisplay(
       onlineThrottling100PerHour: '1 day',
       onlineNoThrottling10PerSecond: '5 minutes',
       offlineSlowHashing1e4PerSecond: 'less than a second',
@@ -352,17 +352,17 @@ final List<ResultTest> passwordTests = <ResultTest>[
     ],
   ),
   ResultTest(
-    feedback: Feedback(
+    feedback: const Feedback(
       warning: 'This is similar to a commonly used password.',
       suggestions: <String>['Add more words that are less common.'],
     ),
-    crackTimesSeconds: CrackTimesSeconds(
+    crackTimesSeconds: const CrackTimesSeconds(
       onlineThrottling100PerHour: 442368,
       onlineNoThrottling10PerSecond: 1228.8,
       offlineSlowHashing1e4PerSecond: 1.2288,
       offlineFastHashing1e10PerSecond: 0.0000012288,
     ),
-    crackTimesDisplay: CrackTimesDisplay(
+    crackTimesDisplay: const CrackTimesDisplay(
       onlineThrottling100PerHour: '5 days',
       onlineNoThrottling10PerSecond: '20 minutes',
       offlineSlowHashing1e4PerSecond: '1 second',
@@ -393,17 +393,17 @@ final List<ResultTest> passwordTests = <ResultTest>[
     ],
   ),
   ResultTest(
-    feedback: Feedback(
+    feedback: const Feedback(
       warning: 'This is a heavily used password.',
       suggestions: <String>['Add more words that are less common.'],
     ),
-    crackTimesSeconds: CrackTimesSeconds(
+    crackTimesSeconds: const CrackTimesSeconds(
       onlineThrottling100PerHour: 108,
       onlineNoThrottling10PerSecond: 0.3,
       offlineSlowHashing1e4PerSecond: 0.0003,
       offlineFastHashing1e10PerSecond: 3e-10,
     ),
-    crackTimesDisplay: CrackTimesDisplay(
+    crackTimesDisplay: const CrackTimesDisplay(
       onlineThrottling100PerHour: '2 minutes',
       onlineNoThrottling10PerSecond: 'less than a second',
       offlineSlowHashing1e4PerSecond: 'less than a second',
@@ -428,7 +428,7 @@ final List<ResultTest> passwordTests = <ResultTest>[
     ],
   ),
   ResultTest(
-    feedback: Feedback(
+    feedback: const Feedback(
       warning: 'Recent years are easy to guess.',
       suggestions: <String>[
         'Add more words that are less common.',
@@ -436,13 +436,13 @@ final List<ResultTest> passwordTests = <ResultTest>[
         'Avoid years that are associated with you.',
       ],
     ),
-    crackTimesSeconds: CrackTimesSeconds(
+    crackTimesSeconds: const CrackTimesSeconds(
       onlineThrottling100PerHour: 540000,
       onlineNoThrottling10PerSecond: 1500,
       offlineSlowHashing1e4PerSecond: 1.5,
       offlineFastHashing1e10PerSecond: 0.0000015,
     ),
-    crackTimesDisplay: CrackTimesDisplay(
+    crackTimesDisplay: const CrackTimesDisplay(
       onlineThrottling100PerHour: '6 days',
       onlineNoThrottling10PerSecond: '25 minutes',
       offlineSlowHashing1e4PerSecond: '2 seconds',
@@ -472,7 +472,7 @@ final List<ResultTest> passwordTests = <ResultTest>[
     ],
   ),
   ResultTest(
-    feedback: Feedback(
+    feedback: const Feedback(
       warning:
           'Repeated character patterns like "abcabcabc" are easy to guess.',
       suggestions: <String>[
@@ -480,13 +480,13 @@ final List<ResultTest> passwordTests = <ResultTest>[
         'Avoid repeated words and characters.',
       ],
     ),
-    crackTimesSeconds: CrackTimesSeconds(
+    crackTimesSeconds: const CrackTimesSeconds(
       onlineThrottling100PerHour: 1908,
       onlineNoThrottling10PerSecond: 5.3,
       offlineSlowHashing1e4PerSecond: 0.0053,
       offlineFastHashing1e10PerSecond: 5.3e-9,
     ),
-    crackTimesDisplay: CrackTimesDisplay(
+    crackTimesDisplay: const CrackTimesDisplay(
       onlineThrottling100PerHour: '32 minutes',
       onlineNoThrottling10PerSecond: '5 seconds',
       offlineSlowHashing1e4PerSecond: 'less than a second',
@@ -513,16 +513,16 @@ final List<ResultTest> passwordTests = <ResultTest>[
       warning: 'Straight rows of keys on your keyboard are easy to guess.',
       suggestions: <String>[
         'Add more words that are less common.',
-        'Use longer keyboard patterns and change typing direction multiple times.',
+        translation.suggestions.longerKeyboardPattern,
       ],
     ),
-    crackTimesSeconds: CrackTimesSeconds(
+    crackTimesSeconds: const CrackTimesSeconds(
       onlineThrottling100PerHour: 46692,
       onlineNoThrottling10PerSecond: 129.7,
       offlineSlowHashing1e4PerSecond: 0.1297,
       offlineFastHashing1e10PerSecond: 1.297e-7,
     ),
-    crackTimesDisplay: CrackTimesDisplay(
+    crackTimesDisplay: const CrackTimesDisplay(
       onlineThrottling100PerHour: '13 hours',
       onlineNoThrottling10PerSecond: '2 minutes',
       offlineSlowHashing1e4PerSecond: 'less than a second',
@@ -546,7 +546,7 @@ final List<ResultTest> passwordTests = <ResultTest>[
     ],
   ),
   ResultTest(
-    feedback: Feedback(
+    feedback: const Feedback(
       warning: 'This is similar to a commonly used password.',
       suggestions: <String>[
         'Add more words that are less common.',
@@ -554,13 +554,13 @@ final List<ResultTest> passwordTests = <ResultTest>[
         "Avoid predictable letter substitutions like '@' for 'a'.",
       ],
     ),
-    crackTimesSeconds: CrackTimesSeconds(
+    crackTimesSeconds: const CrackTimesSeconds(
       onlineThrottling100PerHour: 1188,
       onlineNoThrottling10PerSecond: 3.3,
       offlineSlowHashing1e4PerSecond: 0.0033,
       offlineFastHashing1e10PerSecond: 3.3e-9,
     ),
-    crackTimesDisplay: CrackTimesDisplay(
+    crackTimesDisplay: const CrackTimesDisplay(
       onlineThrottling100PerHour: '20 minutes',
       onlineNoThrottling10PerSecond: '3 seconds',
       offlineSlowHashing1e4PerSecond: 'less than a second',
@@ -579,9 +579,9 @@ final List<ResultTest> passwordTests = <ResultTest>[
         rank: 2,
         dictionary: Dictionary.passwords,
         changes: <PasswordChange>[
-          PasswordChange(l33t: '4', clean: 'a'),
-          PasswordChange(l33t: r'$', clean: 's'),
-          PasswordChange(l33t: '0', clean: 'o'),
+          const PasswordChange(l33t: '4', clean: 'a'),
+          const PasswordChange(l33t: r'$', clean: 's'),
+          const PasswordChange(l33t: '0', clean: 'o'),
         ],
         changesDisplay: r'4 -> a, $ -> s, 0 -> o',
         guesses: 32,
@@ -591,16 +591,16 @@ final List<ResultTest> passwordTests = <ResultTest>[
     ],
   ),
   ResultTest(
-    feedback: Feedback(
+    feedback: const Feedback(
       suggestions: <String>['Add more words that are less common.'],
     ),
-    crackTimesSeconds: CrackTimesSeconds(
+    crackTimesSeconds: const CrackTimesSeconds(
       onlineThrottling100PerHour: 360036,
       onlineNoThrottling10PerSecond: 1000.1,
       offlineSlowHashing1e4PerSecond: 1.0001,
       offlineFastHashing1e10PerSecond: 0.0000010001,
     ),
-    crackTimesDisplay: CrackTimesDisplay(
+    crackTimesDisplay: const CrackTimesDisplay(
       onlineThrottling100PerHour: '4 days',
       onlineNoThrottling10PerSecond: '17 minutes',
       offlineSlowHashing1e4PerSecond: '1 second',
@@ -620,14 +620,14 @@ final List<ResultTest> passwordTests = <ResultTest>[
     ],
   ),
   ResultTest(
-    feedback: Feedback(),
-    crackTimesSeconds: CrackTimesSeconds(
+    feedback: const Feedback(),
+    crackTimesSeconds: const CrackTimesSeconds(
       onlineThrottling100PerHour: 8.424e34,
       onlineNoThrottling10PerSecond: 2.34e32,
       offlineSlowHashing1e4PerSecond: 2.34e29,
       offlineFastHashing1e10PerSecond: 2.34e23,
     ),
-    crackTimesDisplay: CrackTimesDisplay(
+    crackTimesDisplay: const CrackTimesDisplay(
       onlineThrottling100PerHour: 'centuries',
       onlineNoThrottling10PerSecond: 'centuries',
       offlineSlowHashing1e4PerSecond: 'centuries',
@@ -688,16 +688,16 @@ final List<ResultTest> passwordTests = <ResultTest>[
       warning: 'Straight rows of keys on your keyboard are easy to guess.',
       suggestions: <String>[
         'Add more words that are less common.',
-        'Use longer keyboard patterns and change typing direction multiple times.',
+        translation.suggestions.longerKeyboardPattern,
       ],
     ),
-    crackTimesSeconds: CrackTimesSeconds(
+    crackTimesSeconds: const CrackTimesSeconds(
       onlineThrottling100PerHour: 19368000,
       onlineNoThrottling10PerSecond: 53800,
       offlineSlowHashing1e4PerSecond: 53.8,
       offlineFastHashing1e10PerSecond: 0.0000538,
     ),
-    crackTimesDisplay: CrackTimesDisplay(
+    crackTimesDisplay: const CrackTimesDisplay(
       onlineThrottling100PerHour: '7 months',
       onlineNoThrottling10PerSecond: '15 hours',
       offlineSlowHashing1e4PerSecond: '54 seconds',
@@ -731,16 +731,16 @@ final List<ResultTest> passwordTests = <ResultTest>[
       warning: 'Short keyboard patterns are easy to guess.',
       suggestions: <String>[
         'Add more words that are less common.',
-        'Use longer keyboard patterns and change typing direction multiple times.',
+        translation.suggestions.longerKeyboardPattern,
       ],
     ),
-    crackTimesSeconds: CrackTimesSeconds(
+    crackTimesSeconds: const CrackTimesSeconds(
       onlineThrottling100PerHour: 460442304,
       onlineNoThrottling10PerSecond: 1279006.4,
       offlineSlowHashing1e4PerSecond: 1279.0064,
       offlineFastHashing1e10PerSecond: 0.0012790064,
     ),
-    crackTimesDisplay: CrackTimesDisplay(
+    crackTimesDisplay: const CrackTimesDisplay(
       onlineThrottling100PerHour: '14 years',
       onlineNoThrottling10PerSecond: '15 days',
       offlineSlowHashing1e4PerSecond: '21 minutes',
@@ -770,14 +770,14 @@ final List<ResultTest> passwordTests = <ResultTest>[
     ],
   ),
   ResultTest(
-    feedback: Feedback(),
-    crackTimesSeconds: CrackTimesSeconds(
+    feedback: const Feedback(),
+    crackTimesSeconds: const CrackTimesSeconds(
       onlineThrottling100PerHour: 46843200000,
       onlineNoThrottling10PerSecond: 130120000,
       offlineSlowHashing1e4PerSecond: 130120,
       offlineFastHashing1e10PerSecond: 0.13012,
     ),
-    crackTimesDisplay: CrackTimesDisplay(
+    crackTimesDisplay: const CrackTimesDisplay(
       onlineThrottling100PerHour: 'centuries',
       onlineNoThrottling10PerSecond: '4 years',
       offlineSlowHashing1e4PerSecond: '2 days',
@@ -812,14 +812,14 @@ final List<ResultTest> passwordTests = <ResultTest>[
     ],
   ),
   ResultTest(
-    feedback: Feedback(),
-    crackTimesSeconds: CrackTimesSeconds(
+    feedback: const Feedback(),
+    crackTimesSeconds: const CrackTimesSeconds(
       onlineThrottling100PerHour: 40608478800000000,
       onlineNoThrottling10PerSecond: 112801330000000,
       offlineSlowHashing1e4PerSecond: 112801330000,
       offlineFastHashing1e10PerSecond: 112801.33,
     ),
-    crackTimesDisplay: CrackTimesDisplay(
+    crackTimesDisplay: const CrackTimesDisplay(
       onlineThrottling100PerHour: 'centuries',
       onlineNoThrottling10PerSecond: 'centuries',
       offlineSlowHashing1e4PerSecond: 'centuries',
@@ -861,14 +861,14 @@ final List<ResultTest> passwordTests = <ResultTest>[
     ],
   ),
   ResultTest(
-    feedback: Feedback(),
-    crackTimesSeconds: CrackTimesSeconds(
+    feedback: const Feedback(),
+    crackTimesSeconds: const CrackTimesSeconds(
       onlineThrottling100PerHour: 3.6000000000000004e+37,
       onlineNoThrottling10PerSecond: 1e35,
       offlineSlowHashing1e4PerSecond: 1e32,
       offlineFastHashing1e10PerSecond: 1e26,
     ),
-    crackTimesDisplay: CrackTimesDisplay(
+    crackTimesDisplay: const CrackTimesDisplay(
       onlineThrottling100PerHour: 'centuries',
       onlineNoThrottling10PerSecond: 'centuries',
       offlineSlowHashing1e4PerSecond: 'centuries',
@@ -891,16 +891,16 @@ final List<ResultTest> passwordTests = <ResultTest>[
     feedback: Feedback(
       suggestions: <String>[
         'Use multiple words, but avoid common phrases.',
-        'You can create strong passwords without using symbols, numbers, or uppercase letters.',
+        translation.suggestions.noNeed,
       ],
     ),
-    crackTimesSeconds: CrackTimesSeconds(
+    crackTimesSeconds: const CrackTimesSeconds(
       onlineThrottling100PerHour: 36,
       onlineNoThrottling10PerSecond: 0.1,
       offlineSlowHashing1e4PerSecond: 0.0001,
       offlineFastHashing1e10PerSecond: 1e-10,
     ),
-    crackTimesDisplay: CrackTimesDisplay(
+    crackTimesDisplay: const CrackTimesDisplay(
       onlineThrottling100PerHour: '36 seconds',
       onlineNoThrottling10PerSecond: 'less than a second',
       offlineSlowHashing1e4PerSecond: 'less than a second',

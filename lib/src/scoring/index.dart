@@ -18,7 +18,8 @@ import 'utils.dart';
 ///
 /// The optimal "minimum guesses" sequence is here defined to be the sequence
 /// that minimizes the following function:
-///   g = sequenceLength! * Product(m.guesses for m in sequence) + D^(sequenceLength - 1)
+///   g = sequenceLength! * Product(m.guesses for m in sequence) +
+///       D^(sequenceLength - 1)
 ///
 /// where sequenceLength is the length of the sequence.
 /// The factorial term is the number of ways to order sequenceLength patterns.

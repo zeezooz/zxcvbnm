@@ -21,7 +21,7 @@ class Feedback {
     Options options,
   ) {
     if (matches.isEmpty) return Feedback._default(options);
-    if (score > 2) return Feedback();
+    if (score > 2) return const Feedback();
     final String extraFeedback = options.translation.suggestions.anotherWord;
     Feedback? feedback =
         _longestMatch(matches).feedback(isSoleMatch: matches.length == 1);

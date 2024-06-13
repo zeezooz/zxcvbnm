@@ -56,7 +56,9 @@ void main() {
           matchedWord: 'a',
           rank: 1,
           dictionary: Dictionary.commonWords,
-          changes: <PasswordChange>[PasswordChange(l33t: '4', clean: 'a')],
+          changes: <PasswordChange>[
+            const PasswordChange(l33t: '4', clean: 'a'),
+          ],
           changesDisplay: '4 -> a',
           options: options,
         );
@@ -77,7 +79,9 @@ void main() {
           matchedWord: 'apple',
           rank: 1,
           dictionary: Dictionary.commonWords,
-          changes: <PasswordChange>[PasswordChange(l33t: '4', clean: 'a')],
+          changes: <PasswordChange>[
+            const PasswordChange(l33t: '4', clean: 'a'),
+          ],
           changesDisplay: '4 -> a',
           options: options,
         );
@@ -117,7 +121,9 @@ void main() {
           matchedWord: 'abcet',
           rank: 1,
           dictionary: Dictionary.commonWords,
-          changes: <PasswordChange>[PasswordChange(l33t: '4', clean: 'a')],
+          changes: <PasswordChange>[
+            const PasswordChange(l33t: '4', clean: 'a'),
+          ],
           changesDisplay: '4 -> a',
           options: options,
         );
@@ -138,7 +144,9 @@ void main() {
           matchedWord: 'abcet',
           rank: 1,
           dictionary: Dictionary.commonWords,
-          changes: <PasswordChange>[PasswordChange(l33t: '8', clean: 'b')],
+          changes: <PasswordChange>[
+            const PasswordChange(l33t: '8', clean: 'b'),
+          ],
           changesDisplay: '8 -> b',
           options: options,
         );
@@ -159,7 +167,9 @@ void main() {
           matchedWord: 'abcet',
           rank: 1,
           dictionary: Dictionary.commonWords,
-          changes: <PasswordChange>[PasswordChange(l33t: '+', clean: 't')],
+          changes: <PasswordChange>[
+            const PasswordChange(l33t: '+', clean: 't'),
+          ],
           changesDisplay: '+ -> t',
           options: options,
         );
@@ -181,8 +191,8 @@ void main() {
           rank: 1,
           dictionary: Dictionary.commonWords,
           changes: <PasswordChange>[
-            PasswordChange(l33t: '4', clean: 'a'),
-            PasswordChange(l33t: '8', clean: 'b'),
+            const PasswordChange(l33t: '4', clean: 'a'),
+            const PasswordChange(l33t: '8', clean: 'b'),
           ],
           changesDisplay: '4 -> a, 8 -> b',
           options: options,
@@ -204,7 +214,9 @@ void main() {
           matchedWord: 'aaaaaa',
           rank: 1,
           dictionary: Dictionary.commonWords,
-          changes: <PasswordChange>[PasswordChange(l33t: '4', clean: 'a')],
+          changes: <PasswordChange>[
+            const PasswordChange(l33t: '4', clean: 'a'),
+          ],
           changesDisplay: '4 -> a',
           options: options,
         );
@@ -225,7 +237,9 @@ void main() {
           matchedWord: 'aaaaaa',
           rank: 1,
           dictionary: Dictionary.commonWords,
-          changes: <PasswordChange>[PasswordChange(l33t: '4', clean: 'a')],
+          changes: <PasswordChange>[
+            const PasswordChange(l33t: '4', clean: 'a'),
+          ],
           changesDisplay: '4 -> a',
           options: options,
         );
@@ -247,8 +261,8 @@ void main() {
           rank: 1,
           dictionary: Dictionary.commonWords,
           changes: <PasswordChange>[
-            PasswordChange(l33t: '4', clean: 'a'),
-            PasswordChange(l33t: '+', clean: 't'),
+            const PasswordChange(l33t: '4', clean: 'a'),
+            const PasswordChange(l33t: '+', clean: 't'),
           ],
           changesDisplay: '4 -> a, + -> t',
           options: options,
@@ -270,7 +284,9 @@ void main() {
           matchedWord: 'wwwpassword',
           rank: 1,
           dictionary: Dictionary.commonWords,
-          changes: <PasswordChange>[PasswordChange(l33t: 'vv', clean: 'w')],
+          changes: <PasswordChange>[
+            const PasswordChange(l33t: 'vv', clean: 'w'),
+          ],
           changesDisplay: 'vv -> w',
           options: options,
         );
@@ -291,7 +307,9 @@ void main() {
           matchedWord: 'AaaaaA',
           rank: 1,
           dictionary: Dictionary.commonWords,
-          changes: <PasswordChange>[PasswordChange(l33t: '4', clean: 'a')],
+          changes: <PasswordChange>[
+            const PasswordChange(l33t: '4', clean: 'a'),
+          ],
           changesDisplay: '4 -> a',
           options: options,
         );

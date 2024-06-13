@@ -48,13 +48,13 @@ void main() {
       () => expect(
         timeEstimates.estimateAttackTimes(10),
         AttackTimesTest(
-          crackTimesSeconds: CrackTimesSeconds(
+          crackTimesSeconds: const CrackTimesSeconds(
             onlineThrottling100PerHour: 360,
             onlineNoThrottling10PerSecond: 1,
             offlineSlowHashing1e4PerSecond: 0.001,
             offlineFastHashing1e10PerSecond: 1e-9,
           ),
-          crackTimesDisplay: CrackTimesDisplay(
+          crackTimesDisplay: const CrackTimesDisplay(
             onlineThrottling100PerHour: '6 minutes',
             onlineNoThrottling10PerSecond: '1 second',
             offlineSlowHashing1e4PerSecond: 'less than a second',
@@ -70,13 +70,13 @@ void main() {
       () => expect(
         timeEstimates.estimateAttackTimes(100000),
         AttackTimesTest(
-          crackTimesSeconds: CrackTimesSeconds(
+          crackTimesSeconds: const CrackTimesSeconds(
             onlineThrottling100PerHour: 3600000,
             onlineNoThrottling10PerSecond: 10000,
             offlineSlowHashing1e4PerSecond: 10,
             offlineFastHashing1e10PerSecond: 0.00001,
           ),
-          crackTimesDisplay: CrackTimesDisplay(
+          crackTimesDisplay: const CrackTimesDisplay(
             onlineThrottling100PerHour: '1 month',
             onlineNoThrottling10PerSecond: '3 hours',
             offlineSlowHashing1e4PerSecond: '10 seconds',
@@ -92,13 +92,13 @@ void main() {
       () => expect(
         timeEstimates.estimateAttackTimes(10000000),
         AttackTimesTest(
-          crackTimesSeconds: CrackTimesSeconds(
+          crackTimesSeconds: const CrackTimesSeconds(
             onlineThrottling100PerHour: 360000000,
             onlineNoThrottling10PerSecond: 1000000,
             offlineSlowHashing1e4PerSecond: 1000,
             offlineFastHashing1e10PerSecond: 0.001,
           ),
-          crackTimesDisplay: CrackTimesDisplay(
+          crackTimesDisplay: const CrackTimesDisplay(
             onlineThrottling100PerHour: '11 years',
             onlineNoThrottling10PerSecond: '12 days',
             offlineSlowHashing1e4PerSecond: '17 minutes',
@@ -114,13 +114,13 @@ void main() {
       () => expect(
         timeEstimates.estimateAttackTimes(1000000000),
         AttackTimesTest(
-          crackTimesSeconds: CrackTimesSeconds(
+          crackTimesSeconds: const CrackTimesSeconds(
             onlineThrottling100PerHour: 36000000000,
             onlineNoThrottling10PerSecond: 100000000,
             offlineSlowHashing1e4PerSecond: 100000,
             offlineFastHashing1e10PerSecond: 0.1,
           ),
-          crackTimesDisplay: CrackTimesDisplay(
+          crackTimesDisplay: const CrackTimesDisplay(
             onlineThrottling100PerHour: 'centuries',
             onlineNoThrottling10PerSecond: '3 years',
             offlineSlowHashing1e4PerSecond: '1 day',
@@ -136,13 +136,13 @@ void main() {
       () => expect(
         timeEstimates.estimateAttackTimes(100000000000),
         AttackTimesTest(
-          crackTimesSeconds: CrackTimesSeconds(
+          crackTimesSeconds: const CrackTimesSeconds(
             onlineThrottling100PerHour: 3600000000000,
             onlineNoThrottling10PerSecond: 10000000000,
             offlineSlowHashing1e4PerSecond: 10000000,
             offlineFastHashing1e10PerSecond: 10,
           ),
-          crackTimesDisplay: CrackTimesDisplay(
+          crackTimesDisplay: const CrackTimesDisplay(
             onlineThrottling100PerHour: 'centuries',
             onlineNoThrottling10PerSecond: 'centuries',
             offlineSlowHashing1e4PerSecond: '4 months',

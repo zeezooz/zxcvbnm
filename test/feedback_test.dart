@@ -49,7 +49,7 @@ void main() {
         );
         expect(
           feedback,
-          FeedbackTest(),
+          const FeedbackTest(),
         );
       },
     );
