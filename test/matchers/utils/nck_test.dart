@@ -1,8 +1,8 @@
 import 'package:test/test.dart';
-import 'package:zxcvbnm/src/scoring/utils.dart';
+import 'package:zxcvbnm/src/matchers/utils/nck.dart';
 
 void main() {
-  group('Scoring utils: nCk.', () {
+  group('nCk.', () {
     test('Should calculate correctly.', () {
       const List<List<int>> data = <List<int>>[
         <int>[0, 0, 1],

@@ -7,7 +7,7 @@ import 'package:zxcvbnm/src/types.dart';
 import 'package:zxcvbnm/zxcvbnm.dart';
 
 import 'helper/password_tests.dart';
-import 'matcher/dictionary/matching_test.dart';
+import 'matchers/dictionary_matcher_test.dart';
 
 class ResultTest extends Result {
   ResultTest({
@@ -104,7 +104,7 @@ void main() {
                 dictionary: Dictionary.passwords,
                 guesses: 115,
                 uppercaseVariations: 1,
-                l33tVariations: 1,
+                extraVariations: 1,
               ),
             ],
           ),
@@ -157,7 +157,7 @@ void main() {
                 dictionary: Dictionary.userInputs,
                 guesses: 1,
                 uppercaseVariations: 1,
-                l33tVariations: 1,
+                extraVariations: 1,
               ),
             ],
           ),
@@ -207,7 +207,7 @@ void main() {
                 dictionary: Dictionary.userInputs,
                 guesses: 36,
                 uppercaseVariations: 36,
-                l33tVariations: 1,
+                extraVariations: 1,
               ),
             ],
           ),
@@ -257,7 +257,7 @@ void main() {
                 dictionary: Dictionary.userInputs,
                 guesses: 1,
                 uppercaseVariations: 1,
-                l33tVariations: 1,
+                extraVariations: 1,
               ),
             ],
           ),
@@ -295,7 +295,7 @@ void main() {
                 dictionary: Dictionary.passwords,
                 guesses: 115,
                 uppercaseVariations: 1,
-                l33tVariations: 1,
+                extraVariations: 1,
               ),
             ],
           ),

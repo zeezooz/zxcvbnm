@@ -2,9 +2,9 @@ import 'dart:math';
 
 import '../feedback.dart';
 import '../options.dart';
-import '../scoring/utils.dart';
 import '../types.dart';
 import 'base_matcher.dart';
+import 'utils/nck.dart';
 
 /// Matches spatial sequences (qwerty/dvorak/keypad and so on).
 class SpatialMatcher extends BaseMatcher {

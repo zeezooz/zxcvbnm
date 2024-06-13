@@ -80,7 +80,7 @@ void main() {
     final Options options = Options();
 
     test('Lowercase regex.', () {
-      final String token = 'aizocdk';
+      const String token = 'aizocdk';
       final RegExMatch match = RegExMatch(
         password: token,
         start: 0,

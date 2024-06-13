@@ -1,84 +1,22 @@
 import 'package:test/test.dart';
 import 'package:zxcvbnm/languages/en.dart';
-import 'package:zxcvbnm/src/matcher/dictionary/matching.dart';
+import 'package:zxcvbnm/src/matchers/dictionary_matcher.dart';
+import 'package:zxcvbnm/src/matchers/utils/nck.dart';
 import 'package:zxcvbnm/src/options.dart';
 import 'package:zxcvbnm/src/types.dart';
 
-import '../../helper/generate_passwords.dart';
-import 'variants/matching/reverse_test.dart';
-
-class DictionaryMatchTest extends DictionaryMatch {
-  DictionaryMatchTest({
-    required String password,
-    required int start,
-    required int end,
-    required String matchedWord,
-    required int rank,
-    required Dictionary dictionary,
-    int? levenshteinDistance,
-    String? levenshteinDistanceEntry,
-    double? guesses,
-    double? uppercaseVariations,
-    double? l33tVariations,
-    Options? options,
-  })  : guessesTest = guesses,
-        uppercaseVariationsTest = uppercaseVariations,
-        l33tVariationsTest = l33tVariations,
-        super(
-          password: password,
-          start: start,
-          end: end,
-          matchedWord: matchedWord,
-          rank: rank,
-          dictionary: dictionary,
-          levenshteinDistance: levenshteinDistance,
-          levenshteinDistanceEntry: levenshteinDistanceEntry,
-          options: options ?? Options(),
-        );
-
-  final double? guessesTest;
-  final double? uppercaseVariationsTest;
-  final double? l33tVariationsTest;
-
-  @override
-  double get guesses => guessesTest ?? super.guesses;
-
-  @override
-  double get uppercaseVariations =>
-      uppercaseVariationsTest ?? super.uppercaseVariations;
-
-  @override
-  double get l33tVariations => l33tVariationsTest ?? super.l33tVariations;
-
-  @override
-  // ignore: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
-  bool operator ==(Object other) =>
-      other is DictionaryMatch &&
-      password == other.password &&
-      start == other.start &&
-      end == other.end &&
-      matchedWord == other.matchedWord &&
-      rank == other.rank &&
-      dictionary == other.dictionary &&
-      levenshteinDistance == other.levenshteinDistance &&
-      levenshteinDistanceEntry == other.levenshteinDistanceEntry &&
-      (guessesTest == null || guessesTest == other.guesses) &&
-      (uppercaseVariationsTest == null ||
-          uppercaseVariationsTest == other.uppercaseVariations) &&
-      (l33tVariationsTest == null ||
-          l33tVariationsTest == other.l33tVariations);
-}
+import '../helper/generate_passwords.dart';
 
 void main() {
-  group('Dictionary matching.', () {
+  group('DictionaryMatcher.', () {
     group('Default dictionaries.', () {
       final Options options = Options(dictionaries: dictionaries);
-      final MatchDictionary matchDictionary = MatchDictionary(options);
+      final DictionaryMatcher dictionaryMatcher = DictionaryMatcher(options);
 
       test(
         'Default dictionaries.',
         () => expect(
-          matchDictionary.match('we'),
+          dictionaryMatcher.match('we'),
           <Matcher>[
             containsOnce(
               DictionaryMatchTest(
@@ -97,7 +35,7 @@ void main() {
       test(
         'Default dictionaries with duplicates.',
         () => expect(
-          matchDictionary.match('elk'),
+          dictionaryMatcher.match('elk'),
           <List<DictionaryMatch>>[
             <DictionaryMatch>[
               DictionaryMatchTest(
@@ -124,14 +62,6 @@ void main() {
                 rank: 16651,
                 dictionary: Dictionary.commonWords,
               ),
-              ReverseMatchTest(
-                password: 'elk',
-                start: 0,
-                end: 2,
-                matchedWord: 'le',
-                rank: 975,
-                dictionary: Dictionary.lastNames,
-              ),
             ],
           ],
         ),
@@ -151,14 +81,14 @@ void main() {
           Dictionary.passwords: <String>['z', '8', '99', r'$', 'asdf1234&*'],
         },
       );
-      final MatchDictionary matchDictionary = MatchDictionary(options);
+      final DictionaryMatcher dictionaryMatcher = DictionaryMatcher(options);
 
       test(
         'Matches words that contain other words.',
         () => expect(
-          matchDictionary.match('motherboard'),
-          <List<DictionaryMatchTest>>[
-            <DictionaryMatchTest>[
+          dictionaryMatcher.match('motherboard'),
+          <List<DictionaryMatch>>[
+            <DictionaryMatch>[
               DictionaryMatchTest(
                 password: 'motherboard',
                 start: 0,
@@ -191,9 +121,9 @@ void main() {
       test(
         'Matches multiple words when they overlap.',
         () => expect(
-          matchDictionary.match('abcdef'),
-          <List<DictionaryMatchTest>>[
-            <DictionaryMatchTest>[
+          dictionaryMatcher.match('abcdef'),
+          <List<DictionaryMatch>>[
+            <DictionaryMatch>[
               DictionaryMatchTest(
                 password: 'abcdef',
                 start: 0,
@@ -218,9 +148,9 @@ void main() {
       test(
         'Ignores uppercase.',
         () => expect(
-          matchDictionary.match('BoaRdZ'),
-          <List<DictionaryMatchTest>>[
-            <DictionaryMatchTest>[
+          dictionaryMatcher.match('BoaRdZ'),
+          <List<DictionaryMatch>>[
+            <DictionaryMatch>[
               DictionaryMatchTest(
                 password: 'BoaRdZ',
                 start: 0,
@@ -252,9 +182,9 @@ void main() {
               generatePasswords(token, prefixes, suffixes);
           for (final IndexedPassword password in passwords) {
             expect(
-              matchDictionary.match(password.password),
-              <List<DictionaryMatchTest>>[
-                <DictionaryMatchTest>[
+              dictionaryMatcher.match(password.password),
+              <List<DictionaryMatch>>[
+                <DictionaryMatch>[
                   DictionaryMatchTest(
                     password: password.password,
                     start: password.start,
@@ -278,9 +208,9 @@ void main() {
             rankedDictionary.forEach((String word, int rank) {
               if (word == 'motherboard') return;
               expect(
-                matchDictionary.match(word),
-                <List<DictionaryMatchTest>>[
-                  <DictionaryMatchTest>[
+                dictionaryMatcher.match(word),
+                <List<DictionaryMatch>>[
+                  <DictionaryMatch>[
                     DictionaryMatchTest(
                       password: word,
                       start: 0,
@@ -304,15 +234,15 @@ void main() {
           Dictionary.userInputs: <String>['foo', 'bar'],
         },
       );
-      final MatchDictionary matchDictionary = MatchDictionary(options);
+      final DictionaryMatcher dictionaryMatcher = DictionaryMatcher(options);
 
       test(
         'Matches with provided user input dictionary.',
         () {
           expect(
-            matchDictionary.match('foobar'),
-            <List<DictionaryMatchTest>>[
-              <DictionaryMatchTest>[
+            dictionaryMatcher.match('foobar'),
+            <List<DictionaryMatch>>[
+              <DictionaryMatch>[
                 DictionaryMatchTest(
                   password: 'foobar',
                   start: 0,
@@ -335,5 +265,168 @@ void main() {
         },
       );
     });
+
+    group('Uppercase scoring.', () {
+      final Options options = Options();
+      final List<List<Object>> data = <List<Object>>[
+        <Object>['', 1],
+        <Object>['a', 1],
+        <Object>['A', 2],
+        <Object>['abcdef', 1],
+        <Object>['Abcdef', 2],
+        <Object>['abcdeF', 2],
+        <Object>['ABCDEF', 2],
+        <Object>['aBcdef', nCk(6, 1)],
+        <Object>['aBcDef', nCk(6, 1) + nCk(6, 2)],
+        <Object>['ABCDEf', nCk(6, 1)],
+        <Object>['aBCDEf', nCk(6, 1) + nCk(6, 2)],
+        <Object>['ABCdef', nCk(6, 1) + nCk(6, 2) + nCk(6, 3)],
+      ];
+      for (final List<Object> item in data) {
+        final String token = item[0] as String;
+        final num score = item[1] as num;
+        test(
+          "Guess multiplier of '$token'.",
+          () {
+            final DictionaryMatch match = DictionaryMatch(
+              password: token,
+              start: 0,
+              end: token.length,
+              matchedWord: token,
+              rank: 1,
+              dictionary: Dictionary.commonWords,
+              options: options,
+            );
+            expect(
+              match.uppercaseVariations,
+              score,
+            );
+          },
+        );
+      }
+    });
   });
+
+  group('DictionaryMatch guesses.', () {
+    final Options options = Options();
+
+    test(
+      'Base guesses.',
+      () {
+        final DictionaryMatch match = DictionaryMatch(
+          password: 'aaaaa',
+          start: 0,
+          end: 5,
+          matchedWord: 'aaaaa',
+          rank: 32,
+          dictionary: Dictionary.commonWords,
+          options: options,
+        );
+        expect(
+          match.estimatedGuesses,
+          32,
+        );
+      },
+    );
+
+    test(
+      'Capitalization.',
+      () {
+        final DictionaryMatch match = DictionaryMatch(
+          password: 'AAAaaa',
+          start: 0,
+          end: 6,
+          matchedWord: 'aaaaaa',
+          rank: 32,
+          dictionary: Dictionary.commonWords,
+          options: options,
+        );
+        expect(
+          match.estimatedGuesses,
+          32 * match.uppercaseVariations,
+        );
+      },
+    );
+
+    test(
+      'Diceware findings.',
+      () {
+        final DictionaryMatch match = DictionaryMatch(
+          password: 'AaA@@@',
+          start: 0,
+          end: 6,
+          matchedWord: 'AaA@@@',
+          rank: 32,
+          dictionary: Dictionary.diceware,
+          options: options,
+        );
+        expect(
+          match.estimatedGuesses,
+          3888,
+        );
+      },
+    );
+  });
+}
+
+class DictionaryMatchTest extends DictionaryMatch {
+  DictionaryMatchTest({
+    required String password,
+    required int start,
+    required int end,
+    required String matchedWord,
+    required int rank,
+    required Dictionary dictionary,
+    int? levenshteinDistance,
+    String? levenshteinDistanceEntry,
+    double? guesses,
+    double? uppercaseVariations,
+    double? extraVariations,
+    Options? options,
+  })  : guessesTest = guesses,
+        uppercaseVariationsTest = uppercaseVariations,
+        extraVariationsTest = extraVariations,
+        super(
+          password: password,
+          start: start,
+          end: end,
+          matchedWord: matchedWord,
+          rank: rank,
+          dictionary: dictionary,
+          levenshteinDistance: levenshteinDistance,
+          levenshteinDistanceEntry: levenshteinDistanceEntry,
+          options: options ?? Options(),
+        );
+
+  final double? guessesTest;
+  final double? uppercaseVariationsTest;
+  final double? extraVariationsTest;
+
+  @override
+  double get guesses => guessesTest ?? super.guesses;
+
+  @override
+  double get uppercaseVariations =>
+      uppercaseVariationsTest ?? super.uppercaseVariations;
+
+  @override
+  double get extraVariations => extraVariationsTest ?? super.extraVariations;
+
+  @override
+  // ignore: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
+  bool operator ==(Object other) =>
+      other is DictionaryMatch &&
+      password == other.password &&
+      start == other.start &&
+      end == other.end &&
+      matchedWord == other.matchedWord &&
+      rank == other.rank &&
+      dictionary == other.dictionary &&
+      levenshteinDistance == other.levenshteinDistance &&
+      levenshteinDistanceEntry == other.levenshteinDistanceEntry &&
+      (guessesTest == null || guessesTest == other.guesses) &&
+      (uppercaseVariationsTest == null ||
+          uppercaseVariationsTest == other.uppercaseVariations) &&
+      (extraVariationsTest == null ||
+          extraVariationsTest == other.extraVariations);
 }

@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import '../data/const.dart';
 import '../matchers/base_matcher.dart';
 import '../matchers/brute_force_matcher.dart';
 import '../options.dart';
@@ -112,7 +111,7 @@ class ScoringHelper {
     // Calculate the minimization function.
     double g = factorial(sequenceLength) * pi;
     if (!excludeAdditive) {
-      g += pow(minGuessesBeforeGrowingSequence.toDouble(), sequenceLength - 1);
+      g += pow(minGuessesBeforeGrowingSequence, sequenceLength - 1);
     }
     // Update state if new best.
     // First see if any competing sequences covering this prefix,
@@ -130,6 +129,8 @@ class ScoringHelper {
           Optimal(m: match, pi: pi, g: g);
     }
   }
+
+  double get minGuessesBeforeGrowingSequence => 10000;
 
   // Helper: evaluate bruteforce matches ending at passwordCharIndex.
   void bruteforceUpdate(int passwordCharIndex) {

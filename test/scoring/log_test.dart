@@ -6,24 +6,6 @@ import 'package:zxcvbnm/src/scoring/utils.dart';
 void main() {
   group('Scoring utils: log.', () {
     test(
-      'log2 should calculate correctly.',
-      () {
-        const List<List<double>> data = <List<double>>[
-          <double>[1, 0],
-          <double>[2, 1],
-          <double>[4, 2],
-          <double>[32, 5],
-        ];
-        for (final List<double> item in data) {
-          expect(
-            log2(item[0]),
-            item[1],
-          );
-        }
-      },
-    );
-
-    test(
       'log10 should calculate correctly.',
       () {
         const List<List<double>> data = <List<double>>[

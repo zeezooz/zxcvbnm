@@ -1,36 +1,6 @@
 import 'package:test/test.dart';
-import 'package:zxcvbnm/src/matcher/dictionary/variants/matching/unmunger/clean_password.dart';
-import 'package:zxcvbnm/src/matcher/dictionary/variants/matching/unmunger/trie_node.dart';
-
-class IndexedPasswordChangesTest extends IndexedPasswordChange {
-  const IndexedPasswordChangesTest({
-    required String l33t,
-    required String clean,
-    required int i,
-  }) : super(l33t: l33t, clean: clean, i: i);
-
-  @override
-  // ignore: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
-  bool operator ==(Object other) =>
-      other is IndexedPasswordChange &&
-      l33t == other.l33t &&
-      clean == other.clean &&
-      i == other.i;
-}
-
-class PasswordWithChangesTest extends PasswordWithChanges {
-  const PasswordWithChangesTest({
-    required String password,
-    required List<IndexedPasswordChangesTest> changes,
-  }) : super(password: password, changes: changes);
-
-  @override
-  // ignore: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
-  bool operator ==(Object other) =>
-      other is PasswordWithChanges &&
-      password == other.password &&
-      changes.join(',') == other.changes.join(',');
-}
+import 'package:zxcvbnm/src/matchers/utils/clean_password.dart';
+import 'package:zxcvbnm/src/matchers/utils/trie_node.dart';
 
 void main() {
   group('cleanPassword', () {
@@ -50,7 +20,7 @@ void main() {
       () => expect(
         cleanPassword(r'P4|_|$nn4rd', 100, trieNode),
         <PasswordWithChangesTest>[
-          PasswordWithChangesTest(
+          const PasswordWithChangesTest(
             password: r'Pau$mard',
             changes: <IndexedPasswordChangesTest>[
               IndexedPasswordChangesTest(
@@ -513,4 +483,34 @@ void main() {
       ),
     );
   });
+}
+
+class IndexedPasswordChangesTest extends IndexedPasswordChange {
+  const IndexedPasswordChangesTest({
+    required String l33t,
+    required String clean,
+    required int i,
+  }) : super(l33t: l33t, clean: clean, start: i);
+
+  @override
+  // ignore: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
+  bool operator ==(Object other) =>
+      other is IndexedPasswordChange &&
+      l33t == other.l33t &&
+      clean == other.clean &&
+      start == other.start;
+}
+
+class PasswordWithChangesTest extends PasswordWithChanges {
+  const PasswordWithChangesTest({
+    required String password,
+    required List<IndexedPasswordChangesTest> changes,
+  }) : super(password: password, changes: changes);
+
+  @override
+  // ignore: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
+  bool operator ==(Object other) =>
+      other is PasswordWithChanges &&
+      password == other.password &&
+      changes.join(',') == other.changes.join(',');
 }

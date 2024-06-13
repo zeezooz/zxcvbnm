@@ -3,15 +3,15 @@ import 'package:zxcvbnm/languages/en.dart';
 import 'package:zxcvbnm/src/feedback.dart';
 import 'package:zxcvbnm/src/matchers/base_matcher.dart';
 import 'package:zxcvbnm/src/matchers/brute_force_matcher.dart';
+import 'package:zxcvbnm/src/matchers/utils/clean_password.dart';
 import 'package:zxcvbnm/src/options.dart';
-import 'package:zxcvbnm/src/types.dart';
 
-import 'matcher/dictionary/matching_test.dart';
-import 'matcher/dictionary/variants/matching/l33t_test.dart';
-import 'matcher/dictionary/variants/matching/reverse_test.dart';
 import 'matchers/date_matcher_test.dart';
+import 'matchers/dictionary_matcher_test.dart';
+import 'matchers/l33t_matcher_test.dart';
 import 'matchers/reg_ex_matcher_test.dart';
 import 'matchers/repeat_matcher_test.dart';
+import 'matchers/reverse_matcher_test.dart';
 import 'matchers/sequence_matcher_test.dart';
 import 'matchers/spatial_matcher_test.dart';
 
@@ -112,7 +112,7 @@ void main() {
               dictionary: Dictionary.passwords,
               guesses: 10000,
               uppercaseVariations: 0,
-              l33tVariations: 0,
+              extraVariations: 0,
               options: options,
             ),
           ],
@@ -138,7 +138,7 @@ void main() {
               dictionary: Dictionary.passwords,
               guesses: 10000,
               uppercaseVariations: 0,
-              l33tVariations: 0,
+              extraVariations: 0,
               options: options,
             ),
           ],
@@ -164,7 +164,7 @@ void main() {
               dictionary: Dictionary.passwords,
               guesses: 10000,
               uppercaseVariations: 0,
-              l33tVariations: 0,
+              extraVariations: 0,
               options: options,
             ),
           ],
@@ -190,7 +190,7 @@ void main() {
               dictionary: Dictionary.passwords,
               guesses: 10000,
               uppercaseVariations: 0,
-              l33tVariations: 0,
+              extraVariations: 0,
               changes: <PasswordChange>[],
               changesDisplay: '',
               options: options,
@@ -221,7 +221,7 @@ void main() {
               dictionary: Dictionary.passwords,
               guesses: 10000,
               uppercaseVariations: 0,
-              l33tVariations: 0,
+              extraVariations: 0,
               options: options,
             ),
           ],
@@ -250,7 +250,7 @@ void main() {
               dictionary: Dictionary.passwords,
               guesses: 100000,
               uppercaseVariations: 0,
-              l33tVariations: 0,
+              extraVariations: 0,
               options: options,
             ),
           ],
@@ -279,7 +279,7 @@ void main() {
               dictionary: Dictionary.passwords,
               guesses: 100000,
               uppercaseVariations: 0,
-              l33tVariations: 0,
+              extraVariations: 0,
               options: options,
             ),
           ],
@@ -308,7 +308,7 @@ void main() {
               dictionary: Dictionary.wikipedia,
               guesses: 10000,
               uppercaseVariations: 0,
-              l33tVariations: 0,
+              extraVariations: 0,
               options: options,
             ),
           ],
@@ -334,7 +334,7 @@ void main() {
               dictionary: Dictionary.wikipedia,
               guesses: 10000,
               uppercaseVariations: 0,
-              l33tVariations: 0,
+              extraVariations: 0,
               options: options,
             ),
             DictionaryMatchTest(
@@ -346,7 +346,7 @@ void main() {
               dictionary: Dictionary.wikipedia,
               guesses: 10000,
               uppercaseVariations: 0,
-              l33tVariations: 0,
+              extraVariations: 0,
               options: options,
             ),
           ],
@@ -371,7 +371,7 @@ void main() {
               dictionary: Dictionary.commonWords,
               guesses: 10000,
               uppercaseVariations: 0,
-              l33tVariations: 0,
+              extraVariations: 0,
               options: options,
             ),
           ],
@@ -396,7 +396,7 @@ void main() {
               dictionary: Dictionary.lastNames,
               guesses: 10000,
               uppercaseVariations: 0,
-              l33tVariations: 0,
+              extraVariations: 0,
               options: options,
             ),
           ],
@@ -422,7 +422,7 @@ void main() {
               dictionary: Dictionary.firstNames,
               guesses: 10000,
               uppercaseVariations: 0,
-              l33tVariations: 0,
+              extraVariations: 0,
               options: options,
             ),
           ],
@@ -448,7 +448,7 @@ void main() {
               dictionary: Dictionary.firstNames,
               guesses: 10000,
               uppercaseVariations: 0,
-              l33tVariations: 0,
+              extraVariations: 0,
               options: options,
             ),
             DictionaryMatchTest(
@@ -460,7 +460,7 @@ void main() {
               dictionary: Dictionary.firstNames,
               guesses: 10000,
               uppercaseVariations: 0,
-              l33tVariations: 0,
+              extraVariations: 0,
               options: options,
             ),
           ],
@@ -486,7 +486,7 @@ void main() {
               dictionary: Dictionary.userInputs,
               guesses: 10000,
               uppercaseVariations: 0,
-              l33tVariations: 0,
+              extraVariations: 0,
               options: options,
             ),
           ],

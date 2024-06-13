@@ -1,13 +1,13 @@
 import 'package:test/test.dart';
 import 'package:zxcvbnm/languages/en.dart';
 import 'package:zxcvbnm/src/matchers/base_matcher.dart';
+import 'package:zxcvbnm/src/matchers/utils/clean_password.dart';
 import 'package:zxcvbnm/src/matching.dart';
 import 'package:zxcvbnm/src/options.dart';
-import 'package:zxcvbnm/src/types.dart';
 
-import 'matcher/dictionary/matching_test.dart';
-import 'matcher/dictionary/variants/matching/l33t_test.dart';
 import 'matchers/date_matcher_test.dart';
+import 'matchers/dictionary_matcher_test.dart';
+import 'matchers/l33t_matcher_test.dart';
 import 'matchers/repeat_matcher_test.dart';
 
 void main() {

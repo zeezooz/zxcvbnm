@@ -1,29 +1,8 @@
 import 'package:test/test.dart';
-import 'package:zxcvbnm/src/matcher/dictionary/variants/matching/unmunger/trie_node.dart';
-
-class TrieNodeTest extends TrieNode {
-  TrieNodeTest({
-    String l33t = '',
-    List<String>? cleanList,
-    Map<String, TrieNodeTest>? children,
-  }) : super(l33t: l33t, cleanList: cleanList, children: children);
-
-  @override
-  // ignore: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
-  bool operator ==(Object other) {
-    if (other is! TrieNode ||
-        l33t != other.l33t ||
-        cleanList.join(',') != other.cleanList.join(',') ||
-        children.length != other.children.length) return false;
-    for (final String key in children.keys) {
-      if (children[key] != other.children[key]) return false;
-    }
-    return true;
-  }
-}
+import 'package:zxcvbnm/src/matchers/utils/trie_node.dart';
 
 void main() {
-  group('L33t table to trie node.', () {
+  group('TrieNode.fromL33tTable.', () {
     test(
       'Should convert correctly.',
       () {
@@ -135,4 +114,25 @@ void main() {
       },
     );
   });
+}
+
+class TrieNodeTest extends TrieNode {
+  TrieNodeTest({
+    String l33t = '',
+    List<String>? cleanList,
+    Map<String, TrieNodeTest>? children,
+  }) : super(l33t: l33t, cleanList: cleanList, children: children);
+
+  @override
+  // ignore: avoid_equals_and_hash_code_on_mutable_classes, hash_and_equals
+  bool operator ==(Object other) {
+    if (other is! TrieNode ||
+        l33t != other.l33t ||
+        cleanList.join(',') != other.cleanList.join(',') ||
+        children.length != other.children.length) return false;
+    for (final String key in children.keys) {
+      if (children[key] != other.children[key]) return false;
+    }
+    return true;
+  }
 }

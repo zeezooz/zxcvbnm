@@ -1,4 +1,4 @@
-import '../types.dart';
+import '../options.dart';
 
 const L33tTable l33tTableDefault = <String, List<String>>{
   'a': <String>['4', '@'],

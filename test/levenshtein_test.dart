@@ -2,11 +2,12 @@ import 'package:test/test.dart';
 import 'package:zxcvbnm/languages/en.dart';
 import 'package:zxcvbnm/src/feedback.dart';
 import 'package:zxcvbnm/src/matchers/base_matcher.dart';
+import 'package:zxcvbnm/src/matchers/dictionary_matcher.dart';
 import 'package:zxcvbnm/src/options.dart';
 import 'package:zxcvbnm/src/types.dart';
 import 'package:zxcvbnm/zxcvbnm.dart';
 
-import 'matcher/dictionary/matching_test.dart';
+import 'matchers/dictionary_matcher_test.dart';
 import 'zxcvbnm_test.dart';
 
 void main() {
@@ -56,7 +57,7 @@ void main() {
               levenshteinDistanceEntry: 'ishduehgldueod83h4mfis8',
               guesses: 1,
               uppercaseVariations: 1,
-              l33tVariations: 1,
+              extraVariations: 1,
             ),
           ],
         ),
@@ -100,7 +101,7 @@ void main() {
               levenshteinDistanceEntry: 'elephant',
               guesses: 344,
               uppercaseVariations: 1,
-              l33tVariations: 1,
+              extraVariations: 1,
             ),
           ],
         ),

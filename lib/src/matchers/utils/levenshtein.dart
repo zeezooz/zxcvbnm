@@ -1,13 +1,13 @@
 import 'package:algorithmic/string_metrics.dart' show levenshteinDistanceOf;
 
-import 'types.dart';
-
+/// Returns the first entry from the [entries] whose Levenshtein distance
+/// from the [password] is less than the [threshold].
 LevenshteinDistance? levenshteinDistance(
   String password,
-  RankedDictionary rankedDictionary,
+  Iterable<String> entries,
   int threshold,
 ) {
-  for (final String entry in rankedDictionary.keys) {
+  for (final String entry in entries) {
     // If password is too small use the password length divided by 4 while
     // the threshold needs to be at least 1.
     final int usedThreshold =
@@ -17,21 +17,23 @@ LevenshteinDistance? levenshteinDistance(
     if ((password.length - entry.length).abs() > usedThreshold) continue;
     final int distance = levenshteinDistanceOf(password, entry);
     if (distance <= usedThreshold) {
-      return LevenshteinDistance(
-        distance: distance,
-        entry: entry,
-      );
+      return LevenshteinDistance(distance: distance, entry: entry);
     }
   }
   return null;
 }
 
+/// A Levenshtein distance and the corresponding entry.
 class LevenshteinDistance {
+  /// Creates a new instance.
   const LevenshteinDistance({
     required this.distance,
     required this.entry,
   });
 
+  /// The Levenshtein distance.
   final int distance;
+
+  /// The matched string.
   final String entry;
 }

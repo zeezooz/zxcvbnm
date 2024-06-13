@@ -1,11 +1,13 @@
 import 'dart:async';
 
 import 'helper.dart';
-import 'matcher/dictionary/matching.dart';
 import 'matchers/base_matcher.dart';
 import 'matchers/date_matcher.dart';
+import 'matchers/dictionary_matcher.dart';
+import 'matchers/l33t_matcher.dart';
 import 'matchers/reg_ex_matcher.dart';
 import 'matchers/repeat_matcher.dart';
+import 'matchers/reverse_matcher.dart';
 import 'matchers/separator_matcher.dart';
 import 'matchers/sequence_matcher.dart';
 import 'matchers/spatial_matcher.dart';
@@ -16,11 +18,14 @@ typedef Matchers = List<BaseMatcher>;
 /// All matchers combined.
 class OmniMatcher extends BaseMatcher {
   OmniMatcher(this.options) {
+    final DictionaryMatcher dictionaryMatcher = DictionaryMatcher(options);
     matchers = <BaseMatcher>[
       DateMatcher(options),
-      MatchDictionary(options),
+      dictionaryMatcher,
+      L33tMatcher(options, dictionaryMatcher),
       RegExMatcher(options),
       RepeatMatcher(this),
+      ReverseMatcher(options, dictionaryMatcher),
       SeparatorMatcher(),
       SequenceMatcher(options),
       SpatialMatcher(options),

@@ -1,7 +1,7 @@
 import 'data/l33t_table.dart';
 import 'data/translation_keys.dart';
-import 'matcher/dictionary/variants/matching/unmunger/trie_node.dart';
 import 'matchers/base_matcher.dart';
+import 'matchers/utils/trie_node.dart';
 import 'types.dart';
 
 class Options {
@@ -190,3 +190,32 @@ class Options {
     return result;
   }
 }
+
+/// Types of dictionaries.
+enum Dictionary {
+  /// The dictionary used to generate a password by rolling dice.
+  /// https://en.wikipedia.org/wiki/Diceware
+  diceware,
+
+  /// The most often used passwords.
+  passwords,
+
+  /// The most often used words.
+  commonWords,
+
+  /// The most common first names.
+  firstNames,
+
+  /// The most common last names.
+  lastNames,
+
+  /// The most often used words from Wikipedia.
+  wikipedia,
+
+  /// The optional user dictionary.
+  userInputs,
+}
+
+typedef Dictionaries = Map<Dictionary, List<Object>>;
+
+typedef L33tTable = Map<String, List<String>>;

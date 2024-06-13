@@ -2,10 +2,12 @@ import 'package:zxcvbnm/languages/en.dart';
 import 'package:zxcvbnm/src/feedback.dart';
 import 'package:zxcvbnm/src/matchers/base_matcher.dart';
 import 'package:zxcvbnm/src/matchers/brute_force_matcher.dart';
+import 'package:zxcvbnm/src/matchers/utils/clean_password.dart';
+import 'package:zxcvbnm/src/options.dart';
 import 'package:zxcvbnm/src/types.dart';
 
-import '../matcher/dictionary/matching_test.dart';
-import '../matcher/dictionary/variants/matching/l33t_test.dart';
+import '../matchers/dictionary_matcher_test.dart';
+import '../matchers/l33t_matcher_test.dart';
 import '../matchers/reg_ex_matcher_test.dart';
 import '../matchers/repeat_matcher_test.dart';
 import '../matchers/sequence_matcher_test.dart';
@@ -44,7 +46,7 @@ final List<ResultTest> passwordTests = <ResultTest>[
         dictionary: Dictionary.passwords,
         guesses: 363,
         uppercaseVariations: 1,
-        l33tVariations: 1,
+        extraVariations: 1,
       ),
     ],
   ),
@@ -79,7 +81,7 @@ final List<ResultTest> passwordTests = <ResultTest>[
         dictionary: Dictionary.passwords,
         guesses: 726,
         uppercaseVariations: 2,
-        l33tVariations: 1,
+        extraVariations: 1,
       ),
     ],
   ),
@@ -114,7 +116,7 @@ final List<ResultTest> passwordTests = <ResultTest>[
         dictionary: Dictionary.passwords,
         guesses: 726,
         uppercaseVariations: 2,
-        l33tVariations: 1,
+        extraVariations: 1,
       ),
     ],
   ),
@@ -197,7 +199,7 @@ final List<ResultTest> passwordTests = <ResultTest>[
         dictionary: Dictionary.passwords,
         guesses: 1238,
         uppercaseVariations: 2,
-        l33tVariations: 1,
+        extraVariations: 1,
       ),
       BruteForceMatchTest(
         password: 'TESTERINO',
@@ -277,7 +279,7 @@ final List<ResultTest> passwordTests = <ResultTest>[
         dictionary: Dictionary.passwords,
         guesses: 108,
         uppercaseVariations: 2,
-        l33tVariations: 1,
+        extraVariations: 1,
       ),
     ],
   ),
@@ -312,7 +314,7 @@ final List<ResultTest> passwordTests = <ResultTest>[
         dictionary: Dictionary.passwords,
         guesses: 104,
         uppercaseVariations: 1,
-        l33tVariations: 1,
+        extraVariations: 1,
       ),
     ],
   ),
@@ -347,7 +349,7 @@ final List<ResultTest> passwordTests = <ResultTest>[
         dictionary: Dictionary.passwords,
         guesses: 2977,
         uppercaseVariations: 1,
-        l33tVariations: 1,
+        extraVariations: 1,
       ),
     ],
   ),
@@ -382,7 +384,7 @@ final List<ResultTest> passwordTests = <ResultTest>[
         dictionary: Dictionary.passwords,
         guesses: 104,
         uppercaseVariations: 1,
-        l33tVariations: 1,
+        extraVariations: 1,
       ),
       BruteForceMatchTest(
         password: '1234qwert',
@@ -423,7 +425,7 @@ final List<ResultTest> passwordTests = <ResultTest>[
         dictionary: Dictionary.passwords,
         guesses: 2,
         uppercaseVariations: 1,
-        l33tVariations: 1,
+        extraVariations: 1,
       ),
     ],
   ),
@@ -586,7 +588,7 @@ final List<ResultTest> passwordTests = <ResultTest>[
         changesDisplay: r'4 -> a, $ -> s, 0 -> o',
         guesses: 32,
         uppercaseVariations: 2,
-        l33tVariations: 8,
+        extraVariations: 8,
       ),
     ],
   ),
@@ -653,7 +655,7 @@ final List<ResultTest> passwordTests = <ResultTest>[
         dictionary: Dictionary.wikipedia,
         guesses: 50,
         uppercaseVariations: 1,
-        l33tVariations: 1,
+        extraVariations: 1,
       ),
       DictionaryMatchTest(
         password: 'dgo9dsghasdoghi8/!&IT%§(ihsdhf8o7o',
@@ -664,7 +666,7 @@ final List<ResultTest> passwordTests = <ResultTest>[
         dictionary: Dictionary.commonWords,
         guesses: 50,
         uppercaseVariations: 1,
-        l33tVariations: 1,
+        extraVariations: 1,
       ),
       SequenceMatchTest(
         password: 'dgo9dsghasdoghi8/!&IT%§(ihsdhf8o7o',
@@ -839,7 +841,7 @@ final List<ResultTest> passwordTests = <ResultTest>[
         dictionary: Dictionary.commonWords,
         guesses: 862,
         uppercaseVariations: 1,
-        l33tVariations: 1,
+        extraVariations: 1,
       ),
       BruteForceMatchTest(
         password: 'horse stable battery',
@@ -856,7 +858,7 @@ final List<ResultTest> passwordTests = <ResultTest>[
         dictionary: Dictionary.wikipedia,
         guesses: 2181,
         uppercaseVariations: 1,
-        l33tVariations: 1,
+        extraVariations: 1,
       ),
     ],
   ),

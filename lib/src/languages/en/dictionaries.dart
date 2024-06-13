@@ -1,4 +1,4 @@
-import '../../types.dart';
+import '../../options.dart';
 import '../common/dictionaries.dart' as common;
 import 'common_words.dart';
 import 'first_names.dart';

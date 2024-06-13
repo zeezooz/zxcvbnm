@@ -1,19 +1,20 @@
 import 'dart:collection';
 
-import '../../../../../types.dart';
 import 'trie_node.dart';
 
+/// Returns up to [limit] variants of the [password] with replacements
+/// from the [trieRoot].
 List<PasswordWithChanges> cleanPassword(
-  String string,
+  String password,
   int limit,
   TrieNode trieRoot,
 ) {
   final List<PasswordWithChanges> result = <PasswordWithChanges>[];
   for (final bool allChanges in <bool>[true, false]) {
-    final Queue<QueueItem> queue = Queue<QueueItem>()
+    final Queue<_QueueItem> queue = Queue<_QueueItem>()
       ..add(
-        QueueItem(
-          string: string,
+        _QueueItem(
+          password: password,
           index: 0,
           clean: '',
           changes: <IndexedPasswordChange>[],
@@ -22,13 +23,14 @@ List<PasswordWithChanges> cleanPassword(
         ),
       );
     while (queue.isNotEmpty) {
-      final QueueItem item = queue.removeLast();
+      final _QueueItem item = queue.removeLast();
       if (item.nextChanges.isNotEmpty) {
         if (!allChanges) {
-          final String character = string.substring(item.index, item.index + 1);
+          final String character =
+              password.substring(item.index, item.index + 1);
           queue.add(
-            QueueItem(
-              string: string,
+            _QueueItem(
+              password: password,
               index: item.index + 1,
               clean: item.clean + character,
               changes: item.changes,
@@ -37,10 +39,10 @@ List<PasswordWithChanges> cleanPassword(
             ),
           );
         }
-        queue.addAll(<QueueItem>[
+        queue.addAll(<_QueueItem>[
           for (final IndexedPasswordChange change in item.nextChanges.reversed)
-            QueueItem(
-              string: string,
+            _QueueItem(
+              password: password,
               index: item.index + change.l33t.length,
               clean: item.clean + change.clean,
               changes: <IndexedPasswordChange>[...item.changes, change],
@@ -48,7 +50,8 @@ List<PasswordWithChanges> cleanPassword(
               trieRoot: trieRoot,
             ),
         ]);
-      } else if (item.index >= string.length && allChanges == item.allChanges) {
+      } else if (item.index >= password.length &&
+          allChanges == item.allChanges) {
         result.add(
           PasswordWithChanges(
             password: item.clean,
@@ -62,35 +65,61 @@ List<PasswordWithChanges> cleanPassword(
   return result;
 }
 
+/// A changed password and replacements made.
 class PasswordWithChanges {
+  /// Creates a new instance.
   const PasswordWithChanges({
     required this.password,
     required this.changes,
   });
 
+  /// The password with [changes].
   final String password;
+
+  /// The replacements made.
   final List<IndexedPasswordChange> changes;
 
   @override
   String toString() => '"$password" (${changes.join(', ')})';
 }
 
+/// A replacement in a password.
+class PasswordChange {
+  /// Creates a new instance.
+  const PasswordChange({
+    required this.l33t,
+    required this.clean,
+  });
+
+  /// The original string.
+  final String l33t;
+
+  /// The replaced string.
+  final String clean;
+
+  @override
+  String toString() => '$l33t -> $clean';
+}
+
+/// A replacement in a password with [start] index.
 class IndexedPasswordChange extends PasswordChange {
+  /// Creates a new instance.
   const IndexedPasswordChange({
     required String l33t,
     required String clean,
-    required this.i,
+    required this.start,
   }) : super(l33t: l33t, clean: clean);
 
-  final int i;
+  /// The index of a password were the replacement was made.
+  final int start;
 
   @override
-  String toString() => '$l33t -> $clean [$i]';
+  String toString() => '$l33t -> $clean [$start]';
 }
 
-class QueueItem {
-  QueueItem({
-    required this.string,
+class _QueueItem {
+  _QueueItem({
+    required this.password,
     required int index,
     required String clean,
     required this.changes,
@@ -101,8 +130,8 @@ class QueueItem {
     do {
       final List<TrieNode> nodes = <TrieNode>[];
       TrieNode? current = trieRoot;
-      for (int i = _index; i < string.length; i++) {
-        final String character = string.substring(i, i + 1);
+      for (int i = _index; i < password.length; i++) {
+        final String character = password.substring(i, i + 1);
         current = current?.children[character];
         if (current == null) break;
         nodes.add(current);
@@ -115,20 +144,20 @@ class QueueItem {
             IndexedPasswordChange(
               l33t: current.l33t,
               clean: clean,
-              i: _clean.length,
+              start: _clean.length,
             ),
           );
         }
       }
-      if (nextChanges.isEmpty && _index < string.length) {
-        final String character = string.substring(_index, _index + 1);
+      if (nextChanges.isEmpty && _index < password.length) {
+        final String character = password.substring(_index, _index + 1);
         _index++;
         _clean += character;
       }
-    } while (nextChanges.isEmpty && _index < string.length);
+    } while (nextChanges.isEmpty && _index < password.length);
   }
 
-  final String string;
+  final String password;
   int _index;
   int get index => _index;
   String _clean;

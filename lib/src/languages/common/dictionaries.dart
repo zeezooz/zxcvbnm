@@ -1,4 +1,4 @@
-import '../../types.dart';
+import '../../options.dart';
 import 'diceware.dart';
 import 'passwords.dart';
 
