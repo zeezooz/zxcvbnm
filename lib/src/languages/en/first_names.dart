@@ -1,4 +1,6 @@
 // ignore_for_file: type=lint
+
+/// The most common first names.
 const List<String> firstNames = [
   "aaren",
   "aarika",

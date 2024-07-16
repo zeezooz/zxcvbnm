@@ -1,12 +1,10 @@
-import 'data/l33t_table.dart';
-import 'data/translation_keys.dart';
+import 'languages/common/l33t_table.dart' as common;
 import 'matchers/base_matcher.dart';
 import 'matchers/utils/trie_node.dart';
 import 'types.dart';
 
 class Options {
   Options({
-    this.translation = translationKeys,
     List<BaseMatcher>? matchers,
     Dictionaries? dictionaries,
     L33tTable? l33tTable,
@@ -17,16 +15,10 @@ class Options {
     this.maxLength = 256,
   })  : matchers = matchers ?? <BaseMatcher>[],
         _dictionaries = dictionaries ?? <Dictionary, List<Object>>{},
-        _l33tTable = l33tTable ?? l33tTableDefault,
-        _trieNodeRoot = TrieNode.fromL33tTable(l33tTable ?? l33tTableDefault) {
+        _l33tTable = l33tTable ?? common.l33tTable,
+        _trieNodeRoot = TrieNode.fromL33tTable(l33tTable ?? common.l33tTable) {
     _setRankedDictionaries();
   }
-
-  /// Defines an object with a key value match to translate the feedback
-  /// given by this library. The default values are plain keys so that you
-  /// can use your own i18n library. Already implemented language can be
-  /// found with something like @zxcvbn-ts/language-en.
-  Translation translation;
 
   final List<BaseMatcher> matchers;
 
@@ -99,7 +91,6 @@ class Options {
   int get minYearSpace => 20;
 
   Options copyWith({
-    Translation? translation,
     List<BaseMatcher>? matchers,
     Dictionaries? dictionaries,
     List<Object>? userInputs,
@@ -120,7 +111,6 @@ class Options {
         ],
     };
     return Options(
-      translation: translation ?? this.translation,
       matchers: matchers ?? this.matchers,
       dictionaries: newDictionaries,
       l33tTable: l33tTable ?? _l33tTable,

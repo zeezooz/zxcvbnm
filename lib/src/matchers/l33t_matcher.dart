@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import '../feedback.dart';
+import '../languages/common/translation.dart';
 import '../options.dart';
 import 'base_matcher.dart';
 import 'dictionary_matcher.dart';
@@ -12,7 +13,7 @@ class L33tMatcher extends BaseMatcher {
   /// Creates a matcher.
   L33tMatcher(this.options, this.dictionaryMatcher);
 
-  /// Options and translation.
+  /// Options.
   final Options options;
 
   /// A matcher to check cleaned words.
@@ -103,7 +104,6 @@ class L33tMatch extends DictionaryMatch {
     String? levenshteinDistanceEntry,
     required this.changes,
     required this.changesDisplay,
-    required Options options,
   }) : super(
           password: password,
           start: start,
@@ -113,7 +113,6 @@ class L33tMatch extends DictionaryMatch {
           dictionary: dictionary,
           levenshteinDistance: levenshteinDistance,
           levenshteinDistanceEntry: levenshteinDistanceEntry,
-          options: options,
         );
 
   /// The changes made in the [password] to match the [matchedWord].
@@ -186,7 +185,7 @@ class L33tMatch extends DictionaryMatch {
       warning: feedback?.warning,
       suggestions: <String>[
         ...?feedback?.suggestions,
-        options.translation.suggestions.l33t,
+        Translation.suggestions.l33t,
       ],
     );
   }

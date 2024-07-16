@@ -1,13 +1,11 @@
 import 'package:test/test.dart';
 import 'package:zxcvbnm/src/matchers/sequence_matcher.dart';
-import 'package:zxcvbnm/src/options.dart';
 
-import '../helper/generate_passwords.dart';
+import '../helpers/generate_passwords.dart';
 
 void main() {
   group('SequenceMatcher.', () {
-    final Options options = Options();
-    final SequenceMatcher sequenceMatcher = SequenceMatcher(options);
+    final SequenceMatcher sequenceMatcher = SequenceMatcher();
 
     test(
       "Doesn't match without sequences.",
@@ -125,7 +123,6 @@ void main() {
   });
 
   group('SequenceMatch guesses.', () {
-    final Options options = Options();
     const List<List<Object>> data = <List<Object>>[
       <Object>['ab', true, 4 * 2], // obvious start * len 2
       <Object>['XYZ', true, 26 * 3], // base26 * len 3
@@ -147,7 +144,6 @@ void main() {
             name: '',
             space: 0,
             ascending: ascending,
-            options: options,
           );
           expect(
             match.estimatedGuesses,
@@ -168,7 +164,6 @@ class SequenceMatchTest extends SequenceMatch {
     required int space,
     required bool ascending,
     double? guesses,
-    Options? options,
   })  : guessesTest = guesses,
         super(
           password: password,
@@ -177,7 +172,6 @@ class SequenceMatchTest extends SequenceMatch {
           name: name,
           space: space,
           ascending: ascending,
-          options: options ?? Options(),
         );
 
   final double? guessesTest;

@@ -9,4 +9,7 @@ pubspec.lock
 # IDE files
 /.idea/
 
+#API documentation
+/doc/api/
+
 **/.DS_Store

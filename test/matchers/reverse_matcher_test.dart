@@ -11,7 +11,7 @@ void main() {
       },
     );
     final ReverseMatcher matchReverse =
-        ReverseMatcher(options, DictionaryMatcher(options));
+        ReverseMatcher(DictionaryMatcher(options));
 
     test(
       'Matches against reversed words.',
@@ -45,8 +45,6 @@ void main() {
   });
 
   group('ReverseMatch guesses.', () {
-    final Options options = Options();
-
     test(
       'Word is reversed.',
       () {
@@ -57,7 +55,6 @@ void main() {
           matchedWord: 'aaa',
           rank: 32,
           dictionary: Dictionary.commonWords,
-          options: options,
         );
         expect(
           match.estimatedGuesses,
@@ -81,7 +78,6 @@ class ReverseMatchTest extends ReverseMatch {
     double? guesses,
     double? uppercaseVariations,
     double? extraVariations,
-    Options? options,
   })  : guessesTest = guesses,
         uppercaseVariationsTest = uppercaseVariations,
         extraVariationsTest = extraVariations,
@@ -94,7 +90,6 @@ class ReverseMatchTest extends ReverseMatch {
           dictionary: dictionary,
           levenshteinDistance: levenshteinDistance,
           levenshteinDistanceEntry: levenshteinDistanceEntry,
-          options: options ?? Options(),
         );
 
   final double? guessesTest;

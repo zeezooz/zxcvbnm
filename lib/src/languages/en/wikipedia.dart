@@ -1,4 +1,6 @@
 // ignore_for_file: type=lint
+
+/// The most often used words from Wikipedia.
 const List<String> wikipedia = [
   "the",
   "of",

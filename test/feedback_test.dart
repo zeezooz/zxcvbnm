@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'package:test/test.dart';
 import 'package:zxcvbnm/languages/en.dart';
 import 'package:zxcvbnm/src/feedback.dart';
@@ -31,8 +33,6 @@ class FeedbackTest extends Feedback {
 
 void main() {
   group('Feedback.', () {
-    final Options options = Options(translation: translation);
-
     test(
       'Should return no feedback for a good password.',
       () {
@@ -45,7 +45,6 @@ void main() {
               end: 0,
             ),
           ],
-          options,
         );
         expect(
           feedback,
@@ -60,14 +59,13 @@ void main() {
         final Feedback feedback = Feedback.fromMatches(
           3,
           <BaseMatch>[],
-          options,
         );
         expect(
           feedback,
-          FeedbackTest(
+          const FeedbackTest(
             suggestions: <String>[
-              options.translation.suggestions.useWords,
-              options.translation.suggestions.noNeed,
+              'Use multiple words, but avoid common phrases.',
+              'You can create strong passwords without using symbols, numbers, or uppercase letters.',
             ],
           ),
         );
@@ -86,12 +84,11 @@ void main() {
               end: 0,
             ),
           ],
-          options,
         );
         expect(
           feedback,
-          FeedbackTest(
-            suggestions: <String>[options.translation.suggestions.anotherWord],
+          const FeedbackTest(
+            suggestions: <String>['Add more words that are less common.'],
           ),
         );
       },
@@ -113,16 +110,14 @@ void main() {
               guesses: 10000,
               uppercaseVariations: 0,
               extraVariations: 0,
-              options: options,
             ),
           ],
-          options,
         );
         expect(
           feedback,
-          FeedbackTest(
-            warning: options.translation.warnings.topTen,
-            suggestions: <String>[options.translation.suggestions.anotherWord],
+          const FeedbackTest(
+            warning: 'This is a heavily used password.',
+            suggestions: <String>['Add more words that are less common.'],
           ),
         );
 
@@ -139,16 +134,14 @@ void main() {
               guesses: 10000,
               uppercaseVariations: 0,
               extraVariations: 0,
-              options: options,
             ),
           ],
-          options,
         );
         expect(
           feedback,
-          FeedbackTest(
-            warning: options.translation.warnings.topHundred,
-            suggestions: <String>[options.translation.suggestions.anotherWord],
+          const FeedbackTest(
+            warning: 'This is a frequently used password.',
+            suggestions: <String>['Add more words that are less common.'],
           ),
         );
 
@@ -165,16 +158,14 @@ void main() {
               guesses: 10000,
               uppercaseVariations: 0,
               extraVariations: 0,
-              options: options,
             ),
           ],
-          options,
         );
         expect(
           feedback,
-          FeedbackTest(
-            warning: options.translation.warnings.common,
-            suggestions: <String>[options.translation.suggestions.anotherWord],
+          const FeedbackTest(
+            warning: 'This is a commonly used password.',
+            suggestions: <String>['Add more words that are less common.'],
           ),
         );
 
@@ -193,18 +184,16 @@ void main() {
               extraVariations: 0,
               changes: <PasswordChange>[],
               changesDisplay: '',
-              options: options,
             ),
           ],
-          options,
         );
         expect(
           feedback,
-          FeedbackTest(
-            warning: options.translation.warnings.similarToCommon,
+          const FeedbackTest(
+            warning: 'This is similar to a commonly used password.',
             suggestions: <String>[
-              options.translation.suggestions.anotherWord,
-              options.translation.suggestions.l33t,
+              'Add more words that are less common.',
+              'Avoid predictable letter substitutions like "@" for "a".',
             ],
           ),
         );
@@ -222,18 +211,16 @@ void main() {
               guesses: 10000,
               uppercaseVariations: 0,
               extraVariations: 0,
-              options: options,
             ),
           ],
-          options,
         );
         expect(
           feedback,
-          FeedbackTest(
-            warning: options.translation.warnings.similarToCommon,
+          const FeedbackTest(
+            warning: 'This is similar to a commonly used password.',
             suggestions: <String>[
-              options.translation.suggestions.anotherWord,
-              options.translation.suggestions.reverseWords,
+              'Add more words that are less common.',
+              'Avoid reversed spellings of common words.',
             ],
           ),
         );
@@ -251,18 +238,16 @@ void main() {
               guesses: 100000,
               uppercaseVariations: 0,
               extraVariations: 0,
-              options: options,
             ),
           ],
-          options,
         );
         expect(
           feedback,
-          FeedbackTest(
+          const FeedbackTest(
             suggestions: <String>[
-              options.translation.suggestions.anotherWord,
-              options.translation.suggestions.capitalization,
-              options.translation.suggestions.reverseWords,
+              'Add more words that are less common.',
+              'Capitalize more than the first letter.',
+              'Avoid reversed spellings of common words.',
             ],
           ),
         );
@@ -280,18 +265,16 @@ void main() {
               guesses: 100000,
               uppercaseVariations: 0,
               extraVariations: 0,
-              options: options,
             ),
           ],
-          options,
         );
         expect(
           feedback,
-          FeedbackTest(
+          const FeedbackTest(
             suggestions: <String>[
-              options.translation.suggestions.anotherWord,
-              options.translation.suggestions.allUppercase,
-              options.translation.suggestions.reverseWords,
+              'Add more words that are less common.',
+              'Capitalize some, but not all letters.',
+              'Avoid reversed spellings of common words.',
             ],
           ),
         );
@@ -309,16 +292,14 @@ void main() {
               guesses: 10000,
               uppercaseVariations: 0,
               extraVariations: 0,
-              options: options,
             ),
           ],
-          options,
         );
         expect(
           feedback,
-          FeedbackTest(
-            warning: options.translation.warnings.wordByItself,
-            suggestions: <String>[options.translation.suggestions.anotherWord],
+          const FeedbackTest(
+            warning: 'Single words are easy to guess.',
+            suggestions: <String>['Add more words that are less common.'],
           ),
         );
 
@@ -335,7 +316,6 @@ void main() {
               guesses: 10000,
               uppercaseVariations: 0,
               extraVariations: 0,
-              options: options,
             ),
             DictionaryMatchTest(
               password: 'tests',
@@ -347,15 +327,13 @@ void main() {
               guesses: 10000,
               uppercaseVariations: 0,
               extraVariations: 0,
-              options: options,
             ),
           ],
-          options,
         );
         expect(
           feedback,
-          FeedbackTest(
-            suggestions: <String>[options.translation.suggestions.anotherWord],
+          const FeedbackTest(
+            suggestions: <String>['Add more words that are less common.'],
           ),
         );
 
@@ -372,15 +350,13 @@ void main() {
               guesses: 10000,
               uppercaseVariations: 0,
               extraVariations: 0,
-              options: options,
             ),
           ],
-          options,
         );
         expect(
           feedback,
-          FeedbackTest(
-            suggestions: <String>[options.translation.suggestions.anotherWord],
+          const FeedbackTest(
+            suggestions: <String>['Add more words that are less common.'],
           ),
         );
 
@@ -397,16 +373,14 @@ void main() {
               guesses: 10000,
               uppercaseVariations: 0,
               extraVariations: 0,
-              options: options,
             ),
           ],
-          options,
         );
         expect(
           feedback,
-          FeedbackTest(
-            warning: options.translation.warnings.namesByThemselves,
-            suggestions: <String>[options.translation.suggestions.anotherWord],
+          const FeedbackTest(
+            warning: 'Single names or surnames are easy to guess.',
+            suggestions: <String>['Add more words that are less common.'],
           ),
         );
 
@@ -423,16 +397,14 @@ void main() {
               guesses: 10000,
               uppercaseVariations: 0,
               extraVariations: 0,
-              options: options,
             ),
           ],
-          options,
         );
         expect(
           feedback,
-          FeedbackTest(
-            warning: options.translation.warnings.namesByThemselves,
-            suggestions: <String>[options.translation.suggestions.anotherWord],
+          const FeedbackTest(
+            warning: 'Single names or surnames are easy to guess.',
+            suggestions: <String>['Add more words that are less common.'],
           ),
         );
 
@@ -449,7 +421,6 @@ void main() {
               guesses: 10000,
               uppercaseVariations: 0,
               extraVariations: 0,
-              options: options,
             ),
             DictionaryMatchTest(
               password: 'tests',
@@ -461,16 +432,14 @@ void main() {
               guesses: 10000,
               uppercaseVariations: 0,
               extraVariations: 0,
-              options: options,
             ),
           ],
-          options,
         );
         expect(
           feedback,
-          FeedbackTest(
-            warning: options.translation.warnings.commonNames,
-            suggestions: <String>[options.translation.suggestions.anotherWord],
+          const FeedbackTest(
+            warning: 'Common names and surnames are easy to guess.',
+            suggestions: <String>['Add more words that are less common.'],
           ),
         );
 
@@ -487,16 +456,14 @@ void main() {
               guesses: 10000,
               uppercaseVariations: 0,
               extraVariations: 0,
-              options: options,
             ),
           ],
-          options,
         );
         expect(
           feedback,
-          FeedbackTest(
-            warning: options.translation.warnings.userInputs,
-            suggestions: <String>[options.translation.suggestions.anotherWord],
+          const FeedbackTest(
+            warning: 'There should not be any personal or page related data.',
+            suggestions: <String>['Add more words that are less common.'],
           ),
         );
       },
@@ -517,18 +484,17 @@ void main() {
               turns: 1,
               shiftedCount: 0,
               guesses: 1,
-              options: options,
             ),
           ],
-          options,
         );
         expect(
           feedback,
-          FeedbackTest(
-            warning: options.translation.warnings.straightRow,
+          const FeedbackTest(
+            warning:
+                'Straight rows of keys on your keyboard are easy to guess.',
             suggestions: <String>[
-              options.translation.suggestions.anotherWord,
-              options.translation.suggestions.longerKeyboardPattern,
+              'Add more words that are less common.',
+              'Use longer keyboard patterns and change typing direction multiple times.',
             ],
           ),
         );
@@ -545,18 +511,16 @@ void main() {
               turns: 2,
               shiftedCount: 0,
               guesses: 1,
-              options: options,
             ),
           ],
-          options,
         );
         expect(
           feedback,
-          FeedbackTest(
-            warning: options.translation.warnings.keyPattern,
+          const FeedbackTest(
+            warning: 'Short keyboard patterns are easy to guess.',
             suggestions: <String>[
-              options.translation.suggestions.anotherWord,
-              options.translation.suggestions.longerKeyboardPattern,
+              'Add more words that are less common.',
+              'Use longer keyboard patterns and change typing direction multiple times.',
             ],
           ),
         );
@@ -576,18 +540,16 @@ void main() {
               baseToken: 'a',
               baseGuesses: 1,
               guesses: 1,
-              options: options,
             ),
           ],
-          options,
         );
         expect(
           feedback,
-          FeedbackTest(
-            warning: options.translation.warnings.simpleRepeat,
+          const FeedbackTest(
+            warning: 'Repeated characters like "aaa" are easy to guess.',
             suggestions: <String>[
-              options.translation.suggestions.anotherWord,
-              options.translation.suggestions.repeated,
+              'Add more words that are less common.',
+              'Avoid repeated words and characters.',
             ],
           ),
         );
@@ -602,18 +564,17 @@ void main() {
               baseToken: 'aa',
               baseGuesses: 1,
               guesses: 1,
-              options: options,
             ),
           ],
-          options,
         );
         expect(
           feedback,
-          FeedbackTest(
-            warning: options.translation.warnings.extendedRepeat,
+          const FeedbackTest(
+            warning:
+                'Repeated character patterns like "abcabcabc" are easy to guess.',
             suggestions: <String>[
-              options.translation.suggestions.anotherWord,
-              options.translation.suggestions.repeated,
+              'Add more words that are less common.',
+              'Avoid repeated words and characters.',
             ],
           ),
         );
@@ -634,18 +595,16 @@ void main() {
               space: 0,
               ascending: false,
               guesses: 1,
-              options: options,
             ),
           ],
-          options,
         );
         expect(
           feedback,
-          FeedbackTest(
-            warning: options.translation.warnings.sequences,
+          const FeedbackTest(
+            warning: 'Common character sequences like "abc" are easy to guess.',
             suggestions: <String>[
-              options.translation.suggestions.anotherWord,
-              options.translation.suggestions.sequences,
+              'Add more words that are less common.',
+              'Avoid common character sequences.',
             ],
           ),
         );
@@ -664,19 +623,17 @@ void main() {
               end: 5,
               regExName: 'recentYear',
               guesses: 1,
-              options: options,
             ),
           ],
-          options,
         );
         expect(
           feedback,
-          FeedbackTest(
-            warning: options.translation.warnings.recentYears,
+          const FeedbackTest(
+            warning: 'Recent years are easy to guess.',
             suggestions: <String>[
-              options.translation.suggestions.anotherWord,
-              options.translation.suggestions.recentYears,
-              options.translation.suggestions.associatedYears,
+              'Add more words that are less common.',
+              'Avoid recent years.',
+              'Avoid years that are associated with you.',
             ],
           ),
         );
@@ -698,18 +655,16 @@ void main() {
               month: 1,
               day: 1,
               guesses: 1,
-              options: options,
             ),
           ],
-          options,
         );
         expect(
           feedback,
-          FeedbackTest(
-            warning: options.translation.warnings.dates,
+          const FeedbackTest(
+            warning: 'Dates are easy to guess.',
             suggestions: <String>[
-              options.translation.suggestions.anotherWord,
-              options.translation.suggestions.dates,
+              'Add more words that are less common.',
+              'Avoid dates and years that are associated with you.',
             ],
           ),
         );

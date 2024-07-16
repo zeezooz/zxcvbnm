@@ -13,7 +13,6 @@ import 'matchers/repeat_matcher_test.dart';
 void main() {
   group('Omnimatch matching.', () {
     final Options options = Options(
-      translation: translation,
       dictionaries: dictionaries,
     );
     final OmniMatcher omniMatcher = OmniMatcher(options);

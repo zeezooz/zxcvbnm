@@ -1,22 +1,20 @@
 import 'package:test/test.dart';
 import 'package:zxcvbnm/src/matchers/base_matcher.dart';
 import 'package:zxcvbnm/src/matchers/separator_matcher.dart';
-import 'package:zxcvbnm/src/options.dart';
 import 'package:zxcvbnm/src/scoring/index.dart';
 
-import '../helper/password_tests.dart';
+import '../helpers/password_tests.dart';
 import '../matchers/separator_matcher_test.dart';
 
 void main() {
   group('Scoring search.', () {
-    final Options options = Options();
     const bool excludeAdditive = true;
     const String password = '0123456789';
 
     test(
       'Returns one bruteforce match given an empty match sequence.',
       () => expect(
-        mostGuessableMatchSequence(password, <BaseMatch>[], options).sequence,
+        mostGuessableMatchSequence(password, <BaseMatch>[]).sequence,
         <BaseMatch>[BruteForceMatchTest(password: password, start: 0, end: 10)],
       ),
     );
@@ -34,7 +32,6 @@ void main() {
         final MatchSequence matchSequence = mostGuessableMatchSequence(
           password,
           matches,
-          options,
           excludeAdditive: excludeAdditive,
         );
         expect(
@@ -64,7 +61,6 @@ void main() {
         final MatchSequence matchSequence = mostGuessableMatchSequence(
           password,
           matches,
-          options,
           excludeAdditive: excludeAdditive,
         );
         expect(
@@ -94,7 +90,6 @@ void main() {
         final MatchSequence matchSequence = mostGuessableMatchSequence(
           password,
           matches,
-          options,
           excludeAdditive: excludeAdditive,
         );
         expect(
@@ -140,7 +135,6 @@ void main() {
         final MatchSequence matchSequence1 = mostGuessableMatchSequence(
           password,
           <BaseMatch>[match1, match2],
-          options,
           excludeAdditive: excludeAdditive,
         );
         expect(
@@ -150,7 +144,6 @@ void main() {
         final MatchSequence matchSequence2 = mostGuessableMatchSequence(
           password,
           <BaseMatch>[match3, match2],
-          options,
           excludeAdditive: excludeAdditive,
         );
         expect(
@@ -186,7 +179,6 @@ void main() {
         final MatchSequence matchSequence = mostGuessableMatchSequence(
           password,
           matches,
-          options,
           excludeAdditive: excludeAdditive,
         );
         expect(
@@ -222,7 +214,6 @@ void main() {
         final MatchSequence matchSequence = mostGuessableMatchSequence(
           password,
           matches,
-          options,
           excludeAdditive: excludeAdditive,
         );
         expect(

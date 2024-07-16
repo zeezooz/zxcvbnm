@@ -5,7 +5,7 @@ import 'package:zxcvbnm/src/matching.dart';
 import 'package:zxcvbnm/src/options.dart';
 import 'package:zxcvbnm/src/scoring/index.dart';
 
-import '../helper/generate_passwords.dart';
+import '../helpers/generate_passwords.dart';
 
 void main() {
   group('RepeatMatcher.', () {
@@ -252,7 +252,6 @@ void main() {
           final double baseGuesses = mostGuessableMatchSequence(
             baseToken,
             synchronousMatches(omniMatcher.match(baseToken)),
-            options,
           ).guesses;
           final RepeatMatch match = RepeatMatch(
             password: token,
@@ -260,7 +259,6 @@ void main() {
             end: token.length,
             baseToken: baseToken,
             baseGuesses: baseGuesses,
-            options: options,
           );
           expect(
             match.estimatedGuesses,
@@ -281,7 +279,6 @@ class RepeatMatchTest extends RepeatMatch {
     required double baseGuesses,
     int? repeatCount,
     double? guesses,
-    Options? options,
   })  : repeatCountTest = repeatCount,
         guessesTest = guesses,
         super(
@@ -290,7 +287,6 @@ class RepeatMatchTest extends RepeatMatch {
           end: end,
           baseToken: baseToken,
           baseGuesses: baseGuesses,
-          options: options ?? Options(),
         );
 
   final int? repeatCountTest;

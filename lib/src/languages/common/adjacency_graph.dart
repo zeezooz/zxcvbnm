@@ -1,4 +1,6 @@
 // ignore_for_file: type=lint
+
+/// Define keyboard layouts as an object which are used to find sequences.
 const Map<String, Map<String, List<String?>>> adjacencyGraph = {
   "azerty": {
     "0": ["ç9", null, null, ")°", "pP", "oO"],

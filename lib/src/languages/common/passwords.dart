@@ -1,4 +1,6 @@
 // ignore_for_file: type=lint
+
+/// The most often used passwords.
 const List<String> passwords = [
   "123456",
   "password",

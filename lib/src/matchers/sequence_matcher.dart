@@ -1,15 +1,9 @@
 import '../feedback.dart';
-import '../options.dart';
+import '../languages/common/translation.dart';
 import 'base_matcher.dart';
 
 /// Matches sequences (abcdef).
 class SequenceMatcher extends BaseMatcher {
-  /// Creates a matcher.
-  SequenceMatcher(this.options);
-
-  /// Options and translation.
-  final Options options;
-
   @override
   List<List<SequenceMatch>> match(String password) {
     // Identifies sequences by looking for repeated differences in unicode
@@ -86,7 +80,6 @@ class SequenceMatcher extends BaseMatcher {
         name: name,
         space: space,
         ascending: delta > 0,
-        options: options,
       ),
     );
   }
@@ -107,7 +100,6 @@ class SequenceMatch extends BaseMatch {
     required this.name,
     required this.space,
     required this.ascending,
-    required this.options,
   }) : super(password: password, start: start, end: end);
 
   /// The name of the sequence.
@@ -118,9 +110,6 @@ class SequenceMatch extends BaseMatch {
 
   /// Whether the sequence is ascending.
   final bool ascending;
-
-  /// Options and translation.
-  final Options options;
 
   @override
   double get estimatedGuesses {
@@ -157,8 +146,8 @@ class SequenceMatch extends BaseMatch {
   @override
   Feedback? feedback({required bool isSoleMatch}) {
     return Feedback(
-      warning: options.translation.warnings.sequences,
-      suggestions: <String>[options.translation.suggestions.sequences],
+      warning: Translation.warnings.sequences,
+      suggestions: <String>[Translation.suggestions.sequences],
     );
   }
 

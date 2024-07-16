@@ -6,7 +6,7 @@ import 'package:zxcvbnm/src/options.dart';
 import 'package:zxcvbnm/src/types.dart';
 import 'package:zxcvbnm/zxcvbnm.dart';
 
-import 'helper/password_tests.dart';
+import 'helpers/password_tests.dart';
 import 'matchers/dictionary_matcher_test.dart';
 
 class ResultTest extends Result {
@@ -66,7 +66,6 @@ void main() {
       'Should check without userInputs.',
       () {
         final Options options = Options(
-          translation: translation,
           dictionaries: dictionaries,
           graph: adjacencyGraph,
         );
@@ -116,7 +115,6 @@ void main() {
       'Should check with userInputs.',
       () {
         final Options options = Options(
-          translation: translation,
           dictionaries: <Dictionary, List<Object>>{
             ...dictionaries,
             Dictionary.userInputs: <Object>['Test', 12, true, <Object>[]],
@@ -169,7 +167,6 @@ void main() {
       'Should check with userInputs on the fly.',
       () {
         final Options options = Options(
-          translation: translation,
           dictionaries: dictionaries,
           graph: adjacencyGraph,
         );
@@ -219,7 +216,6 @@ void main() {
       'Should check with userInputs on the fly without changing options.',
       () {
         final Options options = Options(
-          translation: translation,
           dictionaries: dictionaries,
           graph: adjacencyGraph,
         );
@@ -306,7 +302,6 @@ void main() {
 
   group('Attack vectors.', () {
     final Options options = Options(
-      translation: translation,
       dictionaries: dictionaries,
       graph: adjacencyGraph,
     );
@@ -338,7 +333,6 @@ void main() {
 
   group('Password tests.', () {
     final Options options = Options(
-      translation: translation,
       dictionaries: dictionaries,
       graph: adjacencyGraph,
     );

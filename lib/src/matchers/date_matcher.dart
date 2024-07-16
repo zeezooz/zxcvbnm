@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import '../feedback.dart';
+import '../languages/common/translation.dart';
 import '../matchers/base_matcher.dart';
 import '../options.dart';
 
@@ -9,7 +10,7 @@ class DateMatcher extends BaseMatcher {
   /// Creates a matcher.
   DateMatcher(this.options);
 
-  /// Options and translation.
+  /// Options.
   final Options options;
 
   /// Returns date matches for the [password].
@@ -309,7 +310,7 @@ class DateMatch extends BaseMatch {
   /// The day of the date.
   final int day;
 
-  /// Options and translation.
+  /// Options.
   final Options options;
 
   @override
@@ -326,8 +327,8 @@ class DateMatch extends BaseMatch {
   @override
   Feedback? feedback({required bool isSoleMatch}) {
     return Feedback(
-      warning: options.translation.warnings.dates,
-      suggestions: <String>[options.translation.suggestions.dates],
+      warning: Translation.warnings.dates,
+      suggestions: <String>[Translation.suggestions.dates],
     );
   }
 

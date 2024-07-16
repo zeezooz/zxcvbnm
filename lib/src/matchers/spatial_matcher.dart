@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import '../feedback.dart';
+import '../languages/common/translation.dart';
 import '../options.dart';
 import '../types.dart';
 import 'base_matcher.dart';
@@ -11,7 +12,7 @@ class SpatialMatcher extends BaseMatcher {
   /// Creates a matcher.
   SpatialMatcher(this.options);
 
-  /// Options and translation.
+  /// Options.
   final Options options;
 
   @override
@@ -89,7 +90,6 @@ class SpatialMatcher extends BaseMatcher {
                 graphName: graphName,
                 turns: turns,
                 shiftedCount: shiftedCount,
-                options: options,
               ),
             );
           }
@@ -117,7 +117,6 @@ class SpatialMatch extends BaseMatch {
     required this.graphName,
     required this.turns,
     required this.shiftedCount,
-    required this.options,
   }) : super(password: password, start: start, end: end);
 
   /// The matched adjacency graph.
@@ -131,9 +130,6 @@ class SpatialMatch extends BaseMatch {
 
   /// The number of characters when using the Shift key.
   final int shiftedCount;
-
-  /// Options and translation.
-  final Options options;
 
   @override
   double get estimatedGuesses {
@@ -173,10 +169,10 @@ class SpatialMatch extends BaseMatch {
   Feedback? feedback({required bool isSoleMatch}) {
     return Feedback(
       warning: turns == 1
-          ? options.translation.warnings.straightRow
-          : options.translation.warnings.keyPattern,
+          ? Translation.warnings.straightRow
+          : Translation.warnings.keyPattern,
       suggestions: <String>[
-        options.translation.suggestions.longerKeyboardPattern,
+        Translation.suggestions.longerKeyboardPattern,
       ],
     );
   }

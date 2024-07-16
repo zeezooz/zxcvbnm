@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import '../feedback.dart';
+import '../languages/common/translation.dart';
 import '../options.dart';
 import '../types.dart';
 import 'base_matcher.dart';
@@ -15,7 +16,7 @@ class DictionaryMatcher extends BaseMatcher {
   /// Creates a matcher.
   DictionaryMatcher(this.options);
 
-  /// Options and translation.
+  /// Options.
   final Options options;
 
   @override
@@ -71,7 +72,6 @@ class DictionaryMatcher extends BaseMatcher {
               dictionary: dictionary,
               levenshteinDistance: distance?.distance,
               levenshteinDistanceEntry: distance?.entry,
-              options: options,
             );
             if (dictionary == Dictionary.diceware) {
               // Always include matches from diceware because they're scored
@@ -101,7 +101,6 @@ class DictionaryMatch extends BaseMatch {
     required this.dictionary,
     this.levenshteinDistance,
     this.levenshteinDistanceEntry,
-    required this.options,
   }) : super(password: password, start: start, end: end);
 
   /// The matched word.
@@ -121,9 +120,6 @@ class DictionaryMatch extends BaseMatch {
   /// the [levenshteinDistance].
   final String? levenshteinDistanceEntry;
 
-  /// Options and translation.
-  final Options options;
-
   /// Converts the match to a [ReverseMatch].
   ReverseMatch toReverseMatch() => ReverseMatch(
         password: password.split('').reversed.join(''),
@@ -134,7 +130,6 @@ class DictionaryMatch extends BaseMatch {
         dictionary: dictionary,
         levenshteinDistance: levenshteinDistance,
         levenshteinDistanceEntry: levenshteinDistanceEntry,
-        options: options,
       );
 
   /// Converts the match to a [L33tMatch].
@@ -156,7 +151,6 @@ class DictionaryMatch extends BaseMatch {
         levenshteinDistanceEntry: levenshteinDistanceEntry,
         changes: changes,
         changesDisplay: changesDisplay,
-        options: options,
       );
 
   @override
@@ -229,14 +223,14 @@ class DictionaryMatch extends BaseMatch {
       case Dictionary.passwords:
         if (isSoleMatch && this is! L33tMatch && this is! ReverseMatch) {
           if (rank <= 10) {
-            warning = options.translation.warnings.topTen;
+            warning = Translation.warnings.topTen;
           } else if (rank <= 100) {
-            warning = options.translation.warnings.topHundred;
+            warning = Translation.warnings.topHundred;
           } else {
-            warning = options.translation.warnings.common;
+            warning = Translation.warnings.common;
           }
         } else if (guesses <= 1e4) {
-          warning = options.translation.warnings.similarToCommon;
+          warning = Translation.warnings.similarToCommon;
         } else {
           warning = null;
         }
@@ -244,23 +238,22 @@ class DictionaryMatch extends BaseMatch {
       case Dictionary.firstNames:
       case Dictionary.lastNames:
         warning = isSoleMatch
-            ? options.translation.warnings.namesByThemselves
-            : options.translation.warnings.commonNames;
+            ? Translation.warnings.namesByThemselves
+            : Translation.warnings.commonNames;
         break;
       case Dictionary.wikipedia:
-        warning =
-            isSoleMatch ? options.translation.warnings.wordByItself : null;
+        warning = isSoleMatch ? Translation.warnings.wordByItself : null;
         break;
       case Dictionary.userInputs:
-        warning = options.translation.warnings.userInputs;
+        warning = Translation.warnings.userInputs;
         break;
     }
     final List<String> suggestions;
     if (_startUpper.hasMatch(token)) {
-      suggestions = <String>[options.translation.suggestions.capitalization];
+      suggestions = <String>[Translation.suggestions.capitalization];
     } else if (_allUpperInverted.hasMatch(token) &&
         token.toLowerCase() != token) {
-      suggestions = <String>[options.translation.suggestions.allUppercase];
+      suggestions = <String>[Translation.suggestions.allUppercase];
     } else {
       suggestions = const <String>[];
     }

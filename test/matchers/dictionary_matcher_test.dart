@@ -5,7 +5,7 @@ import 'package:zxcvbnm/src/matchers/utils/nck.dart';
 import 'package:zxcvbnm/src/options.dart';
 import 'package:zxcvbnm/src/types.dart';
 
-import '../helper/generate_passwords.dart';
+import '../helpers/generate_passwords.dart';
 
 void main() {
   group('DictionaryMatcher.', () {
@@ -17,8 +17,8 @@ void main() {
         'Default dictionaries.',
         () => expect(
           dictionaryMatcher.match('we'),
-          <Matcher>[
-            containsOnce(
+          <List<DictionaryMatch>>[
+            <DictionaryMatch>[
               DictionaryMatchTest(
                 password: 'we',
                 start: 0,
@@ -27,7 +27,7 @@ void main() {
                 rank: 13,
                 dictionary: Dictionary.commonWords,
               ),
-            ),
+            ],
           ],
         ),
       );
@@ -267,7 +267,6 @@ void main() {
     });
 
     group('Uppercase scoring.', () {
-      final Options options = Options();
       final List<List<Object>> data = <List<Object>>[
         <Object>['', 1],
         <Object>['a', 1],
@@ -295,7 +294,6 @@ void main() {
               matchedWord: token,
               rank: 1,
               dictionary: Dictionary.commonWords,
-              options: options,
             );
             expect(
               match.uppercaseVariations,
@@ -308,8 +306,6 @@ void main() {
   });
 
   group('DictionaryMatch guesses.', () {
-    final Options options = Options();
-
     test(
       'Base guesses.',
       () {
@@ -320,7 +316,6 @@ void main() {
           matchedWord: 'aaaaa',
           rank: 32,
           dictionary: Dictionary.commonWords,
-          options: options,
         );
         expect(
           match.estimatedGuesses,
@@ -339,7 +334,6 @@ void main() {
           matchedWord: 'aaaaaa',
           rank: 32,
           dictionary: Dictionary.commonWords,
-          options: options,
         );
         expect(
           match.estimatedGuesses,
@@ -358,7 +352,6 @@ void main() {
           matchedWord: 'AaA@@@',
           rank: 32,
           dictionary: Dictionary.diceware,
-          options: options,
         );
         expect(
           match.estimatedGuesses,
@@ -382,7 +375,6 @@ class DictionaryMatchTest extends DictionaryMatch {
     double? guesses,
     double? uppercaseVariations,
     double? extraVariations,
-    Options? options,
   })  : guessesTest = guesses,
         uppercaseVariationsTest = uppercaseVariations,
         extraVariationsTest = extraVariations,
@@ -395,7 +387,6 @@ class DictionaryMatchTest extends DictionaryMatch {
           dictionary: dictionary,
           levenshteinDistance: levenshteinDistance,
           levenshteinDistanceEntry: levenshteinDistanceEntry,
-          options: options ?? Options(),
         );
 
   final double? guessesTest;

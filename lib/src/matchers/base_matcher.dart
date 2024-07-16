@@ -4,6 +4,7 @@ import 'dart:math';
 import '../feedback.dart';
 
 /// The base class for a matcher.
+// ignore: one_member_abstracts
 abstract class BaseMatcher {
   /// Should return the matches for the [password].
   ///

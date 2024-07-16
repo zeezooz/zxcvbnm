@@ -35,20 +35,19 @@ class Zxcvbnm {
     final List<BaseMatch> matches = synchronousMatches(result);
     final List<Future<List<BaseMatch>>> futures = asynchronousMatches(result);
     if (futures.isEmpty) {
-      return _returnValue(runOptions, matches, usedPassword, startTime);
+      return _returnValue(matches, usedPassword, startTime);
     }
     return Future.wait(futures).then((List<List<BaseMatch>> results) {
       for (final List<BaseMatch> result in results) {
         matches.addAll(result);
       }
-      return _returnValue(runOptions, matches, usedPassword, startTime);
+      return _returnValue(matches, usedPassword, startTime);
     });
   }
 
   int _time() => DateTime.now().millisecondsSinceEpoch;
 
   Result _returnValue(
-    Options options,
     List<BaseMatch> matches,
     String password,
     int startTime,
@@ -56,15 +55,12 @@ class Zxcvbnm {
     final MatchSequence matchSequence = mostGuessableMatchSequence(
       password,
       matches,
-      options,
     );
-    final TimeEstimates timeEstimates = TimeEstimates(options);
     final AttackTimes attackTimes =
-        timeEstimates.estimateAttackTimes(matchSequence.guesses);
+        const TimeEstimates().estimateAttackTimes(matchSequence.guesses);
     final Feedback feedback = Feedback.fromMatches(
       attackTimes.score,
       matchSequence.sequence,
-      options,
     );
     final int calcTime = _time() - startTime;
     return Result(

@@ -1,6 +1,4 @@
 import 'package:test/test.dart';
-import 'package:zxcvbnm/languages/en.dart';
-import 'package:zxcvbnm/src/options.dart';
 import 'package:zxcvbnm/src/time_estimates.dart';
 import 'package:zxcvbnm/src/types.dart';
 
@@ -40,8 +38,7 @@ class AttackTimesTest extends AttackTimes {
 
 void main() {
   group('Time estimates.', () {
-    final Options options = Options(translation: translation);
-    final TimeEstimates timeEstimates = TimeEstimates(options);
+    const TimeEstimates timeEstimates = TimeEstimates();
 
     test(
       'Should be very weak.',

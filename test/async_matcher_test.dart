@@ -2,13 +2,11 @@ import 'package:test/test.dart';
 import 'package:zxcvbnm/languages/en.dart';
 import 'package:zxcvbnm/src/feedback.dart';
 import 'package:zxcvbnm/src/matchers/base_matcher.dart';
-import 'package:zxcvbnm/src/options.dart';
 import 'package:zxcvbnm/zxcvbnm.dart';
 
 void main() {
   group('Async matcher.', () {
     final Options options = Options(
-      translation: translation,
       matchers: <BaseMatcher>[MatchAsync()],
       dictionaries: dictionaries,
       graph: adjacencyGraph,

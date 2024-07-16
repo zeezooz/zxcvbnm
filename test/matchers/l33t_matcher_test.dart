@@ -303,8 +303,6 @@ void main() {
   });
 
   group('L33tMatch guesses.', () {
-    final Options options = Options();
-
     test(
       'Common l33t substitutions.',
       () {
@@ -319,7 +317,6 @@ void main() {
             const PasswordChange(l33t: '@', clean: 'a'),
           ],
           changesDisplay: '@ -> a',
-          options: options,
         );
         expect(
           match.estimatedGuesses,
@@ -342,7 +339,6 @@ void main() {
             const PasswordChange(l33t: '@', clean: 'a'),
           ],
           changesDisplay: '@ -> a',
-          options: options,
         );
         expect(
           match.estimatedGuesses,
@@ -361,7 +357,6 @@ void main() {
           matchedWord: '',
           rank: 1,
           dictionary: Dictionary.commonWords,
-          options: options,
         );
         expect(
           match.extraVariations,
@@ -380,7 +375,6 @@ void main() {
           matchedWord: 'a',
           rank: 1,
           dictionary: Dictionary.commonWords,
-          options: options,
         );
         expect(
           match.extraVariations,
@@ -403,7 +397,6 @@ void main() {
             const PasswordChange(l33t: '4', clean: 'a'),
           ],
           changesDisplay: '4 -> a',
-          options: options,
         );
         expect(
           match.extraVariations,
@@ -426,7 +419,6 @@ void main() {
             const PasswordChange(l33t: '4', clean: 'a'),
           ],
           changesDisplay: '4 -> a',
-          options: options,
         );
         expect(
           match.extraVariations,
@@ -445,7 +437,6 @@ void main() {
           matchedWord: 'abcet',
           rank: 1,
           dictionary: Dictionary.commonWords,
-          options: options,
         );
         expect(
           match.extraVariations,
@@ -468,7 +459,6 @@ void main() {
             const PasswordChange(l33t: '4', clean: 'a'),
           ],
           changesDisplay: '4 -> a',
-          options: options,
         );
         expect(
           match.extraVariations,
@@ -491,7 +481,6 @@ void main() {
             const PasswordChange(l33t: '8', clean: 'b'),
           ],
           changesDisplay: '8 -> b',
-          options: options,
         );
         expect(
           match.extraVariations,
@@ -514,7 +503,6 @@ void main() {
             const PasswordChange(l33t: '+', clean: 't'),
           ],
           changesDisplay: '+ -> t',
-          options: options,
         );
         expect(
           match.extraVariations,
@@ -538,7 +526,6 @@ void main() {
             const PasswordChange(l33t: '8', clean: 'b'),
           ],
           changesDisplay: '4 -> a, 8 -> b',
-          options: options,
         );
         expect(
           match.extraVariations,
@@ -561,7 +548,6 @@ void main() {
             const PasswordChange(l33t: '4', clean: 'a'),
           ],
           changesDisplay: '4 -> a',
-          options: options,
         );
         expect(
           match.extraVariations,
@@ -584,7 +570,6 @@ void main() {
             const PasswordChange(l33t: '4', clean: 'a'),
           ],
           changesDisplay: '4 -> a',
-          options: options,
         );
         expect(
           match.extraVariations,
@@ -608,7 +593,6 @@ void main() {
             const PasswordChange(l33t: '+', clean: 't'),
           ],
           changesDisplay: '4 -> a, + -> t',
-          options: options,
         );
         expect(
           match.extraVariations,
@@ -631,7 +615,6 @@ void main() {
             const PasswordChange(l33t: 'vv', clean: 'w'),
           ],
           changesDisplay: 'vv -> w',
-          options: options,
         );
         expect(
           match.extraVariations,
@@ -654,7 +637,6 @@ void main() {
             const PasswordChange(l33t: '4', clean: 'a'),
           ],
           changesDisplay: '4 -> a',
-          options: options,
         );
         expect(
           match.extraVariations,
@@ -680,7 +662,6 @@ class L33tMatchTest extends L33tMatch {
     double? guesses,
     double? uppercaseVariations,
     double? extraVariations,
-    Options? options,
   })  : guessesTest = guesses,
         uppercaseVariationsTest = uppercaseVariations,
         extraVariationsTest = extraVariations,
@@ -695,7 +676,6 @@ class L33tMatchTest extends L33tMatch {
           levenshteinDistanceEntry: levenshteinDistanceEntry,
           changes: changes,
           changesDisplay: changesDisplay,
-          options: options ?? Options(),
         );
 
   final double? guessesTest;

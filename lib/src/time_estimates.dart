@@ -1,4 +1,4 @@
-import 'options.dart';
+import 'languages/common/translation.dart';
 import 'types.dart';
 
 const int second = 1;
@@ -9,21 +9,19 @@ const int month = day * 31;
 const int year = month * 12;
 const int century = year * 100;
 
-const Map<String, int> times = <String, int>{
-  'second': second,
-  'minute': minute,
-  'hour': hour,
-  'day': day,
-  'month': month,
-  'year': year,
-  'century': century,
+const Map<TimeEstimationsPeriod, int> times = <TimeEstimationsPeriod, int>{
+  TimeEstimationsPeriod.seconds: second,
+  TimeEstimationsPeriod.minutes: minute,
+  TimeEstimationsPeriod.hours: hour,
+  TimeEstimationsPeriod.days: day,
+  TimeEstimationsPeriod.months: month,
+  TimeEstimationsPeriod.years: year,
+  TimeEstimationsPeriod.centuries: century,
 };
 
 /// Estimates time for an attacker.
 class TimeEstimates {
-  const TimeEstimates(this.options);
-
-  final Options options;
+  const TimeEstimates();
 
   AttackTimes estimateAttackTimes(double guesses) {
     final CrackTimesSeconds crackTimesSeconds = CrackTimesSeconds(
@@ -50,30 +48,21 @@ class TimeEstimates {
   }
 
   String _displayTime(double seconds) {
-    String displayString = 'centuries';
-    final List<String> timeKeys = times.keys.toList();
-    final int foundIndex =
-        timeKeys.indexWhere((String time) => seconds < times[time]!);
-    int? value;
-    if (foundIndex > -1) {
-      if (foundIndex > 0) {
-        displayString = timeKeys[foundIndex - 1];
-        value = (seconds / times[displayString]!).round();
+    TimeEstimationsPeriod displayPeriod = TimeEstimationsPeriod.centuries;
+    final List<TimeEstimationsPeriod> timePeriods = times.keys.toList();
+    final int index = timePeriods.indexWhere(
+      (TimeEstimationsPeriod period) => seconds < times[period]!,
+    );
+    int value = 0;
+    if (index > -1) {
+      if (index > 0) {
+        displayPeriod = timePeriods[index - 1];
+        value = (seconds / times[displayPeriod]!).round();
       } else {
-        displayString = 'ltSecond';
+        displayPeriod = TimeEstimationsPeriod.ltSecond;
       }
     }
-    return _translate(displayString, value);
-  }
-
-  String _translate(String displayString, int? value) {
-    String key = displayString;
-    if (value != null && value != 1) {
-      key += 's';
-    }
-    final TimeEstimationTranslation timeEstimation =
-        options.translation.timeEstimation;
-    return timeEstimation.property(key).replaceAll('{base}', '$value');
+    return Translation.timeEstimations.displayTime(displayPeriod, value);
   }
 
   int _guessesToScore(double guesses) {

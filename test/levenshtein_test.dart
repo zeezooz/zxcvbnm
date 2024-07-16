@@ -13,7 +13,6 @@ import 'zxcvbnm_test.dart';
 void main() {
   group('Levenshtein.', () {
     final Options options = Options(
-      translation: translation,
       dictionaries: dictionaries,
       graph: adjacencyGraph,
       useLevenshteinDistance: true,
@@ -128,13 +127,13 @@ void main() {
       () => expect(
         Zxcvbnm(options.copyWith(levenshteinThreshold: 3))('eeleephaant')
             .sequence,
-        containsOnce(
+        <Matcher>[
           predicate(
             (BaseMatch match) =>
                 match is DictionaryMatch && match.levenshteinDistance != null,
             'levenshteinDistance is not null',
           ),
-        ),
+        ],
       ),
     );
   });

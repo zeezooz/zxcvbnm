@@ -25,9 +25,9 @@ class OmniMatcher extends BaseMatcher {
       L33tMatcher(options, dictionaryMatcher),
       RegExMatcher(options),
       RepeatMatcher(this),
-      ReverseMatcher(options, dictionaryMatcher),
+      ReverseMatcher(dictionaryMatcher),
       SeparatorMatcher(),
-      SequenceMatcher(options),
+      SequenceMatcher(),
       SpatialMatcher(options),
     ];
   }

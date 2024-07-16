@@ -114,7 +114,6 @@ void main() {
           graphName: 'qwerty',
           turns: 1,
           shiftedCount: 0,
-          options: options,
         );
         expect(
           match.estimatedGuesses,
@@ -134,7 +133,6 @@ void main() {
           graphName: 'qwerty',
           turns: 1,
           shiftedCount: 2,
-          options: options,
         );
         expect(
           match.estimatedGuesses,
@@ -154,7 +152,6 @@ void main() {
           graphName: 'qwerty',
           turns: 1,
           shiftedCount: 6,
-          options: options,
         );
         expect(
           match.estimatedGuesses,
@@ -174,7 +171,6 @@ void main() {
           graphName: 'qwerty',
           turns: 3,
           shiftedCount: 0,
-          options: options,
         );
         expect(
           match.estimatedGuesses,
@@ -195,7 +191,6 @@ class SpatialMatchTest extends SpatialMatch {
     required int turns,
     required int shiftedCount,
     double? guesses,
-    Options? options,
   })  : guessesTest = guesses,
         super(
           password: password,
@@ -205,7 +200,6 @@ class SpatialMatchTest extends SpatialMatch {
           graphName: graphName,
           turns: turns,
           shiftedCount: shiftedCount,
-          options: options ?? Options(),
         );
 
   final double? guessesTest;

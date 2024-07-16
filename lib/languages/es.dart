@@ -1,0 +1,10 @@
+export '../src/languages/common/adjacency_graph.dart';
+export '../src/languages/common/diceware.dart';
+export '../src/languages/common/l33t_table.dart';
+export '../src/languages/common/passwords.dart';
+export '../src/languages/common/translation.dart' show Translation;
+export '../src/languages/es/common_words.dart';
+export '../src/languages/es/dictionaries.dart';
+export '../src/languages/es/first_names.dart';
+export '../src/languages/es/last_names.dart';
+export '../src/languages/es/wikipedia.dart';

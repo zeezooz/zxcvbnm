@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import '../feedback.dart';
+import '../languages/common/translation.dart';
 import '../options.dart';
 import 'base_matcher.dart';
 
@@ -9,7 +10,7 @@ class RegExMatcher extends BaseMatcher {
   /// Creates a matcher.
   RegExMatcher(this.options);
 
-  /// Options and translation.
+  /// Options.
   final Options options;
 
   @override
@@ -51,7 +52,7 @@ class RegExMatch extends BaseMatch {
   /// The name of the matched regular expression.
   final String regExName;
 
-  /// Options and translation.
+  /// Options.
   final Options options;
 
   @override
@@ -86,10 +87,10 @@ class RegExMatch extends BaseMatch {
     switch (regExName) {
       case 'recentYear':
         return Feedback(
-          warning: options.translation.warnings.recentYears,
+          warning: Translation.warnings.recentYears,
           suggestions: <String>[
-            options.translation.suggestions.recentYears,
-            options.translation.suggestions.associatedYears,
+            Translation.suggestions.recentYears,
+            Translation.suggestions.associatedYears,
           ],
         );
     }

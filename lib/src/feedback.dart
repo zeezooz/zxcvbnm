@@ -1,5 +1,5 @@
+import 'languages/common/translation.dart';
 import 'matchers/base_matcher.dart';
-import 'options.dart';
 
 class Feedback {
   const Feedback({
@@ -7,22 +7,21 @@ class Feedback {
     List<String>? suggestions,
   }) : suggestions = suggestions ?? const <String>[];
 
-  Feedback._default(Options options)
+  Feedback._default()
       : this(
           suggestions: <String>[
-            options.translation.suggestions.useWords,
-            options.translation.suggestions.noNeed,
+            Translation.suggestions.useWords,
+            Translation.suggestions.noNeed,
           ],
         );
 
   factory Feedback.fromMatches(
     int score,
     List<BaseMatch> matches,
-    Options options,
   ) {
-    if (matches.isEmpty) return Feedback._default(options);
+    if (matches.isEmpty) return Feedback._default();
     if (score > 2) return const Feedback();
-    final String extraFeedback = options.translation.suggestions.anotherWord;
+    final String extraFeedback = Translation.suggestions.anotherWord;
     Feedback? feedback =
         _longestMatch(matches).feedback(isSoleMatch: matches.length == 1);
     if (feedback != null) {

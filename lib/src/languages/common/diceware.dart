@@ -1,4 +1,7 @@
 // ignore_for_file: type=lint
+
+/// The dictionary used to generate a password by rolling dice.
+/// https://en.wikipedia.org/wiki/Diceware
 const List<String> diceware = [
   "abacus",
   "abdomen",

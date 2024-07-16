@@ -1,4 +1,5 @@
 import '../feedback.dart';
+import '../languages/common/translation.dart';
 import '../options.dart';
 import 'base_matcher.dart';
 import 'dictionary_matcher.dart';
@@ -6,10 +7,7 @@ import 'dictionary_matcher.dart';
 /// Matches reversed words from dictionaries.
 class ReverseMatcher extends BaseMatcher {
   /// Creates a matcher.
-  ReverseMatcher(this.options, this.dictionaryMatcher);
-
-  /// Options and translation.
-  final Options options;
+  ReverseMatcher(this.dictionaryMatcher);
 
   /// A matcher to check cleaned words.
   final DictionaryMatcher dictionaryMatcher;
@@ -41,7 +39,6 @@ class ReverseMatch extends DictionaryMatch {
     required Dictionary dictionary,
     int? levenshteinDistance,
     String? levenshteinDistanceEntry,
-    required Options options,
   }) : super(
           password: password,
           start: start,
@@ -51,7 +48,6 @@ class ReverseMatch extends DictionaryMatch {
           dictionary: dictionary,
           levenshteinDistance: levenshteinDistance,
           levenshteinDistanceEntry: levenshteinDistanceEntry,
-          options: options,
         );
 
   @override
@@ -65,7 +61,7 @@ class ReverseMatch extends DictionaryMatch {
         warning: feedback?.warning,
         suggestions: <String>[
           ...?feedback?.suggestions,
-          options.translation.suggestions.reverseWords,
+          Translation.suggestions.reverseWords,
         ],
       );
     }

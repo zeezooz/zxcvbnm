@@ -2,7 +2,6 @@ import 'package:test/test.dart';
 import 'package:zxcvbnm/languages/en.dart';
 import 'package:zxcvbnm/src/feedback.dart';
 import 'package:zxcvbnm/src/matchers/base_matcher.dart';
-import 'package:zxcvbnm/src/options.dart';
 import 'package:zxcvbnm/src/types.dart';
 import 'package:zxcvbnm/zxcvbnm.dart';
 
@@ -14,7 +13,6 @@ void main() {
       'Should use custom matcher.',
       () {
         final Options options = Options(
-          translation: translation,
           matchers: <BaseMatcher>[MatchMinLength()],
           dictionaries: dictionaries,
           graph: adjacencyGraph,

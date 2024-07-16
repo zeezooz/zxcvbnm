@@ -2,7 +2,7 @@ import 'package:test/test.dart';
 import 'package:zxcvbnm/src/matchers/date_matcher.dart';
 import 'package:zxcvbnm/src/options.dart';
 
-import '../helper/generate_passwords.dart';
+import '../helpers/generate_passwords.dart';
 
 void main() {
   group('DateMatcher.', () {

@@ -1,6 +1,8 @@
-include: package:lints/recommended.yaml
-
 analyzer:
+  exclude: 
+    - /example/l10n/generated/**
+    - /lib/src/l10n/generated/**
+    - /lib/src/l10n/flutter.dart
   language:
     strict-casts: true
     strict-inference: true
@@ -118,7 +120,7 @@ linter:
     - null_closures
     # Incompatible rules: always_specify_types.
     # - omit_local_variable_types
-    # - one_member_abstracts
+    - one_member_abstracts
     - only_throw_errors
     - overridden_fields
     - package_api_docs

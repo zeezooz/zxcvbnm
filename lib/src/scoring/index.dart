@@ -2,7 +2,6 @@ import 'dart:math';
 
 import '../matchers/base_matcher.dart';
 import '../matchers/brute_force_matcher.dart';
-import '../options.dart';
 import '../types.dart';
 import 'utils.dart';
 
@@ -37,12 +36,11 @@ import 'utils.dart';
 ///   Sum(D^i for i in [1..sequenceLength-1].
 MatchSequence mostGuessableMatchSequence(
   String password,
-  List<BaseMatch> matches,
-  Options options, {
+  List<BaseMatch> matches, {
   bool excludeAdditive = false,
 }) {
   final ScoringHelper helper =
-      ScoringHelper(password, options, excludeAdditive: excludeAdditive);
+      ScoringHelper(password, excludeAdditive: excludeAdditive);
   final int passwordLength = password.length;
   // Partition matches into sublists according to ending index j.
   final List<List<BaseMatch>> matchesByJ = List<List<BaseMatch>>.generate(
@@ -87,13 +85,11 @@ MatchSequence mostGuessableMatchSequence(
 
 class ScoringHelper {
   ScoringHelper(
-    this.password,
-    this.options, {
+    this.password, {
     this.excludeAdditive = false,
   });
 
   final String password;
-  final Options options;
   final bool excludeAdditive;
   final Map<int, Map<int, Optimal>> optimal = <int, Map<int, Optimal>>{};
 

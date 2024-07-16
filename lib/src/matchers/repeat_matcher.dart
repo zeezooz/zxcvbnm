@@ -2,8 +2,8 @@ import 'dart:async';
 
 import '../feedback.dart';
 import '../helper.dart';
+import '../languages/common/translation.dart';
 import '../matching.dart';
-import '../options.dart';
 import '../scoring/index.dart';
 import 'base_matcher.dart';
 
@@ -115,7 +115,6 @@ class RepeatMatcher extends BaseMatcher {
     final double baseGuesses = mostGuessableMatchSequence(
       baseToken,
       matches,
-      omniMatcher.options,
     ).guesses;
     return RepeatMatch(
       password: password,
@@ -123,7 +122,6 @@ class RepeatMatcher extends BaseMatcher {
       end: end,
       baseToken: baseToken,
       baseGuesses: baseGuesses,
-      options: omniMatcher.options,
     );
   }
 }
@@ -137,7 +135,6 @@ class RepeatMatch extends BaseMatch {
     required int end,
     required this.baseToken,
     required this.baseGuesses,
-    required this.options,
   }) : super(password: password, start: start, end: end);
 
   /// The repeating string.
@@ -145,9 +142,6 @@ class RepeatMatch extends BaseMatch {
 
   /// The number of guesses for the [baseToken].
   final double baseGuesses;
-
-  /// Options and translation.
-  final Options options;
 
   /// The number of repetitions of the [baseToken].
   int get repeatCount => length ~/ baseToken.length;
@@ -159,9 +153,9 @@ class RepeatMatch extends BaseMatch {
   Feedback? feedback({required bool isSoleMatch}) {
     return Feedback(
       warning: baseToken.length == 1
-          ? options.translation.warnings.simpleRepeat
-          : options.translation.warnings.extendedRepeat,
-      suggestions: <String>[options.translation.suggestions.repeated],
+          ? Translation.warnings.simpleRepeat
+          : Translation.warnings.extendedRepeat,
+      suggestions: <String>[Translation.suggestions.repeated],
     );
   }
 
