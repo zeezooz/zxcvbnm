@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import '../feedback.dart';
-import '../languages/common/translation.dart';
 import '../options.dart';
+import '../translation.dart';
 import '../types.dart';
 import 'base_matcher.dart';
 import 'utils/nck.dart';

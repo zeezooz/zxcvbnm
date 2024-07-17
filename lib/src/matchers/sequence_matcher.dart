@@ -1,5 +1,5 @@
 import '../feedback.dart';
-import '../languages/common/translation.dart';
+import '../translation.dart';
 import 'base_matcher.dart';
 
 /// Matches sequences (abcdef).

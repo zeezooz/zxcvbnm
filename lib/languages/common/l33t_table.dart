@@ -1,4 +1,4 @@
-import '../../options.dart';
+import '../../src/options.dart';
 
 /// Define an object with l33t substitutions. For example that an 'a' can
 /// be exchanged with a '4' or a '@'.

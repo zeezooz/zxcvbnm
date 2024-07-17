@@ -1,10 +1,14 @@
-export '../src/languages/common/adjacency_graph.dart';
-export '../src/languages/common/diceware.dart';
-export '../src/languages/common/l33t_table.dart';
-export '../src/languages/common/passwords.dart';
-export '../src/languages/common/translation.dart' show Translation;
-export '../src/languages/es/common_words.dart';
-export '../src/languages/es/dictionaries.dart';
-export '../src/languages/es/first_names.dart';
-export '../src/languages/es/last_names.dart';
-export '../src/languages/es/wikipedia.dart';
+import '../src/options.dart';
+import 'common.dart' as common;
+import 'es/common_words.dart';
+import 'es/first_names.dart';
+import 'es/last_names.dart';
+import 'es/wikipedia.dart';
+
+/// Dictionaries that should be used to check against.
+const Dictionaries dictionaries = <Dictionary, List<List<Object>>>{
+  ...common.dictionaries,
+  Dictionary.commonWords: <List<Object>>[commonWords],
+  Dictionary.names: <List<Object>>[firstNames, lastNames],
+  Dictionary.wikipedia: <List<Object>>[wikipedia],
+};

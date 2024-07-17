@@ -1,4 +1,4 @@
-import 'languages/common/translation.dart';
+import 'translation.dart';
 import 'types.dart';
 
 const int second = 1;

@@ -89,7 +89,7 @@ in the next command.
 
 * Locate the translation.dart file. Use `.dart_tool/package_config.json` to get
 the package's rootUri. Remove the initial "file://" and append
-"/lib/src/languages/common/translation.dart" to get the full path.
+"/lib/src/translation.dart" to get the full path.
 
 * Generate Dart files:
 

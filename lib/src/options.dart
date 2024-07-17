@@ -1,5 +1,5 @@
-import 'languages/common/adjacency_graph.dart';
-import 'languages/common/l33t_table.dart' as common;
+import '../languages/common/adjacency_graph.dart';
+import '../languages/common/l33t_table.dart' as common;
 import 'matchers/base_matcher.dart';
 import 'matchers/utils/trie_node.dart';
 import 'types.dart';

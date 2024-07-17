@@ -1,5 +1,5 @@
-import 'languages/common/translation.dart';
 import 'matchers/base_matcher.dart';
+import 'translation.dart';
 
 class Feedback {
   const Feedback({

@@ -6,11 +6,11 @@
                 "match": "/pubspec.yaml$|/lib/src/l10n/.+\\.arb$"
             },
             {
-                "cmd": "dart pub global run intl_translation:generate_from_arb --output-dir lib/src/l10n/generated/dart/ --no-use-deferred-loading lib/src/languages/common/translation.dart lib/src/l10n/*.arb",
+                "cmd": "dart pub global run intl_translation:generate_from_arb --output-dir lib/src/l10n/generated/dart/ --no-use-deferred-loading lib/src/translation.dart lib/src/l10n/*.arb",
                 "match": "/lib/src/l10n/.+\\.arb$"
             },
             {
-                "cmd": "dart pub global run intl_translation:generate_from_arb --output-dir example/l10n/generated/ --no-use-deferred-loading lib/src/languages/common/translation.dart example/l10n/*.arb",
+                "cmd": "dart pub global run intl_translation:generate_from_arb --output-dir example/l10n/generated/ --no-use-deferred-loading lib/src/translation.dart example/l10n/*.arb",
                 "match": "/example/l10n/.+\\.arb$"
             }
         ]

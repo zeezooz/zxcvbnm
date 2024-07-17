@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:intl/src/intl_helpers.dart';
 import 'package:intl_multiple_translations/intl_multiple_translations.dart';
 import 'package:test/test.dart';
-import 'package:zxcvbnm/languages/common.dart';
+import 'package:zxcvbnm/languages/common/translation.dart';
 import 'package:zxcvbnm/messages.dart';
 
 import 'helpers/messages.dart';

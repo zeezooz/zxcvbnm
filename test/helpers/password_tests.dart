@@ -1,6 +1,6 @@
 // ignore_for_file: lines_longer_than_80_chars
 
-import 'package:zxcvbnm/languages/en.dart';
+import 'package:zxcvbnm/languages/common/adjacency_graph.dart';
 import 'package:zxcvbnm/src/feedback.dart';
 import 'package:zxcvbnm/src/matchers/base_matcher.dart';
 import 'package:zxcvbnm/src/matchers/brute_force_matcher.dart';

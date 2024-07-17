@@ -1,6 +1,9 @@
-export '../src/languages/common/adjacency_graph.dart';
-export '../src/languages/common/diceware.dart';
-export '../src/languages/common/dictionaries.dart';
-export '../src/languages/common/l33t_table.dart';
-export '../src/languages/common/passwords.dart';
-export '../src/languages/common/translation.dart' show Translation;
+import '../src/options.dart';
+import 'common/diceware.dart';
+import 'common/passwords.dart';
+
+/// Dictionaries that should be used to check against.
+const Dictionaries dictionaries = <Dictionary, List<List<Object>>>{
+  Dictionary.diceware: <List<Object>>[diceware],
+  Dictionary.passwords: <List<Object>>[passwords],
+};

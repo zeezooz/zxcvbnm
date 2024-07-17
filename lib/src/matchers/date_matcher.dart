@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import '../feedback.dart';
-import '../languages/common/translation.dart';
 import '../matchers/base_matcher.dart';
 import '../options.dart';
+import '../translation.dart';
 
 /// Matches dates.
 class DateMatcher extends BaseMatcher {

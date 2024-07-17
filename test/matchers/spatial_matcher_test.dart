@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:zxcvbnm/languages/common.dart';
+import 'package:zxcvbnm/languages/common/adjacency_graph.dart';
 import 'package:zxcvbnm/src/matchers/spatial_matcher.dart';
 import 'package:zxcvbnm/src/options.dart';
 import 'package:zxcvbnm/src/types.dart';
