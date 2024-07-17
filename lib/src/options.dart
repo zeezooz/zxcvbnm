@@ -15,7 +15,7 @@ class Options {
     this.l33tMaxSubstitutions = 512,
     this.maxLength = 256,
   })  : matchers = matchers ?? <BaseMatcher>[],
-        _dictionaries = dictionaries ?? <Dictionary, List<Object>>{},
+        _dictionaries = dictionaries ?? <Dictionary, List<List<Object>>>{},
         _l33tTable = l33tTable ?? common.l33tTable,
         _trieNodeRoot = TrieNode.fromL33tTable(l33tTable ?? common.l33tTable) {
     _setRankedDictionaries();
@@ -103,12 +103,12 @@ class Options {
     int? maxLength,
   }) {
     dictionaries ??= _dictionaries;
-    final Dictionaries newDictionaries = <Dictionary, List<Object>>{
+    final Dictionaries newDictionaries = <Dictionary, List<List<Object>>>{
       ...dictionaries,
       if (userInputs != null)
-        Dictionary.userInputs: <Object>[
+        Dictionary.userInputs: <List<Object>>[
           ...?dictionaries[Dictionary.userInputs],
-          ...userInputs,
+          userInputs,
         ],
     };
     return Options(
@@ -124,10 +124,10 @@ class Options {
     );
   }
 
-  void extendUserInputsDictionary(List<Object> list) {
-    final List<Object> newList = <Object>[
+  void extendUserInputsDictionary(List<List<Object>> lists) {
+    final List<List<Object>> newList = <List<Object>>[
       ...?dictionaries[Dictionary.userInputs],
-      ...list,
+      ...lists,
     ];
     rankedDictionaries[Dictionary.userInputs] =
         _sanitizedRankedDictionary(newList);
@@ -135,11 +135,14 @@ class Options {
         _rankedDictionariesMaxWordSize(newList);
   }
 
-  RankedDictionary _sanitizedRankedDictionary(List<Object> list) {
-    final List<String> sanitizedInputs = <String>[
-      for (final Object input in list)
-        if (input is String || input is num || input is bool)
-          input.toString().toLowerCase(),
+  RankedDictionary _sanitizedRankedDictionary(List<List<Object>> lists) {
+    final List<List<String>> sanitizedInputs = <List<String>>[
+      for (final List<Object> list in lists)
+        <String>[
+          for (final Object input in list)
+            if (input is String || input is num || input is bool)
+              input.toString().toLowerCase(),
+        ],
     ];
     return _rankedDictionary(sanitizedInputs);
   }
@@ -149,34 +152,41 @@ class Options {
         <Dictionary, RankedDictionary>{};
     final Map<Dictionary, int> rankedDictionariesMaxWordSize =
         <Dictionary, int>{};
-    _dictionaries.forEach((Dictionary dictionary, List<Object> list) {
+    _dictionaries.forEach((Dictionary dictionary, List<List<Object>> lists) {
       rankedDictionaries[dictionary] = dictionary == Dictionary.userInputs
-          ? _sanitizedRankedDictionary(list)
-          : _rankedDictionary(list);
+          ? _sanitizedRankedDictionary(lists)
+          : _rankedDictionary(lists);
       rankedDictionariesMaxWordSize[dictionary] =
-          _rankedDictionariesMaxWordSize(list);
+          _rankedDictionariesMaxWordSize(lists);
     });
     this.rankedDictionaries = rankedDictionaries;
     this.rankedDictionariesMaxWordSize = rankedDictionariesMaxWordSize;
   }
 
-  RankedDictionary _rankedDictionary(List<Object> list) {
+  RankedDictionary _rankedDictionary(List<List<Object>> lists) {
     final RankedDictionary result = <String, int>{};
-    // Rank starts at 1, not 0.
-    int rank = 1;
-    for (Object word in list) {
-      if (word is! String) word = word.toString();
-      result[word] = rank++;
+    for (final List<Object> list in lists) {
+      // Rank starts at 1, not 0.
+      int rank = 1;
+      for (Object word in list) {
+        if (word is! String) word = word.toString();
+        if (!result.containsKey(word) || result[word]! > rank) {
+          result[word] = rank;
+        }
+        rank++;
+      }
     }
     return result;
   }
 
-  int _rankedDictionariesMaxWordSize(List<Object> list) {
+  int _rankedDictionariesMaxWordSize(List<List<Object>> lists) {
     int result = 0;
-    for (final Object entry in list) {
-      final int length =
-          entry is String ? entry.length : entry.toString().length;
-      if (length > result) result = length;
+    for (final List<Object> list in lists) {
+      for (final Object entry in list) {
+        final int length =
+            entry is String ? entry.length : entry.toString().length;
+        if (length > result) result = length;
+      }
     }
     return result;
   }
@@ -194,11 +204,8 @@ enum Dictionary {
   /// The most often used words.
   commonWords,
 
-  /// The most common first names.
-  firstNames,
-
-  /// The most common last names.
-  lastNames,
+  /// The most common names.
+  names,
 
   /// The most often used words from Wikipedia.
   wikipedia,
@@ -207,6 +214,6 @@ enum Dictionary {
   userInputs,
 }
 
-typedef Dictionaries = Map<Dictionary, List<Object>>;
+typedef Dictionaries = Map<Dictionary, List<List<Object>>>;
 
 typedef L33tTable = Map<String, List<String>>;

@@ -6,10 +6,9 @@ import 'last_names.dart';
 import 'wikipedia.dart';
 
 /// Dictionaries that should be used to check against.
-const Dictionaries dictionaries = <Dictionary, List<Object>>{
+const Dictionaries dictionaries = <Dictionary, List<List<Object>>>{
   ...common.dictionaries,
-  Dictionary.commonWords: commonWords,
-  Dictionary.firstNames: firstNames,
-  Dictionary.lastNames: lastNames,
-  Dictionary.wikipedia: wikipedia,
+  Dictionary.commonWords: <List<Object>>[commonWords],
+  Dictionary.names: <List<Object>>[firstNames, lastNames],
+  Dictionary.wikipedia: <List<Object>>[wikipedia],
 };

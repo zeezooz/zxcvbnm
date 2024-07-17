@@ -7,17 +7,20 @@ import 'package:zxcvbnm/src/options.dart';
 
 void main() {
   group('L33tMatcher.', () {
-    const Map<Dictionary, List<String>> dictionaries =
-        <Dictionary, List<String>>{
-      Dictionary.commonWords: <String>[
-        'aac',
-        'password',
-        'paassword',
-        'asdf0',
-        'computer',
-        'pacific',
+    const Dictionaries dictionaries = <Dictionary, List<List<String>>>{
+      Dictionary.commonWords: <List<String>>[
+        <String>[
+          'aac',
+          'password',
+          'paassword',
+          'asdf0',
+          'computer',
+          'pacific',
+        ],
       ],
-      Dictionary.wikipedia: <String>['cgo'],
+      Dictionary.wikipedia: <List<String>>[
+        <String>['cgo'],
+      ],
     };
     const L33tTable l33tTable = <String, List<String>>{
       'a': <String>['4', '@'],

@@ -235,8 +235,7 @@ class DictionaryMatch extends BaseMatch {
           warning = null;
         }
         break;
-      case Dictionary.firstNames:
-      case Dictionary.lastNames:
+      case Dictionary.names:
         warning = isSoleMatch
             ? Translation.warnings.namesByThemselves
             : Translation.warnings.commonNames;
