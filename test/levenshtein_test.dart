@@ -14,7 +14,6 @@ void main() {
   group('Levenshtein.', () {
     final Options options = Options(
       dictionaries: dictionaries,
-      graph: adjacencyGraph,
       useLevenshteinDistance: true,
     );
     final Zxcvbnm zxcvbnm = Zxcvbnm(options);

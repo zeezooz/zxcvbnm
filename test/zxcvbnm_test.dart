@@ -65,10 +65,7 @@ void main() {
     test(
       'Should check without userInputs.',
       () {
-        final Options options = Options(
-          dictionaries: dictionaries,
-          graph: adjacencyGraph,
-        );
+        final Options options = Options(dictionaries: dictionaries);
         final Zxcvbnm zxcvbnm = Zxcvbnm(options);
         expect(
           zxcvbnm('test'),
@@ -119,7 +116,6 @@ void main() {
             ...dictionaries,
             Dictionary.userInputs: <Object>['Test', 12, true, <Object>[]],
           },
-          graph: adjacencyGraph,
         );
         final Zxcvbnm zxcvbnm = Zxcvbnm(options);
         expect(
@@ -166,10 +162,7 @@ void main() {
     test(
       'Should check with userInputs on the fly.',
       () {
-        final Options options = Options(
-          dictionaries: dictionaries,
-          graph: adjacencyGraph,
-        );
+        final Options options = Options(dictionaries: dictionaries);
         final Zxcvbnm zxcvbnm = Zxcvbnm(options);
         expect(
           zxcvbnm('onTheFly', <String>['onTheFly']),
@@ -215,10 +208,7 @@ void main() {
     test(
       'Should check with userInputs on the fly without changing options.',
       () {
-        final Options options = Options(
-          dictionaries: dictionaries,
-          graph: adjacencyGraph,
-        );
+        final Options options = Options(dictionaries: dictionaries);
         final Zxcvbnm zxcvbnm = Zxcvbnm(options);
         expect(
           zxcvbnm('test', <String>['test']),
@@ -301,10 +291,7 @@ void main() {
   });
 
   group('Attack vectors.', () {
-    final Options options = Options(
-      dictionaries: dictionaries,
-      graph: adjacencyGraph,
-    );
+    final Options options = Options(dictionaries: dictionaries);
     final Zxcvbnm zxcvbnm = Zxcvbnm(options);
 
     test(
@@ -332,10 +319,7 @@ void main() {
   });
 
   group('Password tests.', () {
-    final Options options = Options(
-      dictionaries: dictionaries,
-      graph: adjacencyGraph,
-    );
+    final Options options = Options(dictionaries: dictionaries);
     final Zxcvbnm zxcvbnm = Zxcvbnm(options);
     for (final ResultTest resultTest in passwordTests) {
       test(

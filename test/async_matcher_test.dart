@@ -9,7 +9,6 @@ void main() {
     final Options options = Options(
       matchers: <BaseMatcher>[MatchAsync()],
       dictionaries: dictionaries,
-      graph: adjacencyGraph,
     );
     final Zxcvbnm zxcvbnm = Zxcvbnm(options);
 

@@ -1,3 +1,4 @@
+import 'languages/common/adjacency_graph.dart';
 import 'languages/common/l33t_table.dart' as common;
 import 'matchers/base_matcher.dart';
 import 'matchers/utils/trie_node.dart';
@@ -8,7 +9,7 @@ class Options {
     List<BaseMatcher>? matchers,
     Dictionaries? dictionaries,
     L33tTable? l33tTable,
-    this.graph = const <String, GraphEntry>{},
+    this.graph = adjacencyGraph,
     this.useLevenshteinDistance = false,
     this.levenshteinThreshold = 2,
     this.l33tMaxSubstitutions = 512,

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl_multiple_translations/intl_multiple_translations.dart';
-import 'package:zxcvbnm/languages/common.dart';
+import 'package:zxcvbnm/languages/common.dart' as common;
+import 'package:zxcvbnm/languages/en.dart' as en;
+import 'package:zxcvbnm/languages/es.dart' as es;
 import 'package:zxcvbnm/localizations.dart';
 import 'package:zxcvbnm/zxcvbnm.dart';
 
@@ -120,8 +122,11 @@ class PasswordFeedback extends StatelessWidget {
   Widget build(BuildContext context) {
     final Zxcvbnm zxcvbnm = Zxcvbnm(
       Options(
-        dictionaries: dictionaries,
-        graph: adjacencyGraph,
+        dictionaries: switch (Localizations.localeOf(context)) {
+          Locale(languageCode: 'en') => en.dictionaries,
+          Locale(languageCode: 'es') => es.dictionaries,
+          _ => common.dictionaries,
+        },
       ),
     );
     final Result result = zxcvbnm(password);

@@ -15,7 +15,6 @@ void main() {
         final Options options = Options(
           matchers: <BaseMatcher>[MatchMinLength()],
           dictionaries: dictionaries,
-          graph: adjacencyGraph,
         );
         final Zxcvbnm zxcvbnm = Zxcvbnm(options);
         expect(

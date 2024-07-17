@@ -38,7 +38,7 @@ void main() {
                 password: 'rz!$token%z',
                 start: 3,
                 end: 3 + token.length,
-                graph: options.graph['qwerty']!,
+                graph: adjacencyGraph['qwerty']!,
                 graphName: 'qwerty',
                 turns: 2,
                 shiftedCount: 3,
@@ -87,7 +87,7 @@ void main() {
                   password: password,
                   start: 0,
                   end: password.length,
-                  graph: options.graph[graphName]!,
+                  graph: adjacencyGraph[graphName]!,
                   graphName: graphName,
                   turns: turns,
                   shiftedCount: shiftedCount,
@@ -101,8 +101,6 @@ void main() {
   });
 
   group('SpatialMatch guesses.', () {
-    final Options options = Options(graph: adjacencyGraph);
-
     test(
       'No turns or shifts.',
       () {
@@ -110,7 +108,7 @@ void main() {
           password: 'zxcvbn',
           start: 0,
           end: 6,
-          graph: options.graph['qwerty']!,
+          graph: adjacencyGraph['qwerty']!,
           graphName: 'qwerty',
           turns: 1,
           shiftedCount: 0,
@@ -129,7 +127,7 @@ void main() {
           password: 'ZxCvbn',
           start: 0,
           end: 6,
-          graph: options.graph['qwerty']!,
+          graph: adjacencyGraph['qwerty']!,
           graphName: 'qwerty',
           turns: 1,
           shiftedCount: 2,
@@ -148,7 +146,7 @@ void main() {
           password: 'ZXCVBN',
           start: 0,
           end: 6,
-          graph: options.graph['qwerty']!,
+          graph: adjacencyGraph['qwerty']!,
           graphName: 'qwerty',
           turns: 1,
           shiftedCount: 6,
@@ -167,7 +165,7 @@ void main() {
           password: 'zxcft6yh',
           start: 0,
           end: 8,
-          graph: options.graph['qwerty']!,
+          graph: adjacencyGraph['qwerty']!,
           graphName: 'qwerty',
           turns: 3,
           shiftedCount: 0,
