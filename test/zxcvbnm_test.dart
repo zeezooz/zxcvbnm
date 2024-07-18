@@ -112,11 +112,11 @@ void main() {
       'Should check with userInputs.',
       () {
         final Options options = Options(
-          dictionaries: <Dictionary, List<List<Object>>>{
+          dictionaries: <Dictionaries>{
             ...dictionaries,
-            Dictionary.userInputs: <List<Object>>[
-              <Object>['Test', 12, true, <Object>[]],
-            ],
+            <Dictionary, List<String>>{
+              Dictionary.userInputs: <String>['Test', '12', 'true'],
+            },
           },
         );
         final Zxcvbnm zxcvbnm = Zxcvbnm(options);

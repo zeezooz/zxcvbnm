@@ -6,10 +6,10 @@ import 'package:zxcvbnm/src/options.dart';
 void main() {
   group('ReverseMatcher.', () {
     final Options options = Options(
-      dictionaries: <Dictionary, List<List<int>>>{
-        Dictionary.passwords: <List<int>>[
-          <int>[123, 321, 456, 654, 999],
-        ],
+      dictionaries: <Dictionaries>{
+        <Dictionary, List<String>>{
+          Dictionary.passwords: <String>['123', '321', '456', '654', '999'],
+        },
       },
     );
     final ReverseMatcher matchReverse =

@@ -1,9 +1,9 @@
 import '../src/options.dart';
 import 'common.dart' as common;
-import 'en/common_words.dart';
-import 'en/first_names.dart';
-import 'en/last_names.dart';
-import 'en/wikipedia.dart';
+import 'es_es/common_words.dart';
+import 'es_es/first_names.dart';
+import 'es_es/last_names.dart';
+import 'es_es/wikipedia.dart';
 
 /// Dictionaries that should be used to check against.
 const Set<Dictionaries> dictionaries = <Dictionaries>{

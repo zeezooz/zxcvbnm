@@ -70,19 +70,25 @@ void main() {
 
     group('Without user input.', () {
       final Options options = Options(
-        dictionaries: <Dictionary, List<List<String>>>{
-          Dictionary.commonWords: <List<String>>[
-            <String>[
+        dictionaries: <Dictionaries>{
+          <Dictionary, List<String>>{
+            Dictionary.commonWords: <String>[
               'motherboard',
               'mother',
               'board',
               'abcd',
               'cdef',
             ],
-          ],
-          Dictionary.passwords: <List<String>>[
-            <String>['z', '8', '99', r'$', 'asdf1234&*'],
-          ],
+          },
+          <Dictionary, List<String>>{
+            Dictionary.passwords: <String>[
+              'z',
+              '8',
+              '99',
+              r'$',
+              'asdf1234&*',
+            ],
+          },
         },
       );
       final DictionaryMatcher dictionaryMatcher = DictionaryMatcher(options);
@@ -234,10 +240,10 @@ void main() {
 
     group('With user input.', () {
       final Options options = Options(
-        dictionaries: <Dictionary, List<List<Object>>>{
-          Dictionary.userInputs: <List<Object>>[
-            <String>['foo', 'bar'],
-          ],
+        dictionaries: <Dictionaries>{
+          <Dictionary, List<String>>{
+            Dictionary.userInputs: <String>['foo', 'bar'],
+          },
         },
       );
       final DictionaryMatcher dictionaryMatcher = DictionaryMatcher(options);

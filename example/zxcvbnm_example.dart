@@ -1,9 +1,8 @@
 // ignore_for_file: avoid_print
 
 import 'package:intl/intl.dart';
-import 'package:zxcvbnm/languages/common.dart' as common;
 import 'package:zxcvbnm/languages/en.dart' as en;
-import 'package:zxcvbnm/languages/es.dart' as es;
+import 'package:zxcvbnm/languages/es_es.dart' as es;
 import 'package:zxcvbnm/messages.dart';
 import 'package:zxcvbnm/zxcvbnm.dart';
 
@@ -11,20 +10,12 @@ Future<void> main() async {
   const String localeName = 'es';
   await initializeZxcvbnmMessages(localeName);
   Intl.defaultLocale = localeName;
-  final Dictionaries dictionaries;
-  switch (localeName) {
-    case 'en':
-      dictionaries = en.dictionaries;
-      break;
-    case 'es':
-      dictionaries = es.dictionaries;
-      break;
-    default:
-      dictionaries = common.dictionaries;
-  }
   final Zxcvbnm zxcvbnm = Zxcvbnm(
     Options(
-      dictionaries: dictionaries,
+      dictionaries: <Dictionaries>{
+        ...en.dictionaries,
+        if (localeName == 'es') ...es.dictionaries,
+      },
     ),
   );
   final Result result = zxcvbnm('password');

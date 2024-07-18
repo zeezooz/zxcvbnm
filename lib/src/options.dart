@@ -7,7 +7,7 @@ import 'types.dart';
 class Options {
   Options({
     List<BaseMatcher>? matchers,
-    Dictionaries? dictionaries,
+    Set<Dictionaries>? dictionaries,
     L33tTable? l33tTable,
     this.graph = adjacencyGraph,
     this.useLevenshteinDistance = false,
@@ -15,7 +15,7 @@ class Options {
     this.l33tMaxSubstitutions = 512,
     this.maxLength = 256,
   })  : matchers = matchers ?? <BaseMatcher>[],
-        _dictionaries = dictionaries ?? <Dictionary, List<List<Object>>>{},
+        _dictionaries = dictionaries ?? <Dictionaries>{},
         _l33tTable = l33tTable ?? common.l33tTable,
         _trieNodeRoot = TrieNode.fromL33tTable(l33tTable ?? common.l33tTable) {
     _setRankedDictionaries();
@@ -27,11 +27,11 @@ class Options {
   /// search the dictionaries for similar password with l33t speak and reversed
   /// words. The recommended sets are found in @zxcvbn-ts/language-common and
   /// @zxcvbn-ts/language-en.
-  Dictionaries _dictionaries;
+  Set<Dictionaries> _dictionaries;
 
-  Dictionaries get dictionaries => _dictionaries;
+  Set<Dictionaries> get dictionaries => _dictionaries;
 
-  set dictionaries(Dictionaries value) {
+  set dictionaries(Set<Dictionaries> value) {
     _dictionaries = value;
     _setRankedDictionaries();
   }
@@ -93,8 +93,8 @@ class Options {
 
   Options copyWith({
     List<BaseMatcher>? matchers,
-    Dictionaries? dictionaries,
-    List<Object>? userInputs,
+    Set<Dictionaries>? dictionaries,
+    List<String>? userInputs,
     L33tTable? l33tTable,
     Graph? graph,
     bool? useLevenshteinDistance,
@@ -103,13 +103,10 @@ class Options {
     int? maxLength,
   }) {
     dictionaries ??= _dictionaries;
-    final Dictionaries newDictionaries = <Dictionary, List<List<Object>>>{
+    final Set<Dictionaries> newDictionaries = <Dictionaries>{
       ...dictionaries,
       if (userInputs != null)
-        Dictionary.userInputs: <List<Object>>[
-          ...?dictionaries[Dictionary.userInputs],
-          userInputs,
-        ],
+        <Dictionary, List<String>>{Dictionary.userInputs: userInputs},
     };
     return Options(
       matchers: matchers ?? this.matchers,
@@ -124,35 +121,48 @@ class Options {
     );
   }
 
-  void extendUserInputsDictionary(List<List<Object>> lists) {
-    final List<List<Object>> newList = <List<Object>>[
-      ...?dictionaries[Dictionary.userInputs],
+  void extendUserInputsDictionary(Set<List<String>> lists) {
+    final Set<List<String>> newList = <List<String>>{
+      for (final Dictionaries dictionary in _dictionaries)
+        if (dictionary.containsKey(Dictionary.userInputs))
+          dictionary[Dictionary.userInputs]!,
       ...lists,
-    ];
+    };
     rankedDictionaries[Dictionary.userInputs] =
         _sanitizedRankedDictionary(newList);
     rankedDictionariesMaxWordSize[Dictionary.userInputs] =
         _rankedDictionariesMaxWordSize(newList);
   }
 
-  RankedDictionary _sanitizedRankedDictionary(List<List<Object>> lists) {
-    final List<List<String>> sanitizedInputs = <List<String>>[
-      for (final List<Object> list in lists)
+  RankedDictionary _sanitizedRankedDictionary(Set<List<String>> lists) {
+    final Set<List<String>> sanitizedInputs = <List<String>>{
+      for (final List<String> list in lists)
         <String>[
-          for (final Object input in list)
-            if (input is String || input is num || input is bool)
-              input.toString().toLowerCase(),
+          for (final String input in list) input.toLowerCase(),
         ],
-    ];
+    };
     return _rankedDictionary(sanitizedInputs);
   }
 
   void _setRankedDictionaries() {
+    final Map<Dictionary, Set<List<String>>> dictionaries =
+        <Dictionary, Set<List<String>>>{};
+    for (final Dictionaries dictionary in _dictionaries) {
+      for (final MapEntry<Dictionary, List<String>> entry
+          in dictionary.entries) {
+        dictionaries
+            .putIfAbsent(
+              entry.key,
+              () => <List<String>>{},
+            )
+            .add(entry.value);
+      }
+    }
     final RankedDictionaries rankedDictionaries =
         <Dictionary, RankedDictionary>{};
     final Map<Dictionary, int> rankedDictionariesMaxWordSize =
         <Dictionary, int>{};
-    _dictionaries.forEach((Dictionary dictionary, List<List<Object>> lists) {
+    dictionaries.forEach((Dictionary dictionary, Set<List<String>> lists) {
       rankedDictionaries[dictionary] = dictionary == Dictionary.userInputs
           ? _sanitizedRankedDictionary(lists)
           : _rankedDictionary(lists);
@@ -163,9 +173,9 @@ class Options {
     this.rankedDictionariesMaxWordSize = rankedDictionariesMaxWordSize;
   }
 
-  RankedDictionary _rankedDictionary(List<List<Object>> lists) {
+  RankedDictionary _rankedDictionary(Set<List<String>> lists) {
     final RankedDictionary result = <String, int>{};
-    for (final List<Object> list in lists) {
+    for (final List<String> list in lists) {
       // Rank starts at 1, not 0.
       int rank = 1;
       for (Object word in list) {
@@ -179,9 +189,9 @@ class Options {
     return result;
   }
 
-  int _rankedDictionariesMaxWordSize(List<List<Object>> lists) {
+  int _rankedDictionariesMaxWordSize(Set<List<String>> lists) {
     int result = 0;
-    for (final List<Object> list in lists) {
+    for (final List<String> list in lists) {
       for (final Object entry in list) {
         final int length =
             entry is String ? entry.length : entry.toString().length;
@@ -214,6 +224,6 @@ enum Dictionary {
   userInputs,
 }
 
-typedef Dictionaries = Map<Dictionary, List<List<Object>>>;
+typedef Dictionaries = Map<Dictionary, List<String>>;
 
 typedef L33tTable = Map<String, List<String>>;

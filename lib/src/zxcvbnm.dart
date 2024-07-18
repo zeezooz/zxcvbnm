@@ -15,7 +15,7 @@ class Zxcvbnm {
 
   final Options options;
 
-  Result call(String password, [List<Object>? userInputs]) {
+  Result call(String password, [List<String>? userInputs]) {
     // ignore: discarded_futures
     final FutureOr<Result> result = async(password, userInputs);
     if (result is Future) {
@@ -24,7 +24,7 @@ class Zxcvbnm {
     return result;
   }
 
-  FutureOr<Result> async(String password, [List<Object>? userInputs]) {
+  FutureOr<Result> async(String password, [List<String>? userInputs]) {
     final int startTime = _time();
     final String usedPassword =
         password.substring(0, min(options.maxLength, password.length));
