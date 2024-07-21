@@ -32,7 +32,6 @@ class SeparatorMatcher extends BaseMatcher {
       // lookbehind to something simple. This simple approach uses the first
       // character before the separator too but we only need the index of the
       // separator.
-      // https://github.com/zxcvbn-ts/zxcvbn/issues/202
       final int start = match.start + 1;
       result.add(
         SeparatorMatch(

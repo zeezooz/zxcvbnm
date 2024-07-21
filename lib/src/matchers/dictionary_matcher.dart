@@ -33,13 +33,17 @@ class DictionaryMatcher extends BaseMatcher {
         fitsDictionaryWordSize = false;
         final String usedPassword = passwordLower.substring(start, end);
         DictionaryMatch? tokenMatch;
-        for (final Dictionary dictionary in options.rankedDictionaries.keys) {
+        final RankedDictionaries rankedDictionaries =
+            options.rankedDictionaries;
+        final Map<Dictionary, int> rankedDictionariesMaxWordSize =
+            options.rankedDictionariesMaxWordSize;
+        for (final Dictionary dictionary in rankedDictionaries.keys) {
           final int longestDictionaryWordSize =
-              options.rankedDictionariesMaxWordSize[dictionary]!;
+              rankedDictionariesMaxWordSize[dictionary]!;
           if (end > start + longestDictionaryWordSize) continue;
           fitsDictionaryWordSize = true;
           final RankedDictionary rankedDictionary =
-              options.rankedDictionaries[dictionary]!;
+              rankedDictionaries[dictionary]!;
           final bool isInDictionary =
               rankedDictionary.containsKey(usedPassword);
           LevenshteinDistance? distance;

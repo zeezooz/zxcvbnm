@@ -3,86 +3,78 @@ import '../languages/common/l33t_table.dart' as common;
 import 'matchers/base_matcher.dart';
 import 'matchers/utils/trie_node.dart';
 
+/// Options.
 class Options {
+  /// Creates a new instance.
   Options({
-    List<BaseMatcher>? matchers,
-    Set<Dictionaries>? dictionaries,
-    L33tTable? l33tTable,
+    this.matchers = const <BaseMatcher>[],
+    this.dictionaries = const <Dictionaries>{},
+    this.l33tTable = common.l33tTable,
     this.graph = adjacencyGraph,
     this.useLevenshteinDistance = false,
     this.levenshteinThreshold = 2,
     this.l33tMaxSubstitutions = 512,
     this.maxLength = 256,
-  })  : matchers = matchers ?? <BaseMatcher>[],
-        _dictionaries = dictionaries ?? <Dictionaries>{},
-        _l33tTable = l33tTable ?? common.l33tTable,
-        _trieNodeRoot = TrieNode.fromL33tTable(l33tTable ?? common.l33tTable) {
-    _setRankedDictionaries();
-  }
+  });
 
+  /// Additional matchers.
   final List<BaseMatcher> matchers;
 
   /// Define dictionary that should be used to check against. The matcher will
   /// search the dictionaries for similar password with l33t speak and reversed
-  /// words. The recommended sets are found in @zxcvbn-ts/language-common and
-  /// @zxcvbn-ts/language-en.
-  Set<Dictionaries> _dictionaries;
+  /// words.
+  final Set<Dictionaries> dictionaries;
 
-  Set<Dictionaries> get dictionaries => _dictionaries;
+  RankedDictionaries? _rankedDictionaries;
 
-  set dictionaries(Set<Dictionaries> value) {
-    _dictionaries = value;
-    _setRankedDictionaries();
+  /// Ranks of words by dictionary type.
+  RankedDictionaries get rankedDictionaries {
+    if (_rankedDictionaries == null) _setRankedDictionaries();
+    return _rankedDictionaries!;
   }
 
-  RankedDictionaries rankedDictionaries = <Dictionary, RankedDictionary>{};
+  Map<Dictionary, int>? _rankedDictionariesMaxWordSize;
 
-  Map<Dictionary, int> rankedDictionariesMaxWordSize = <Dictionary, int>{};
+  /// Maximum word length by dictionary type.
+  Map<Dictionary, int> get rankedDictionariesMaxWordSize {
+    if (_rankedDictionariesMaxWordSize == null) _setRankedDictionaries();
+    return _rankedDictionariesMaxWordSize!;
+  }
 
   /// Define an object with l33t substitutions. For example that an "a" can
   /// be exchanged with a "4" or a "@".
-  L33tTable _l33tTable;
+  final L33tTable l33tTable;
 
-  L33tTable get l33tTable => _l33tTable;
+  TrieNode? _trieNodeRoot;
 
-  set l33tTable(L33tTable value) {
-    _l33tTable = value;
-    _trieNodeRoot = TrieNode.fromL33tTable(_l33tTable);
-  }
-
-  TrieNode _trieNodeRoot;
-
-  TrieNode get trieNodeRoot => _trieNodeRoot;
+  /// A tree of l33t substitutions.
+  TrieNode get trieNodeRoot =>
+      _trieNodeRoot ??= TrieNode.fromL33tTable(l33tTable);
 
   /// Defines keyboard layouts as an object which are used to find sequences.
-  /// Already implemented layouts can be found in @zxcvbn-ts/language-common.
-  Graph graph;
+  final Graph graph;
 
   /// Defines if the levenshtein algorithm should be used. This will be only
   /// used on the complete password and not on parts of it. This will
   /// decrease the calcTime a bit but will significantly improve the password
-  /// check. The recommended sets are found in @zxcvbn-ts/language-common
-  /// and @zxcvbn-ts/language-en.
-  /// Default is false.
-  bool useLevenshteinDistance;
+  /// check. Default is false.
+  final bool useLevenshteinDistance;
 
   /// Defines how many characters can be different to match a dictionary word
-  /// with the levenshtein algorithm.
-  /// Default is 2.
-  int levenshteinThreshold;
+  /// with the levenshtein algorithm. Default is 2.
+  final int levenshteinThreshold;
 
   /// The l33t matcher will check how many characters can be exchanged with
   /// the l33t table. If they are to many it will decrease the calcTime
   /// significantly. So we cap it at a reasonable value by default which will
-  /// probably already seems like a strong password anyway.
-  /// Default is 512.
-  int l33tMaxSubstitutions;
+  /// probably already seems like a strong password anyway. Default is 512.
+  final int l33tMaxSubstitutions;
 
   /// Defines how many character of the password are checked. A password longer
   /// than the default are considered strong anyway, but it can be increased
   /// as pleased. Be aware that this could open some attack vectors.
   /// Default is 256.
-  int maxLength;
+  final int maxLength;
 
   /// The current year used to calculate date guesses.
   final int currentYear = DateTime.now().year;
@@ -90,6 +82,7 @@ class Options {
   /// The minimum number of years used to calculate date guesses.
   int get minYearSpace => 20;
 
+  /// Creates a new instance with updated values.
   Options copyWith({
     List<BaseMatcher>? matchers,
     Set<Dictionaries>? dictionaries,
@@ -101,7 +94,7 @@ class Options {
     int? l33tMaxSubstitutions,
     int? maxLength,
   }) {
-    dictionaries ??= _dictionaries;
+    dictionaries ??= this.dictionaries;
     final Set<Dictionaries> newDictionaries = <Dictionaries>{
       ...dictionaries,
       if (userInputs != null)
@@ -110,7 +103,7 @@ class Options {
     return Options(
       matchers: matchers ?? this.matchers,
       dictionaries: newDictionaries,
-      l33tTable: l33tTable ?? _l33tTable,
+      l33tTable: l33tTable ?? this.l33tTable,
       graph: graph ?? this.graph,
       useLevenshteinDistance:
           useLevenshteinDistance ?? this.useLevenshteinDistance,
@@ -120,36 +113,13 @@ class Options {
     );
   }
 
-  void extendUserInputsDictionary(Set<List<String>> lists) {
-    final Set<List<String>> newList = <List<String>>{
-      for (final Dictionaries dictionary in _dictionaries)
-        if (dictionary.containsKey(Dictionary.userInputs))
-          dictionary[Dictionary.userInputs]!,
-      ...lists,
-    };
-    rankedDictionaries[Dictionary.userInputs] =
-        _sanitizedRankedDictionary(newList);
-    rankedDictionariesMaxWordSize[Dictionary.userInputs] =
-        _rankedDictionariesMaxWordSize(newList);
-  }
-
-  RankedDictionary _sanitizedRankedDictionary(Set<List<String>> lists) {
-    final Set<List<String>> sanitizedInputs = <List<String>>{
-      for (final List<String> list in lists)
-        <String>[
-          for (final String input in list) input.toLowerCase(),
-        ],
-    };
-    return _rankedDictionary(sanitizedInputs);
-  }
-
   void _setRankedDictionaries() {
-    final Map<Dictionary, Set<List<String>>> dictionaries =
+    final Map<Dictionary, Set<List<String>>> newDictionaries =
         <Dictionary, Set<List<String>>>{};
-    for (final Dictionaries dictionary in _dictionaries) {
+    for (final Dictionaries dictionary in dictionaries) {
       for (final MapEntry<Dictionary, List<String>> entry
           in dictionary.entries) {
-        dictionaries
+        newDictionaries
             .putIfAbsent(
               entry.key,
               () => <List<String>>{},
@@ -161,15 +131,25 @@ class Options {
         <Dictionary, RankedDictionary>{};
     final Map<Dictionary, int> rankedDictionariesMaxWordSize =
         <Dictionary, int>{};
-    dictionaries.forEach((Dictionary dictionary, Set<List<String>> lists) {
+    newDictionaries.forEach((Dictionary dictionary, Set<List<String>> lists) {
       rankedDictionaries[dictionary] = dictionary == Dictionary.userInputs
           ? _sanitizedRankedDictionary(lists)
           : _rankedDictionary(lists);
       rankedDictionariesMaxWordSize[dictionary] =
-          _rankedDictionariesMaxWordSize(lists);
+          _rankedDictionaryMaxWordSize(lists);
     });
-    this.rankedDictionaries = rankedDictionaries;
-    this.rankedDictionariesMaxWordSize = rankedDictionariesMaxWordSize;
+    _rankedDictionaries = rankedDictionaries;
+    _rankedDictionariesMaxWordSize = rankedDictionariesMaxWordSize;
+  }
+
+  RankedDictionary _sanitizedRankedDictionary(Set<List<String>> lists) {
+    final Set<List<String>> sanitizedInputs = <List<String>>{
+      for (final List<String> list in lists)
+        <String>[
+          for (final String input in list) input.toLowerCase(),
+        ],
+    };
+    return _rankedDictionary(sanitizedInputs);
   }
 
   RankedDictionary _rankedDictionary(Set<List<String>> lists) {
@@ -188,7 +168,7 @@ class Options {
     return result;
   }
 
-  int _rankedDictionariesMaxWordSize(Set<List<String>> lists) {
+  int _rankedDictionaryMaxWordSize(Set<List<String>> lists) {
     int result = 0;
     for (final List<String> list in lists) {
       for (final Object entry in list) {
@@ -223,14 +203,21 @@ enum Dictionary {
   userInputs,
 }
 
+/// A dictionary. Although a map can have multiple values, it's recommended to
+/// store a single dictionary here.
 typedef Dictionaries = Map<Dictionary, List<String>>;
 
+/// Ranks of words.
 typedef RankedDictionary = Map<String, int>;
 
+/// Ranks of words by dictionary type.
 typedef RankedDictionaries = Map<Dictionary, RankedDictionary>;
 
+/// L33t substitutions.
 typedef L33tTable = Map<String, List<String>>;
 
+/// A keyboard layout.
 typedef GraphEntry = Map<String, List<String?>>;
 
+/// Keyboard layouts.
 typedef Graph = Map<String, GraphEntry>;
