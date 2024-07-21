@@ -2,7 +2,6 @@ import '../languages/common/adjacency_graph.dart';
 import '../languages/common/l33t_table.dart' as common;
 import 'matchers/base_matcher.dart';
 import 'matchers/utils/trie_node.dart';
-import 'types.dart';
 
 class Options {
   Options({
@@ -226,4 +225,12 @@ enum Dictionary {
 
 typedef Dictionaries = Map<Dictionary, List<String>>;
 
+typedef RankedDictionary = Map<String, int>;
+
+typedef RankedDictionaries = Map<Dictionary, RankedDictionary>;
+
 typedef L33tTable = Map<String, List<String>>;
+
+typedef GraphEntry = Map<String, List<String?>>;
+
+typedef Graph = Map<String, GraphEntry>;

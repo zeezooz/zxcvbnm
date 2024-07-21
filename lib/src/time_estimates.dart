@@ -1,5 +1,4 @@
 import 'translation.dart';
-import 'types.dart';
 
 const int second = 1;
 const int minute = second * 60;
@@ -113,4 +112,42 @@ class AttackTimes {
       '${crackTimesDisplay.offlineSlowHashing1e4PerSecond}, '
       '${crackTimesDisplay.offlineFastHashing1e10PerSecond}, '
       '$score ';
+}
+
+class CrackTimesSeconds {
+  const CrackTimesSeconds({
+    required this.onlineThrottling100PerHour,
+    required this.onlineNoThrottling10PerSecond,
+    required this.offlineSlowHashing1e4PerSecond,
+    required this.offlineFastHashing1e10PerSecond,
+  });
+
+  final double onlineThrottling100PerHour;
+  final double onlineNoThrottling10PerSecond;
+  final double offlineSlowHashing1e4PerSecond;
+  final double offlineFastHashing1e10PerSecond;
+
+  @override
+  String toString() => '[$onlineThrottling100PerHour, '
+      '$onlineNoThrottling10PerSecond, $offlineSlowHashing1e4PerSecond, '
+      '$offlineFastHashing1e10PerSecond]';
+}
+
+class CrackTimesDisplay {
+  const CrackTimesDisplay({
+    required this.onlineThrottling100PerHour,
+    required this.onlineNoThrottling10PerSecond,
+    required this.offlineSlowHashing1e4PerSecond,
+    required this.offlineFastHashing1e10PerSecond,
+  });
+
+  final String onlineThrottling100PerHour;
+  final String onlineNoThrottling10PerSecond;
+  final String offlineSlowHashing1e4PerSecond;
+  final String offlineFastHashing1e10PerSecond;
+
+  @override
+  String toString() => '[$onlineThrottling100PerHour, '
+      '$onlineNoThrottling10PerSecond, $offlineSlowHashing1e4PerSecond, '
+      '$offlineFastHashing1e10PerSecond]';
 }

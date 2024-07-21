@@ -8,7 +8,6 @@ import 'matching.dart';
 import 'options.dart';
 import 'scoring.dart';
 import 'time_estimates.dart';
-import 'types.dart';
 
 class Zxcvbnm {
   Zxcvbnm([Options? options]) : options = options ?? Options();
@@ -75,4 +74,32 @@ class Zxcvbnm {
       calcTime: calcTime,
     );
   }
+}
+
+class Result {
+  const Result({
+    required this.feedback,
+    required this.crackTimesSeconds,
+    required this.crackTimesDisplay,
+    required this.score,
+    required this.password,
+    required this.guesses,
+    required this.guessesLog10,
+    required this.sequence,
+    required this.calcTime,
+  });
+
+  final Feedback feedback;
+  final CrackTimesSeconds crackTimesSeconds;
+  final CrackTimesDisplay crackTimesDisplay;
+  final int score;
+  final String password;
+  final double guesses;
+  final double guessesLog10;
+  final List<BaseMatch> sequence;
+  final int calcTime;
+
+  @override
+  String toString() => '$feedback, $crackTimesSeconds, $crackTimesDisplay, '
+      '$score, $password, $guesses, $guessesLog10, $sequence, $calcTime';
 }

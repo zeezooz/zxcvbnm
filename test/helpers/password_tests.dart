@@ -6,7 +6,7 @@ import 'package:zxcvbnm/src/matchers/base_matcher.dart';
 import 'package:zxcvbnm/src/matchers/brute_force_matcher.dart';
 import 'package:zxcvbnm/src/matchers/utils/clean_password.dart';
 import 'package:zxcvbnm/src/options.dart';
-import 'package:zxcvbnm/src/types.dart';
+import 'package:zxcvbnm/src/time_estimates.dart';
 
 import '../matchers/dictionary_matcher_test.dart';
 import '../matchers/l33t_matcher_test.dart';

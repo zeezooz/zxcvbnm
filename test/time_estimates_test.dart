@@ -1,6 +1,5 @@
 import 'package:test/test.dart';
 import 'package:zxcvbnm/src/time_estimates.dart';
-import 'package:zxcvbnm/src/types.dart';
 
 class AttackTimesTest extends AttackTimes {
   AttackTimesTest({

@@ -4,7 +4,7 @@ import 'package:zxcvbnm/src/feedback.dart';
 import 'package:zxcvbnm/src/matchers/base_matcher.dart';
 import 'package:zxcvbnm/src/matchers/dictionary_matcher.dart';
 import 'package:zxcvbnm/src/options.dart';
-import 'package:zxcvbnm/src/types.dart';
+import 'package:zxcvbnm/src/time_estimates.dart';
 import 'package:zxcvbnm/zxcvbnm.dart';
 
 import 'matchers/dictionary_matcher_test.dart';

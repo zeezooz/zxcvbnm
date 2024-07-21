@@ -3,7 +3,6 @@ import 'package:zxcvbnm/languages/en.dart';
 import 'package:zxcvbnm/src/matchers/dictionary_matcher.dart';
 import 'package:zxcvbnm/src/matchers/utils/nck.dart';
 import 'package:zxcvbnm/src/options.dart';
-import 'package:zxcvbnm/src/types.dart';
 
 import '../helpers/generate_passwords.dart';
 

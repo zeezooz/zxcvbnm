@@ -3,7 +3,6 @@ import 'dart:math';
 import '../feedback.dart';
 import '../options.dart';
 import '../translation.dart';
-import '../types.dart';
 import 'base_matcher.dart';
 import 'l33t_matcher.dart';
 import 'reverse_matcher.dart';
