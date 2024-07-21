@@ -13,10 +13,9 @@ import 'matchers/sequence_matcher.dart';
 import 'matchers/spatial_matcher.dart';
 import 'options.dart';
 
-typedef Matchers = List<BaseMatcher>;
-
 /// All matchers combined.
 class OmniMatcher extends BaseMatcher {
+  /// Creates a new instance.
   OmniMatcher(this.options) {
     final DictionaryMatcher dictionaryMatcher = DictionaryMatcher(options);
     matchers = <BaseMatcher>[
@@ -32,14 +31,17 @@ class OmniMatcher extends BaseMatcher {
     ];
   }
 
+  /// Options.
   final Options options;
-  late final Matchers matchers;
+
+  /// Matchers used.
+  late final List<BaseMatcher> matchers;
 
   @override
   List<FutureOr<List<BaseMatch>>> match(String password) {
     final List<BaseMatch> matches = <BaseMatch>[];
     final List<Future<List<BaseMatch>>> futures = <Future<List<BaseMatch>>>[];
-    final Matchers matchers = <BaseMatcher>[
+    final List<BaseMatcher> matchers = <BaseMatcher>[
       ...this.matchers,
       ...options.matchers,
     ];

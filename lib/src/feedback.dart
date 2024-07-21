@@ -1,7 +1,9 @@
 import 'matchers/base_matcher.dart';
 import 'translation.dart';
 
+/// A feedback for the password.
 class Feedback {
+  /// Creates a new instance.
   const Feedback({
     this.warning,
     List<String>? suggestions,
@@ -15,6 +17,7 @@ class Feedback {
           ],
         );
 
+  /// Get feedback from the [matches].
   factory Feedback.fromMatches(
     int score,
     List<BaseMatch> matches,
@@ -35,7 +38,10 @@ class Feedback {
     return feedback;
   }
 
+  /// Warning about the password.
   final String? warning;
+
+  /// Suggestions for improving the password.
   final List<String> suggestions;
 
   @override
