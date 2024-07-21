@@ -55,8 +55,7 @@ class Zxcvbnm {
       password,
       matches,
     );
-    final AttackTimes attackTimes =
-        const TimeEstimates().estimateAttackTimes(matchSequence.guesses);
+    final AttackTimes attackTimes = estimateAttackTimes(matchSequence.guesses);
     final Feedback feedback = Feedback.fromMatches(
       attackTimes.score,
       matchSequence.sequence,

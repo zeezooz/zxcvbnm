@@ -37,12 +37,10 @@ class AttackTimesTest extends AttackTimes {
 
 void main() {
   group('Time estimates.', () {
-    const TimeEstimates timeEstimates = TimeEstimates();
-
     test(
       'Should be very weak.',
       () => expect(
-        timeEstimates.estimateAttackTimes(10),
+        estimateAttackTimes(10),
         AttackTimesTest(
           crackTimesSeconds: const CrackTimesSeconds(
             onlineThrottling100PerHour: 360,
@@ -64,7 +62,7 @@ void main() {
     test(
       'Should be weak.',
       () => expect(
-        timeEstimates.estimateAttackTimes(100000),
+        estimateAttackTimes(100000),
         AttackTimesTest(
           crackTimesSeconds: const CrackTimesSeconds(
             onlineThrottling100PerHour: 3600000,
@@ -86,7 +84,7 @@ void main() {
     test(
       'Should be good.',
       () => expect(
-        timeEstimates.estimateAttackTimes(10000000),
+        estimateAttackTimes(10000000),
         AttackTimesTest(
           crackTimesSeconds: const CrackTimesSeconds(
             onlineThrottling100PerHour: 360000000,
@@ -108,7 +106,7 @@ void main() {
     test(
       'Should be very good.',
       () => expect(
-        timeEstimates.estimateAttackTimes(1000000000),
+        estimateAttackTimes(1000000000),
         AttackTimesTest(
           crackTimesSeconds: const CrackTimesSeconds(
             onlineThrottling100PerHour: 36000000000,
@@ -130,7 +128,7 @@ void main() {
     test(
       'Should be excellent.',
       () => expect(
-        timeEstimates.estimateAttackTimes(100000000000),
+        estimateAttackTimes(100000000000),
         AttackTimesTest(
           crackTimesSeconds: const CrackTimesSeconds(
             onlineThrottling100PerHour: 3600000000000,
