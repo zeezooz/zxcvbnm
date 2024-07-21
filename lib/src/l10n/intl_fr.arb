@@ -1,0 +1,213 @@
+{
+  "@@locale": "fr",
+  "Warnings_straightRow": "Les lignes droites de touches de votre clavier sont faciles à deviner.",
+  "@Warnings_straightRow": {
+    "context": "Warnings messages.",
+    "description": "Straight keyboard sequences like \"qwerty\"."
+  },
+  "Warnings_keyPattern": "Des motifs de clavier courts sont faciles à deviner.",
+  "@Warnings_keyPattern": {
+    "context": "Warnings messages.",
+    "description": "Keyboard sequences like \"qazxc\"."
+  },
+  "Warnings_simpleRepeat": "Les caractères répétés comme 'aaa' sont faciles à deviner.",
+  "@Warnings_simpleRepeat": {
+    "context": "Warnings messages.",
+    "description": "Repeated characters like \"aaa\"."
+  },
+  "Warnings_extendedRepeat": "Les caractères répétés comme 'abcabcabc' sont faciles à deviner.",
+  "@Warnings_extendedRepeat": {
+    "context": "Warnings messages.",
+    "description": "Repeated character patterns like \"abcabcabc\"."
+  },
+  "Warnings_sequences": "Des séquences de caractères communs comme 'abc' sont faciles à deviner.",
+  "@Warnings_sequences": {
+    "context": "Warnings messages.",
+    "description": "Character sequences like \"abc\"."
+  },
+  "Warnings_recentYears": "Les années récentes sont faciles à deviner.",
+  "@Warnings_recentYears": {
+    "context": "Warnings messages.",
+    "description": "Recent years."
+  },
+  "Warnings_dates": "Les dates sont faciles à deviner.",
+  "@Warnings_dates": {
+    "context": "Warnings messages.",
+    "description": "Dates."
+  },
+  "Warnings_topTen": "Ce mot de passe est très utilisé.",
+  "@Warnings_topTen": {
+    "context": "Warnings messages.",
+    "description": "Top 10 frequently used passwords."
+  },
+  "Warnings_topHundred": "Ce mot de passe est fréquemment utilisé.",
+  "@Warnings_topHundred": {
+    "context": "Warnings messages.",
+    "description": "Top 100 frequently used passwords."
+  },
+  "Warnings_common": "Ce mot de passe est couramment utilisé.",
+  "@Warnings_common": {
+    "context": "Warnings messages.",
+    "description": "Frequently used passwords."
+  },
+  "Warnings_similarToCommon": "Ce mot de passe est similaire à un mot de passe couramment utilisé.",
+  "@Warnings_similarToCommon": {
+    "context": "Warnings messages.",
+    "description": "Similar to a frequently used password."
+  },
+  "Warnings_wordByItself": "Les mots simples sont faciles à deviner.",
+  "@Warnings_wordByItself": {
+    "context": "Warnings messages.",
+    "description": "Single words."
+  },
+  "Warnings_namesByThemselves": "Des noms ou des prénoms simples sont faciles à deviner.",
+  "@Warnings_namesByThemselves": {
+    "context": "Warnings messages.",
+    "description": "Single names or surnames."
+  },
+  "Warnings_commonNames": "Les noms communs et les noms de famille sont faciles à deviner.",
+  "@Warnings_commonNames": {
+    "context": "Warnings messages.",
+    "description": "Names and surnames."
+  },
+  "Warnings_userInputs": "Le mot de passe ne doit pas comporter de données personnelles ou liées au site.",
+  "@Warnings_userInputs": {
+    "context": "Warnings messages.",
+    "description": "Words from the user dictionary."
+  },
+  "Suggestions_l33t": "Évitez les substitutions de lettres prévisibles comme '@' pour 'a'.",
+  "@Suggestions_l33t": {
+    "context": "Suggestions messages.",
+    "description": "L33t words."
+  },
+  "Suggestions_reverseWords": "Évitez les orthographes inversées des mots courants.",
+  "@Suggestions_reverseWords": {
+    "context": "Suggestions messages.",
+    "description": "Reversed words."
+  },
+  "Suggestions_allUppercase": "Mettez quelques lettres en majuscules, mais pas toutes.",
+  "@Suggestions_allUppercase": {
+    "context": "Suggestions messages.",
+    "description": "All letters are capitalized."
+  },
+  "Suggestions_capitalization": "Capitalisez mais pas seulement la première lettre.",
+  "@Suggestions_capitalization": {
+    "context": "Suggestions messages.",
+    "description": "The first letter is capitalized."
+  },
+  "Suggestions_dates": "Évitez les dates et les années qui vous sont associées.",
+  "@Suggestions_dates": {
+    "context": "Suggestions messages.",
+    "description": "Dates."
+  },
+  "Suggestions_recentYears": "Évitez les dernières années.",
+  "@Suggestions_recentYears": {
+    "context": "Suggestions messages.",
+    "description": "Recent years."
+  },
+  "Suggestions_associatedYears": "Évitez les années qui vous sont associées.",
+  "@Suggestions_associatedYears": {
+    "context": "Suggestions messages.",
+    "description": "Recent years."
+  },
+  "Suggestions_sequences": "Évitez les séquences de caractères courantes.",
+  "@Suggestions_sequences": {
+    "context": "Suggestions messages.",
+    "description": "Character sequences like \"abc\"."
+  },
+  "Suggestions_repeated": "Évitez les mots et les caractères répétés.",
+  "@Suggestions_repeated": {
+    "context": "Suggestions messages.",
+    "description": "Repeats."
+  },
+  "Suggestions_longerKeyboardPattern": "Utilisez des motifs de clavier plus longs et changez de sens de frappe plusieurs fois.",
+  "@Suggestions_longerKeyboardPattern": {
+    "context": "Suggestions messages.",
+    "description": "Keyboard sequences."
+  },
+  "Suggestions_anotherWord": "Ajoutez des mots moins courants.",
+  "@Suggestions_anotherWord": {
+    "context": "Suggestions messages.",
+    "description": "Default suggestion."
+  },
+  "Suggestions_useWords": "Utilisez plusieurs mots, mais évitez les phrases courantes.",
+  "@Suggestions_useWords": {
+    "context": "Suggestions messages.",
+    "description": "Empty password."
+  },
+  "Suggestions_noNeed": "Vous pouvez créer des mots de passe forts sans utiliser de symboles, de chiffres ou de lettres majuscules.",
+  "@Suggestions_noNeed": {
+    "context": "Suggestions messages.",
+    "description": "Empty password."
+  },
+  "TimeEstimations_ltSecond": "moins d''une seconde",
+  "@TimeEstimations_ltSecond": {
+    "context": "Time estimations messages.",
+    "description": "Less than a second."
+  },
+  "TimeEstimations_seconds": "{number, plural, one{{number} seconde} other{{number} secondes}}",
+  "@TimeEstimations_seconds": {
+    "context": "Time estimations messages.",
+    "description": "Seconds.",
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "TimeEstimations_minutes": "{number, plural, one{{number} minute} other{{number} minutes}}",
+  "@TimeEstimations_minutes": {
+    "context": "Time estimations messages.",
+    "description": "Minutes.",
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "TimeEstimations_hours": "{number, plural, one{{number} heure} other{{number} heures}}",
+  "@TimeEstimations_hours": {
+    "context": "Time estimations messages.",
+    "description": "Hours.",
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "TimeEstimations_days": "{number, plural, one{{number} jour} other{{number} jours}}",
+  "@TimeEstimations_days": {
+    "context": "Time estimations messages.",
+    "description": "Days.",
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "TimeEstimations_months": "{number, plural, other{{number} mois}}",
+  "@TimeEstimations_months": {
+    "context": "Time estimations messages.",
+    "description": "Months.",
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "TimeEstimations_years": "{number, plural, one{{number} année} other{{number} années}}",
+  "@TimeEstimations_years": {
+    "context": "Time estimations messages.",
+    "description": "Years.",
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "TimeEstimations_centuries": "siècles",
+  "@TimeEstimations_centuries": {
+    "context": "Time estimations messages.",
+    "description": "Centuries."
+  }
+}

@@ -1,49 +1,122 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
-
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
-
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
-
 A password strength estimator inspired by password crackers.
-This is a Dart rewrite of [zxcvbn-ts](https://github.com/zxcvbn-ts/zxcvbn),
-which is a rewrite and further evolution of [zxcvbn](https://github.com/dropbox/zxcvbn) by Dropbox.
+This is a Dart rewrite of
+[zxcvbn-ts](https://github.com/zxcvbn-ts/zxcvbn),
+which is a rewrite and further evolution of
+[zxcvbn](https://github.com/dropbox/zxcvbn) by Dropbox.
+
+> zxcvbn is a password strength estimator inspired by password crackers.
+> Through pattern matching and conservative estimation, it recognizes and
+> weighs 40k common passwords, common names surnames, popular words from
+> Wikipedia and common word in different language from different countries,
+> and other common patterns like dates, repeats (aaa), sequences (abcd),
+> keyboard patterns (qwertyuiop), and l33t speak.
+>
+> Consider using zxcvbn as an algorithmic alternative to password composition
+> policy&nbsp;— it is more secure, flexible, and usable when sites require a
+> minimal complexity score in place of annoying rules like "passwords must
+> contain three of {lower, upper, numbers, symbols}".
+>
+> - **More secure**: policies often fail both ways, allowing weak passwords
+> (P@ssword1) and disallowing strong passwords.
+> - **More flexible**: zxcvbn allows many password styles to flourish so long as
+> it detects sufficient complexity&nbsp;— passphrases are rated highly given
+> enough uncommon words, keyboard patterns are ranked based on length and number
+> of turns, and capitalization adds more complexity when it's unpredictaBle.
+> - **More usable**: zxcvbn is designed to power simple, rule-free interfaces
+> that give instant feedback. In addition to strength estimation, zxcvbn
+> includes minimal, targeted verbal feedback that can help guide users towards
+> less guessable passwords.
+>
+> For further detail and motivation, please refer to the USENIX Security '16
+> [paper and presentation](https://www.usenix.org/conference/usenixsecurity16/technical-sessions/presentation/wheeler).
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+- Estimate strength of a password
+- Get a score for the password
+- Localization support for [dictionaries](#dictionaries) and feedback
+  [translations](#translation)
+- Extend existing dictionaries with your own
+- Usable without dictionaries at all, which reduce the scoring efficiency
+  rapidly. This is not recommended
+- [Custom matchers](https://github.com/zeezooz/zxcvbnm/blob/main/test/custom_matcher_test.dart),
+  including
+  [asynchronous ones](https://github.com/zeezooz/zxcvbnm/blob/main/test/async_matcher_test.dart)
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
 ```dart
-const like = 'sample';
+import 'package:zxcvbnm/languages/en.dart';
+import 'package:zxcvbnm/zxcvbnm.dart';
+...
+final Zxcvbnm zxcvbnm = Zxcvbnm(Options(dictionaries: dictionaries));
+final Result result = zxcvbnm('password');
+print('score: ${result.score}/4');
 ```
 
-## Translation
+### Dictionaries
+
+Dictionaries contain easy-to-guess words to check a password for. By default, no
+dictionaries are used, which may allow some weak passwords, so it's recommended
+to specify some dictionaries. They are `Set`s, so you can combine them using the
+spread operator:
+
+```dart
+import 'package:zxcvbnm/languages/en.dart' as en;
+import 'package:zxcvbnm/languages/es_es.dart' as es;
+...
+dictionaries: {
+  ...en.dictionaries,
+  if (localeName == 'es') ...es.dictionaries,
+}
+```
+
+#### Included dictionaries
+
+- `common` - [Diceware](https://en.wikipedia.org/wiki/Diceware) and the most
+  often used passwords. These dictionaries are already included in the locale
+  specific dictionaries, so you usually don't need to add them explicitly
+- `cs` - Czech
+- `de` - German
+- `en` - English
+- `es_es` - Spanish (Spain)
+- `fi` - Finnish
+- `fr` - French
+- `id` - Indonesian
+- `it` - Italian
+- `ja` - Japanese
+- `nl_be` - Dutch (Belgium)
+- `pl` - Polish
+- `pt_br` - Portuguese (Brazil)
+
+Locale specific dictionaries contain the most often used words, the most common
+names, and the most often used words from Wikipedia.
+
+### Translation
 
 The package uses [intl](https://pub.dev/packages/intl) to translate messages.
 You can use your own translation or override some messages by loading a
-translation with necessary keys. See
-[lib/src/l10n/intl_en.arb](https://github.com/zeezooz/zxcvbnm/blob/main/lib/src/l10n/intl_en.arb)
-for message keys. If you need to load more than 1 translation, use
+translation with necessary keys. If you need to load more than 1 translation
+per locale, use
 [intl_multiple_translations](https://pub.dev/packages/intl_multiple_translations)
 or a similar package.
 
-### Dart
+#### Included languages
+
+- `cs` - Czech
+- `de` - German
+- `en` (default) - English
+- `es` - Spanish (Spain)
+- `fi` - Finnish
+- `fr` - French
+- `id` - Indonesian
+- `it` - Italian
+- `ja` - Japanese
+- `nl` - Dutch (Belgium)
+- `pl` - Polish
+- `pt` - Portuguese (Brazil)
+
+#### Dart
 
 Load the translation:
 
@@ -69,47 +142,11 @@ import 'package:intl/intl.dart';
 Intl.withLocale('es', () => doSomething());
 ```
 
-To use your own translation or override some messages:
+See
+[doc/translation/dart.md](https://github.com/zeezooz/zxcvbnm/blob/main/doc/translation/dart.md)
+to learn how to use your own translation or override some messages.
 
-* Create an ARB file with the translation. Use
-[lib/src/l10n/intl_en.arb](https://github.com/zeezooz/zxcvbnm/blob/main/lib/src/l10n/intl_en.arb)
-as a template.
-
-* Add [intl_translation](https://pub.dev/packages/intl_translation) to
-dev_dependencies or activate it globally:
-
-```shell
-dart pub global activate intl_translation
-```
-
-If you added it to dev_dependencies, replace `dart pub global run` with `dart run`
-in the next command.
-
-* Create an output directory if necessary.
-
-* Locate the translation.dart file. Use `.dart_tool/package_config.json` to get
-the package's rootUri. Remove the initial "file://" and append
-"/lib/src/translation.dart" to get the full path.
-
-* Generate Dart files:
-
-```shell
-dart pub global run intl_translation:generate_from_arb --output-dir output_directory --no-use-deferred-loading path/to/translation.dart path/to/your.arb
-```
-
-* Load the translation from the generated files.
-
-```dart
-import 'output_directory/messages_all.dart';
-...
-await initializeMessages('es');
-```
-
-When overriding a translation, make sure that you load your translation after
-the package translation. See
-[example/translation_example.dart](https://github.com/zeezooz/zxcvbnm/blob/main/example/translation_example.dart).
-
-### Flutter
+#### Flutter
 
 Add the localizations delegate:
 
@@ -125,46 +162,12 @@ return MaterialApp(
 );
 ```
 
-To use your own translation or override some messages:
+See
+[doc/translation/flutter.md](https://github.com/zeezooz/zxcvbnm/blob/main/doc/translation/flutter.md)
+to learn how to use your own translation or override some messages.
 
-* Create an ARB file with the translation. Use
-[lib/src/l10n/intl_en.arb](https://github.com/zeezooz/zxcvbnm/blob/main/lib/src/l10n/intl_en.arb)
-as a template.
+## Contribution
 
-* Add [intl_utils](https://pub.dev/packages/intl_utils) to dev_dependencies
-and enable it in pubspec.yaml:
-
-```yaml
-flutter_intl:
-  enabled: true
-```
-
-* Generate Dart files:
-
-```shell
-dart run intl_utils:generate
-```
-
-* Use the generated delegate.
-
-```dart
-import 'generated/l10n.dart';
-...
-return MaterialApp(
-  localizationsDelegates: [
-    S.delegate,
-    ...
-  ],
-  ...
-);
-```
-
-When overriding a translation, make sure that you add your localization delegate
-after the package localization delegate. See
-[example/flutter_example](https://github.com/zeezooz/zxcvbnm/blob/main/example/flutter_example).
-
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+Please feel free to
+[open an issue](https://github.com/zeezooz/zxcvbnm/issues/new) or provide a pull
+request.
