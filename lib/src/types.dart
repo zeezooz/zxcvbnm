@@ -2,24 +2,6 @@ import 'feedback.dart';
 import 'matchers/base_matcher.dart';
 import 'options.dart';
 
-class Optimal {
-  const Optimal({
-    required this.m,
-    required this.pi,
-    required this.g,
-  });
-
-  // Match.
-  final BaseMatch m;
-
-  // Product term Prod(m.guesses for m in sequence).
-  // Allows for fast (non-looping) updates to the minimization function.
-  final double pi;
-
-  // Overall metric.
-  final double g;
-}
-
 class CrackTimesSeconds {
   const CrackTimesSeconds({
     required this.onlineThrottling100PerHour,

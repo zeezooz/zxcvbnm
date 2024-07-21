@@ -1,13 +1,13 @@
 import 'package:test/test.dart';
 import 'package:zxcvbnm/src/matchers/base_matcher.dart';
 import 'package:zxcvbnm/src/matchers/separator_matcher.dart';
-import 'package:zxcvbnm/src/scoring/index.dart';
+import 'package:zxcvbnm/src/scoring.dart';
 
-import '../helpers/password_tests.dart';
-import '../matchers/separator_matcher_test.dart';
+import 'helpers/password_tests.dart';
+import 'matchers/separator_matcher_test.dart';
 
 void main() {
-  group('Scoring search.', () {
+  group('Scoring.', () {
     const bool excludeAdditive = true;
     const String password = '0123456789';
 

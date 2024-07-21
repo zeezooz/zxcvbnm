@@ -6,7 +6,7 @@ import 'helper.dart';
 import 'matchers/base_matcher.dart';
 import 'matching.dart';
 import 'options.dart';
-import 'scoring/index.dart';
+import 'scoring.dart';
 import 'time_estimates.dart';
 import 'types.dart';
 

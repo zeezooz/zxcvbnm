@@ -3,7 +3,7 @@ import 'dart:async';
 import '../feedback.dart';
 import '../helper.dart';
 import '../matching.dart';
-import '../scoring/index.dart';
+import '../scoring.dart';
 import '../translation.dart';
 import 'base_matcher.dart';
 

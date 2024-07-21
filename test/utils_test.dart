@@ -1,10 +1,10 @@
 import 'dart:math';
 
 import 'package:test/test.dart';
-import 'package:zxcvbnm/src/scoring/utils.dart';
+import 'package:zxcvbnm/src/utils.dart';
 
 void main() {
-  group('Scoring utils: log.', () {
+  group('Utils: log.', () {
     test(
       'log10 should calculate correctly.',
       () {
