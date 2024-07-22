@@ -2,11 +2,8 @@
 
 import 'package:test/test.dart';
 import 'package:zxcvbnm/languages/common/adjacency_graph.dart';
-import 'package:zxcvbnm/src/feedback.dart';
-import 'package:zxcvbnm/src/matchers/base_matcher.dart';
-import 'package:zxcvbnm/src/matchers/brute_force_matcher.dart';
-import 'package:zxcvbnm/src/matchers/utils/clean_password.dart';
-import 'package:zxcvbnm/src/options.dart';
+import 'package:zxcvbnm/matchers.dart';
+import 'package:zxcvbnm/zxcvbnm.dart';
 
 import 'matchers/date_matcher_test.dart';
 import 'matchers/dictionary_matcher_test.dart';

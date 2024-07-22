@@ -1,9 +1,7 @@
 import 'package:test/test.dart';
 import 'package:zxcvbnm/languages/en.dart';
-import 'package:zxcvbnm/src/matchers/base_matcher.dart';
-import 'package:zxcvbnm/src/matchers/utils/clean_password.dart';
-import 'package:zxcvbnm/src/matching.dart';
-import 'package:zxcvbnm/src/options.dart';
+import 'package:zxcvbnm/matchers.dart';
+import 'package:zxcvbnm/options.dart';
 
 import 'matchers/date_matcher_test.dart';
 import 'matchers/dictionary_matcher_test.dart';

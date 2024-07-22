@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:zxcvbnm/src/matchers/brute_force_matcher.dart';
+import 'package:zxcvbnm/matchers.dart';
 
 void main() {
   group('BruteForceMatch guesses.', () {

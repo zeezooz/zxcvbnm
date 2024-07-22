@@ -1,10 +1,7 @@
 import 'package:test/test.dart';
 import 'package:zxcvbnm/languages/en.dart';
-import 'package:zxcvbnm/src/feedback.dart';
-import 'package:zxcvbnm/src/matchers/base_matcher.dart';
-import 'package:zxcvbnm/src/matchers/dictionary_matcher.dart';
-import 'package:zxcvbnm/src/options.dart';
-import 'package:zxcvbnm/src/time_estimates.dart';
+import 'package:zxcvbnm/matchers.dart';
+import 'package:zxcvbnm/options.dart';
 import 'package:zxcvbnm/zxcvbnm.dart';
 
 import 'matchers/dictionary_matcher_test.dart';
@@ -16,7 +13,7 @@ void main() {
       dictionaries: dictionaries,
       useLevenshteinDistance: true,
     );
-    final Zxcvbnm zxcvbnm = Zxcvbnm(options);
+    final Zxcvbnm zxcvbnm = Zxcvbnm(options: options);
 
     test(
       'Should find levenstein distance.',
@@ -109,8 +106,9 @@ void main() {
     test(
       'Should respect threshold which is lower than the default 2.',
       () => expect(
-        Zxcvbnm(options.copyWith(levenshteinThreshold: 1))('eeleephaant')
-            .sequence,
+        Zxcvbnm(options: options.copyWith(levenshteinThreshold: 1))(
+          'eeleephaant',
+        ).sequence,
         everyElement(
           predicate(
             (BaseMatch match) =>
@@ -124,8 +122,9 @@ void main() {
     test(
       'Should respect threshold which is higher than the default 2.',
       () => expect(
-        Zxcvbnm(options.copyWith(levenshteinThreshold: 3))('eeleephaant')
-            .sequence,
+        Zxcvbnm(options: options.copyWith(levenshteinThreshold: 3))(
+          'eeleephaant',
+        ).sequence,
         <Matcher>[
           predicate(
             (BaseMatch match) =>

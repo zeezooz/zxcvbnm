@@ -120,15 +120,13 @@ class PasswordFeedback extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Zxcvbnm zxcvbnm = Zxcvbnm(
-      Options(
-        dictionaries: {
-          ...en.dictionaries,
-          ...switch (Localizations.localeOf(context)) {
-            Locale(languageCode: 'es') => es.dictionaries,
-            _ => {},
-          },
+      dictionaries: {
+        ...en.dictionaries,
+        ...switch (Localizations.localeOf(context)) {
+          Locale(languageCode: 'es') => es.dictionaries,
+          _ => {},
         },
-      ),
+      },
     );
     final Result result = zxcvbnm(password);
     return Column(

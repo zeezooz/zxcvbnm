@@ -9,11 +9,27 @@ import 'options.dart';
 import 'scoring.dart';
 import 'time_estimates.dart';
 
+/// A password estimator.
 class Zxcvbnm {
-  Zxcvbnm([Options? options]) : options = options ?? Options();
+  /// Creates an estimator.
+  ///
+  /// If you only need to provide dictionaries, you can set them here.
+  /// If you need other options too, set dictionaries only in options.
+  Zxcvbnm({Set<Dictionaries>? dictionaries, Options? options})
+      : assert(
+          dictionaries == null || options == null,
+          'Cannot set both dictionaries and options\n'
+          'To set both, use "options: Options(dictionaries: dictionaries)".',
+        ),
+        options =
+            options ?? Options(dictionaries: dictionaries ?? <Dictionaries>{});
 
+  /// Options.
   final Options options;
 
+  /// Estimates the [password] using only synchronous matchers.
+  ///
+  /// [userInputs] sets a user dictionary for this run only.
   Result call(String password, [List<String>? userInputs]) {
     // ignore: discarded_futures
     final FutureOr<Result> result = async(password, userInputs);
@@ -23,6 +39,9 @@ class Zxcvbnm {
     return result;
   }
 
+  /// Estimates the [password]. Works with asynchronous matchers too.
+  ///
+  /// [userInputs] sets a user dictionary for this run only.
   FutureOr<Result> async(String password, [List<String>? userInputs]) {
     final int startTime = _time();
     final String usedPassword =
@@ -75,7 +94,9 @@ class Zxcvbnm {
   }
 }
 
+/// Estimation result.
 class Result {
+  /// Creates a new instance.
   const Result({
     required this.feedback,
     required this.crackTimesSeconds,
@@ -88,14 +109,31 @@ class Result {
     required this.calcTime,
   });
 
+  /// The feedback for the [password].
   final Feedback feedback;
+
+  /// Estimated times in seconds.
   final CrackTimesSeconds crackTimesSeconds;
+
+  /// Estimated times in human readable format.
   final CrackTimesDisplay crackTimesDisplay;
+
+  /// The [password] strength from 0 (the weakest) to 4 (the strongest).
   final int score;
+
+  /// The password that was evaluated.
   final String password;
+
+  /// The estimated number of guesses for the [password].
   final double guesses;
+
+  /// The logarithm with base 10 of [guesses]
   final double guessesLog10;
+
+  /// The sequence of matches.
   final List<BaseMatch> sequence;
+
+  /// Calculation time.
   final int calcTime;
 
   @override

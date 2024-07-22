@@ -6,7 +6,6 @@ import '../translation.dart';
 import 'base_matcher.dart';
 import 'l33t_matcher.dart';
 import 'reverse_matcher.dart';
-import 'utils/clean_password.dart';
 import 'utils/levenshtein.dart';
 import 'utils/nck.dart';
 

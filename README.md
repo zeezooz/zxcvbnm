@@ -4,6 +4,8 @@ This is a Dart rewrite of
 which is a rewrite and further evolution of
 [zxcvbn](https://github.com/dropbox/zxcvbn) by Dropbox.
 
+The goal is to match [zxcvbn-ts](https://github.com/zxcvbn-ts/zxcvbn) in password evaluation. Although message translation and API may differ.
+
 > zxcvbn is a password strength estimator inspired by password crackers.
 > Through pattern matching and conservative estimation, it recognizes and
 > weighs 40k common passwords, common names surnames, popular words from
@@ -49,7 +51,7 @@ which is a rewrite and further evolution of
 import 'package:zxcvbnm/languages/en.dart';
 import 'package:zxcvbnm/zxcvbnm.dart';
 ...
-final Zxcvbnm zxcvbnm = Zxcvbnm(Options(dictionaries: dictionaries));
+final Zxcvbnm zxcvbnm = Zxcvbnm(dictionaries: dictionaries);
 final Result result = zxcvbnm('password');
 print('score: ${result.score}/4');
 ```

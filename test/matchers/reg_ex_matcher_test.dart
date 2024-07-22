@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:test/test.dart';
-import 'package:zxcvbnm/src/matchers/reg_ex_matcher.dart';
-import 'package:zxcvbnm/src/options.dart';
+import 'package:zxcvbnm/matchers.dart';
+import 'package:zxcvbnm/options.dart';
 
 void main() {
   group('RegExMatcher.', () {

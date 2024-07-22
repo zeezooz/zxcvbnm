@@ -190,3 +190,21 @@ class L33tMatch extends DictionaryMatch {
     );
   }
 }
+
+/// A replacement in a password.
+class PasswordChange {
+  /// Creates a new instance.
+  const PasswordChange({
+    required this.l33t,
+    required this.clean,
+  });
+
+  /// The original string.
+  final String l33t;
+
+  /// The replaced string.
+  final String clean;
+
+  @override
+  String toString() => '$l33t -> $clean';
+}

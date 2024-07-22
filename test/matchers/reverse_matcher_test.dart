@@ -1,7 +1,6 @@
 import 'package:test/test.dart';
-import 'package:zxcvbnm/src/matchers/dictionary_matcher.dart';
-import 'package:zxcvbnm/src/matchers/reverse_matcher.dart';
-import 'package:zxcvbnm/src/options.dart';
+import 'package:zxcvbnm/matchers.dart';
+import 'package:zxcvbnm/options.dart';
 
 void main() {
   group('ReverseMatcher.', () {

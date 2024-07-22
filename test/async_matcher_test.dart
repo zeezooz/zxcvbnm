@@ -1,16 +1,17 @@
 import 'package:test/test.dart';
 import 'package:zxcvbnm/languages/en.dart';
-import 'package:zxcvbnm/src/feedback.dart';
-import 'package:zxcvbnm/src/matchers/base_matcher.dart';
+import 'package:zxcvbnm/matchers.dart';
+import 'package:zxcvbnm/options.dart';
 import 'package:zxcvbnm/zxcvbnm.dart';
 
 void main() {
   group('Async matcher.', () {
-    final Options options = Options(
-      matchers: <BaseMatcher>[MatchAsync()],
-      dictionaries: dictionaries,
+    final Zxcvbnm zxcvbnm = Zxcvbnm(
+      options: Options(
+        matchers: <BaseMatcher>[MatchAsync()],
+        dictionaries: dictionaries,
+      ),
     );
-    final Zxcvbnm zxcvbnm = Zxcvbnm(options);
 
     test(
       'Should use async matcher as a future.',

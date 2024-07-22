@@ -11,12 +11,10 @@ Future<void> main() async {
   await initializeZxcvbnmMessages(localeName);
   Intl.defaultLocale = localeName;
   final Zxcvbnm zxcvbnm = Zxcvbnm(
-    Options(
-      dictionaries: <Dictionaries>{
-        ...en.dictionaries,
-        if (localeName == 'es') ...es.dictionaries,
-      },
-    ),
+    dictionaries: <Dictionaries>{
+      ...en.dictionaries,
+      if (localeName == 'es') ...es.dictionaries,
+    },
   );
   final Result result = zxcvbnm('password');
   print('score: ${result.score}/4');

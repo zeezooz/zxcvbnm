@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:zxcvbnm/src/matchers/separator_matcher.dart';
+import 'package:zxcvbnm/matchers.dart';
 
 void main() {
   group('SeparatorMatcher.', () {

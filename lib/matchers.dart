@@ -9,3 +9,4 @@ export 'src/matchers/reverse_matcher.dart';
 export 'src/matchers/separator_matcher.dart';
 export 'src/matchers/sequence_matcher.dart';
 export 'src/matchers/spatial_matcher.dart';
+export 'src/matching.dart';

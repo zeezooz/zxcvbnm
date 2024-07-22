@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:zxcvbnm/src/matchers/sequence_matcher.dart';
+import 'package:zxcvbnm/matchers.dart';
 
 import '../helpers/generate_passwords.dart';
 

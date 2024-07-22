@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import '../l33t_matcher.dart';
 import 'trie_node.dart';
 
 /// Returns up to [limit] variants of the [password] with replacements
@@ -81,24 +82,6 @@ class PasswordWithChanges {
 
   @override
   String toString() => '"$password" (${changes.join(', ')})';
-}
-
-/// A replacement in a password.
-class PasswordChange {
-  /// Creates a new instance.
-  const PasswordChange({
-    required this.l33t,
-    required this.clean,
-  });
-
-  /// The original string.
-  final String l33t;
-
-  /// The replaced string.
-  final String clean;
-
-  @override
-  String toString() => '$l33t -> $clean';
 }
 
 /// A replacement in a password with [start] index.

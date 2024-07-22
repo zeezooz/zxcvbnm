@@ -1,8 +1,7 @@
 import 'package:test/test.dart';
+import 'package:zxcvbnm/matchers.dart';
+import 'package:zxcvbnm/options.dart';
 import 'package:zxcvbnm/src/helper.dart';
-import 'package:zxcvbnm/src/matchers/repeat_matcher.dart';
-import 'package:zxcvbnm/src/matching.dart';
-import 'package:zxcvbnm/src/options.dart';
 import 'package:zxcvbnm/src/scoring.dart';
 
 import '../helpers/generate_passwords.dart';

@@ -1,9 +1,8 @@
 import 'dart:async';
 
 import 'package:test/test.dart';
+import 'package:zxcvbnm/matchers.dart';
 import 'package:zxcvbnm/src/helper.dart';
-import 'package:zxcvbnm/src/matchers/base_matcher.dart';
-import 'package:zxcvbnm/src/matchers/brute_force_matcher.dart';
 
 void main() {
   group('Filter matches.', () {

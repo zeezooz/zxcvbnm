@@ -1,9 +1,7 @@
 import 'package:test/test.dart';
-import 'package:zxcvbnm/src/matchers/dictionary_matcher.dart';
-import 'package:zxcvbnm/src/matchers/l33t_matcher.dart';
-import 'package:zxcvbnm/src/matchers/utils/clean_password.dart';
+import 'package:zxcvbnm/matchers.dart';
+import 'package:zxcvbnm/options.dart';
 import 'package:zxcvbnm/src/matchers/utils/nck.dart';
-import 'package:zxcvbnm/src/options.dart';
 
 void main() {
   group('L33tMatcher.', () {

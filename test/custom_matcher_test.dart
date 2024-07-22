@@ -1,8 +1,7 @@
 import 'package:test/test.dart';
 import 'package:zxcvbnm/languages/en.dart';
-import 'package:zxcvbnm/src/feedback.dart';
-import 'package:zxcvbnm/src/matchers/base_matcher.dart';
-import 'package:zxcvbnm/src/time_estimates.dart';
+import 'package:zxcvbnm/matchers.dart';
+import 'package:zxcvbnm/options.dart';
 import 'package:zxcvbnm/zxcvbnm.dart';
 
 import 'zxcvbnm_test.dart';
@@ -12,11 +11,12 @@ void main() {
     test(
       'Should use custom matcher.',
       () {
-        final Options options = Options(
-          matchers: <BaseMatcher>[MatchMinLength()],
-          dictionaries: dictionaries,
+        final Zxcvbnm zxcvbnm = Zxcvbnm(
+          options: Options(
+            matchers: <BaseMatcher>[MatchMinLength()],
+            dictionaries: dictionaries,
+          ),
         );
-        final Zxcvbnm zxcvbnm = Zxcvbnm(options);
         expect(
           zxcvbnm('ep8fkw8ds'),
           ResultTest(

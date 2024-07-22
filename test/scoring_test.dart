@@ -1,6 +1,5 @@
 import 'package:test/test.dart';
-import 'package:zxcvbnm/src/matchers/base_matcher.dart';
-import 'package:zxcvbnm/src/matchers/separator_matcher.dart';
+import 'package:zxcvbnm/matchers.dart';
 import 'package:zxcvbnm/src/scoring.dart';
 
 import 'helpers/password_tests.dart';

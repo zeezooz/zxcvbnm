@@ -1,9 +1,6 @@
 import 'package:test/test.dart';
 import 'package:zxcvbnm/languages/en.dart';
-import 'package:zxcvbnm/src/feedback.dart';
-import 'package:zxcvbnm/src/matchers/base_matcher.dart';
-import 'package:zxcvbnm/src/options.dart';
-import 'package:zxcvbnm/src/time_estimates.dart';
+import 'package:zxcvbnm/matchers.dart';
 import 'package:zxcvbnm/zxcvbnm.dart';
 
 import 'helpers/password_tests.dart';
@@ -65,8 +62,7 @@ void main() {
     test(
       'Should check without userInputs.',
       () {
-        final Options options = Options(dictionaries: dictionaries);
-        final Zxcvbnm zxcvbnm = Zxcvbnm(options);
+        final Zxcvbnm zxcvbnm = Zxcvbnm(dictionaries: dictionaries);
         expect(
           zxcvbnm('test'),
           ResultTest(
@@ -111,7 +107,7 @@ void main() {
     test(
       'Should check with userInputs.',
       () {
-        final Options options = Options(
+        final Zxcvbnm zxcvbnm = Zxcvbnm(
           dictionaries: <Dictionaries>{
             ...dictionaries,
             <Dictionary, List<String>>{
@@ -119,7 +115,6 @@ void main() {
             },
           },
         );
-        final Zxcvbnm zxcvbnm = Zxcvbnm(options);
         expect(
           zxcvbnm('test'),
           ResultTest(
@@ -164,8 +159,7 @@ void main() {
     test(
       'Should check with userInputs on the fly.',
       () {
-        final Options options = Options(dictionaries: dictionaries);
-        final Zxcvbnm zxcvbnm = Zxcvbnm(options);
+        final Zxcvbnm zxcvbnm = Zxcvbnm(dictionaries: dictionaries);
         expect(
           zxcvbnm('onTheFly', <String>['onTheFly']),
           ResultTest(
@@ -210,8 +204,7 @@ void main() {
     test(
       'Should check with userInputs on the fly without changing options.',
       () {
-        final Options options = Options(dictionaries: dictionaries);
-        final Zxcvbnm zxcvbnm = Zxcvbnm(options);
+        final Zxcvbnm zxcvbnm = Zxcvbnm(dictionaries: dictionaries);
         expect(
           zxcvbnm('test', <String>['test']),
           ResultTest(
@@ -293,8 +286,7 @@ void main() {
   });
 
   group('Attack vectors.', () {
-    final Options options = Options(dictionaries: dictionaries);
-    final Zxcvbnm zxcvbnm = Zxcvbnm(options);
+    final Zxcvbnm zxcvbnm = Zxcvbnm(dictionaries: dictionaries);
 
     test(
       'Should not die while processing and have a appropriate calcTime for '
@@ -321,8 +313,7 @@ void main() {
   });
 
   group('Password tests.', () {
-    final Options options = Options(dictionaries: dictionaries);
-    final Zxcvbnm zxcvbnm = Zxcvbnm(options);
+    final Zxcvbnm zxcvbnm = Zxcvbnm(dictionaries: dictionaries);
     for (final ResultTest resultTest in passwordTests) {
       test(
         'should resolve ${resultTest.password}',
