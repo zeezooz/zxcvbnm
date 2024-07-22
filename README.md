@@ -150,10 +150,12 @@ to learn how to use your own translation or override some messages.
 
 #### Flutter
 
+Install [zxcvbnm_flutter](https://pub.dev/packages/zxcvbnm_flutter).
+
 Add the localizations delegate:
 
 ```dart
-import 'package:zxcvbnm/localizations.dart';
+import 'package:zxcvbnm_flutter/zxcvbnm_flutter.dart';
 ...
 return MaterialApp(
   localizationsDelegates: [

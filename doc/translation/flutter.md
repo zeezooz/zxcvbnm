@@ -6,10 +6,12 @@ translation with necessary keys.
 
 ## Usage
 
+Install [zxcvbnm_flutter](https://pub.dev/packages/zxcvbnm_flutter).
+
 Add the localizations delegate:
 
 ```dart
-import 'package:zxcvbnm/localizations.dart';
+import 'package:zxcvbnm_flutter/zxcvbnm_flutter.dart';
 ...
 return MaterialApp(
   localizationsDelegates: [
@@ -58,4 +60,4 @@ When overriding a translation, make sure that you add your localization delegate
 after the package localization delegate and use
 [intl_multiple_translations](https://pub.dev/packages/intl_multiple_translations)
 or a similar package. See
-[example/flutter_example](https://github.com/zeezooz/zxcvbnm/blob/main/example/flutter_example).
+[the example](https://github.com/zeezooz/zxcvbnm_flutter/blob/main/example/flutter_example).
