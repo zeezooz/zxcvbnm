@@ -301,6 +301,19 @@ void main() {
     );
 
     test(
+      'should not die while processing and have a appropriate calcTime for '
+      'l33t same value attack.',
+      () {
+        return expect(
+          zxcvbnm('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+                  '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+              .calcTime,
+          lessThan(1000),
+        );
+      },
+    );
+
+    test(
       'Should not die while processing and have a appropriate calcTime for '
       'regex attacks.',
       () {

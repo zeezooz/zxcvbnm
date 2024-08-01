@@ -13,7 +13,7 @@ class Options {
     this.graph = adjacencyGraph,
     this.useLevenshteinDistance = false,
     this.levenshteinThreshold = 2,
-    this.l33tMaxSubstitutions = 512,
+    this.l33tMaxSubstitutions = 100,
     this.maxLength = 256,
   });
 
@@ -67,7 +67,7 @@ class Options {
   /// The l33t matcher will check how many characters can be exchanged with
   /// the l33t table. If they are to many it will decrease the calcTime
   /// significantly. So we cap it at a reasonable value by default which will
-  /// probably already seems like a strong password anyway. Default is 512.
+  /// probably already seems like a strong password anyway. Default is 100.
   final int l33tMaxSubstitutions;
 
   /// Defines how many character of the password are checked. A password longer

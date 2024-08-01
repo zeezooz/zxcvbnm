@@ -19,6 +19,8 @@ List<PasswordWithChanges> cleanPassword(
           index: 0,
           clean: '',
           changes: <IndexedPasswordChange>[],
+          lastL33t: '',
+          lastL33tCount: 0,
           allChanges: true,
           trieRoot: trieRoot,
         ),
@@ -35,6 +37,8 @@ List<PasswordWithChanges> cleanPassword(
               index: item.index + 1,
               clean: item.clean + character,
               changes: item.changes,
+              lastL33t: item.lastL33t,
+              lastL33tCount: item.lastL33tCount,
               allChanges: false,
               trieRoot: trieRoot,
             ),
@@ -47,6 +51,9 @@ List<PasswordWithChanges> cleanPassword(
               index: item.index + change.l33t.length,
               clean: item.clean + change.clean,
               changes: <IndexedPasswordChange>[...item.changes, change],
+              lastL33t: change.l33t,
+              lastL33tCount:
+                  item.lastL33t == change.l33t ? item.lastL33tCount + 1 : 1,
               allChanges: item.allChanges,
               trieRoot: trieRoot,
             ),
@@ -106,6 +113,8 @@ class _QueueItem {
     required int index,
     required String clean,
     required this.changes,
+    required this.lastL33t,
+    required this.lastL33tCount,
     required this.allChanges,
     required this.trieRoot,
   })  : _clean = clean,
@@ -122,6 +131,11 @@ class _QueueItem {
       // Iterate backward to get wider substitutions first.
       for (int i = _index + nodes.length - 1; i >= _index; i--) {
         current = nodes[i - _index];
+        // Skip if this would be a 4th or more consecutive substitution of
+        // the same letter. This should work in all language as there
+        // shouldn't be the same letter more than four times in a row.
+        // So we can ignore the rest to save calculation time.
+        if (lastL33t == current.l33t && lastL33tCount >= 3) continue;
         for (final String clean in current.cleanList) {
           nextChanges.add(
             IndexedPasswordChange(
@@ -146,6 +160,8 @@ class _QueueItem {
   String _clean;
   String get clean => _clean;
   final List<IndexedPasswordChange> changes;
+  final String lastL33t;
+  final int lastL33tCount;
   final bool allChanges;
   final TrieNode trieRoot;
   final List<IndexedPasswordChange> nextChanges = <IndexedPasswordChange>[];
