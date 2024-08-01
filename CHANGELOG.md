@@ -1,5 +1,6 @@
-## 1.0.2
+## 1.1.0
 
+- Added Arabic translation and name dictionaries.
 - [Options.l33tMaxSubstitutions](https://pub.dev/documentation/zxcvbnm/latest/options/Options/l33tMaxSubstitutions.html) now defaults to 100 (was 512).
 - No more than 3 consecutive substitution of the same l33t replacement are made.
 

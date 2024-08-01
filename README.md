@@ -78,6 +78,7 @@ dictionaries: {
 - `common` - [Diceware](https://en.wikipedia.org/wiki/Diceware) and the most
   often used passwords. These dictionaries are already included in the locale
   specific dictionaries, so you usually don't need to add them explicitly
+- `ar` - Arabic
 - `cs` - Czech
 - `de` - German
 - `en` - English
@@ -91,8 +92,8 @@ dictionaries: {
 - `pl` - Polish
 - `pt_br` - Portuguese (Brazil)
 
-Locale specific dictionaries contain the most often used words, the most common
-names, and the most often used words from Wikipedia.
+Locale specific dictionaries usually contain the most often used words,
+the most common names, and the most often used words from Wikipedia.
 
 ### Translation
 
@@ -105,6 +106,7 @@ or a similar package.
 
 #### Included languages
 
+- `ar` - Arabic
 - `cs` - Czech
 - `de` - German
 - `en` (default) - English
