@@ -1,5 +1,6 @@
 ## 1.1.0
 
+- Updated name dictionaries for Spanish and Portuguese.
 - Added Arabic translation and name dictionaries.
 - [Options.l33tMaxSubstitutions](https://pub.dev/documentation/zxcvbnm/latest/options/Options/l33tMaxSubstitutions.html) now defaults to 100 (was 512).
 - No more than 3 consecutive substitution of the same l33t replacement are made.
