@@ -1,5 +1,6 @@
 {
   "@@locale": "ja",
+  "@@author": "zxcvbn-ts",
   "Warnings_straightRow": "キーボードの直線的なキー配列の使用は、推測されやすくなります",
   "@Warnings_straightRow": {
     "context": "Warnings messages.",

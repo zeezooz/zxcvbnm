@@ -1,5 +1,6 @@
 {
   "@@locale": "fr",
+  "@@author": "jsalvat",
   "Warnings_straightRow": "Les lignes droites de touches de votre clavier sont faciles à deviner.",
   "@Warnings_straightRow": {
     "context": "Warnings messages.",

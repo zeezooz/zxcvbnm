@@ -1,5 +1,6 @@
 {
   "@@locale": "de",
+  "@@author": "zxcvbn-ts",
   "Warnings_straightRow": "Gerade Linien von Tasten auf der Tastatur sind leicht zu erraten.",
   "@Warnings_straightRow": {
     "context": "Warnings messages.",

@@ -1,5 +1,6 @@
 {
   "@@locale": "cs",
+  "@@author": "zxcvbn-ts",
   "Warnings_straightRow": "Rovné řady kláves na klávesnici lze snadno uhodnout.",
   "@Warnings_straightRow": {
     "context": "Warnings messages.",

@@ -1,5 +1,6 @@
 {
   "@@locale": "pl",
+  "@@author": "oskar-gmerek",
   "Warnings_straightRow": "Występujące kolejno po sobie znaki na klawiaturze są łatwe do odgadnięcia.",
   "@Warnings_straightRow": {
     "context": "Warnings messages.",

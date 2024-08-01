@@ -1,5 +1,6 @@
 {
   "@@locale": "id",
+  "@@author": "zxcvbn-ts",
   "Warnings_straightRow": "Deretan tombol pada keyboard mudah untuk ditebak.",
   "@Warnings_straightRow": {
     "context": "Warnings messages.",

@@ -1,5 +1,6 @@
 {
   "@@locale": "pt",
+  "@@author": "https://github.com/lacerdev",
   "Warnings_straightRow": "Letras que vêm em sequência no teclado são fáceis de adivinhar.",
   "@Warnings_straightRow": {
     "context": "Warnings messages.",

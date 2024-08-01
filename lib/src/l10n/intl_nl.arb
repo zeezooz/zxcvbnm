@@ -1,5 +1,6 @@
 {
   "@@locale": "nl",
+  "@@author": "simonbackx",
   "Warnings_straightRow": "Opeenvolgende toetsen op jouw toetsenbord zijn makkelijk te raden.",
   "@Warnings_straightRow": {
     "context": "Warnings messages.",

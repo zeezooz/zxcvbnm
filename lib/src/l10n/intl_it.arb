@@ -1,5 +1,6 @@
 {
   "@@locale": "it",
+  "@@author": "Allan Lewis",
   "Warnings_straightRow": "Le sequenze lineari dei tasti sulla tastiera sono facili da indovinare.",
   "@Warnings_straightRow": {
     "context": "Warnings messages.",

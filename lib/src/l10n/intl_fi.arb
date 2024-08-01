@@ -1,5 +1,6 @@
 {
   "@@locale": "fi",
+  "@@author": "sasxa",
   "Warnings_straightRow": "Näppäimistön vierekkäiset kirjaimet ovat helppoja arvata.",
   "@Warnings_straightRow": {
     "context": "Warnings messages.",

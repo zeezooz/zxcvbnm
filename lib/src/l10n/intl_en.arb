@@ -1,5 +1,6 @@
 {
   "@@locale": "en",
+  "@@author": "zxcvbn-ts",
   "Warnings_straightRow": "Straight rows of keys on your keyboard are easy to guess.",
   "@Warnings_straightRow": {
     "context": "Warnings messages.",
