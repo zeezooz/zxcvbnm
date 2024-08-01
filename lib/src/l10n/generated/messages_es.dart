@@ -14,64 +14,100 @@ import 'package:intl/message_lookup_by_library.dart';
 
 final messages = MessageLookup();
 
-typedef String? MessageIfAbsent(
-    String? messageStr, List<Object>? args);
+typedef String? MessageIfAbsent(String? messageStr, List<Object>? args);
 
 class MessageLookup extends MessageLookupByLibrary {
   @override
   String get localeName => 'es';
 
-  static m0(number) => "${Intl.plural(number, one: '${number} día', other: '${number} días')}";
+  static m0(number) =>
+      "${Intl.plural(number, one: '${number} día', other: '${number} días')}";
 
-  static m1(number) => "${Intl.plural(number, one: '${number} hora', other: '${number} horas')}";
+  static m1(number) =>
+      "${Intl.plural(number, one: '${number} hora', other: '${number} horas')}";
 
-  static m2(number) => "${Intl.plural(number, one: '${number} minuto', other: '${number} minutos')}";
+  static m2(number) =>
+      "${Intl.plural(number, one: '${number} minuto', other: '${number} minutos')}";
 
-  static m3(number) => "${Intl.plural(number, one: '${number} mes', other: '${number} meses')}";
+  static m3(number) =>
+      "${Intl.plural(number, one: '${number} mes', other: '${number} meses')}";
 
-  static m4(number) => "${Intl.plural(number, one: '${number} segundo', other: '${number} segundos')}";
+  static m4(number) =>
+      "${Intl.plural(number, one: '${number} segundo', other: '${number} segundos')}";
 
-  static m5(number) => "${Intl.plural(number, one: '${number} año', other: '${number} años')}";
+  static m5(number) =>
+      "${Intl.plural(number, one: '${number} año', other: '${number} años')}";
 
   @override
-  final Map<String, dynamic> messages = _notInlinedMessages(_notInlinedMessages);
+  final Map<String, dynamic> messages =
+      _notInlinedMessages(_notInlinedMessages);
 
   static Map<String, dynamic> _notInlinedMessages(_) => {
-      'Suggestions_allUppercase': MessageLookupByLibrary.simpleMessage('Escribe en mayúsculas algunas, pero no todas las letras.'),
-    'Suggestions_anotherWord': MessageLookupByLibrary.simpleMessage('Añade más palabras que sean menos comunes.'),
-    'Suggestions_associatedYears': MessageLookupByLibrary.simpleMessage('Evita años asociados contigo.'),
-    'Suggestions_capitalization': MessageLookupByLibrary.simpleMessage('Escribe en mayúsculas alguna letra más además de la primera.'),
-    'Suggestions_dates': MessageLookupByLibrary.simpleMessage('Evita fechas que estén asociadas contigo.'),
-    'Suggestions_l33t': MessageLookupByLibrary.simpleMessage('Evita sustituciones predecibles como \"@\" por \"a\".'),
-    'Suggestions_longerKeyboardPattern': MessageLookupByLibrary.simpleMessage('Usa patrones de teclado más largos y cambia la dirección de escritura varias veces.'),
-    'Suggestions_noNeed': MessageLookupByLibrary.simpleMessage('Puedes crear contraseñas seguras sin usar símbolos, números o mayúsculas.'),
-    'Suggestions_recentYears': MessageLookupByLibrary.simpleMessage('Evita años recientes.'),
-    'Suggestions_repeated': MessageLookupByLibrary.simpleMessage('Evitas palabras y letras repetidas.'),
-    'Suggestions_reverseWords': MessageLookupByLibrary.simpleMessage('Evita palabras comunes escritas al revés.'),
-    'Suggestions_sequences': MessageLookupByLibrary.simpleMessage('Evita secuencias de letras comunes.'),
-    'Suggestions_useWords': MessageLookupByLibrary.simpleMessage('Usa varias palabras, pero evita frases comunes.'),
-    'TimeEstimations_centuries': MessageLookupByLibrary.simpleMessage('siglos'),
-    'TimeEstimations_days': m0,
-    'TimeEstimations_hours': m1,
-    'TimeEstimations_ltSecond': MessageLookupByLibrary.simpleMessage('menos de un segundo'),
-    'TimeEstimations_minutes': m2,
-    'TimeEstimations_months': m3,
-    'TimeEstimations_seconds': m4,
-    'TimeEstimations_years': m5,
-    'Warnings_common': MessageLookupByLibrary.simpleMessage('Es una contraseña usada comúnmente.'),
-    'Warnings_commonNames': MessageLookupByLibrary.simpleMessage('Nombre y apellidos comunes son fáciles de adivinar.'),
-    'Warnings_dates': MessageLookupByLibrary.simpleMessage('Las fechas son fáciles de adivinar.'),
-    'Warnings_extendedRepeat': MessageLookupByLibrary.simpleMessage('Patrones repetidos como \"abcabcabc\" son fáciles de adivinar.'),
-    'Warnings_keyPattern': MessageLookupByLibrary.simpleMessage('Patrones cortos son fáciles de adivinar.'),
-    'Warnings_namesByThemselves': MessageLookupByLibrary.simpleMessage('Nombres o apellidos a solas son fáciles de adivinar.'),
-    'Warnings_recentYears': MessageLookupByLibrary.simpleMessage('Los años recientes son fáciles de adivinar.'),
-    'Warnings_sequences': MessageLookupByLibrary.simpleMessage('Patrones comunes como \"abc\" son fáciles de adivinar.'),
-    'Warnings_similarToCommon': MessageLookupByLibrary.simpleMessage('Es similar a una contraseña usada habitualmente.'),
-    'Warnings_simpleRepeat': MessageLookupByLibrary.simpleMessage('Caracteres repetidos como \"aaa\" son fáciles de adivinar.'),
-    'Warnings_straightRow': MessageLookupByLibrary.simpleMessage('Teclas consecutivas en tu teclado son fáciles de adivinar.'),
-    'Warnings_topHundred': MessageLookupByLibrary.simpleMessage('Es una contraseña usada con mucha frecuencia.'),
-    'Warnings_topTen': MessageLookupByLibrary.simpleMessage('Es de las contraseñas más usadas.'),
-    'Warnings_userInputs': MessageLookupByLibrary.simpleMessage('No debería haber datos personales o relacionados con esta página.'),
-    'Warnings_wordByItself': MessageLookupByLibrary.simpleMessage('Palabras únicas son fáciles de adivinar.')
-  };
+        'Suggestions_allUppercase': MessageLookupByLibrary.simpleMessage(
+            'Escribe en mayúsculas algunas, pero no todas las letras.'),
+        'Suggestions_anotherWord': MessageLookupByLibrary.simpleMessage(
+            'Añade más palabras que sean menos comunes.'),
+        'Suggestions_associatedYears': MessageLookupByLibrary.simpleMessage(
+            'Evita años asociados contigo.'),
+        'Suggestions_capitalization': MessageLookupByLibrary.simpleMessage(
+            'Escribe en mayúsculas alguna letra más además de la primera.'),
+        'Suggestions_dates': MessageLookupByLibrary.simpleMessage(
+            'Evita fechas que estén asociadas contigo.'),
+        'Suggestions_l33t': MessageLookupByLibrary.simpleMessage(
+            'Evita sustituciones predecibles como \"@\" por \"a\".'),
+        'Suggestions_longerKeyboardPattern': MessageLookupByLibrary.simpleMessage(
+            'Usa patrones de teclado más largos y cambia la dirección de escritura varias veces.'),
+        'Suggestions_noNeed': MessageLookupByLibrary.simpleMessage(
+            'Puedes crear contraseñas seguras sin usar símbolos, números o mayúsculas.'),
+        'Suggestions_recentYears':
+            MessageLookupByLibrary.simpleMessage('Evita años recientes.'),
+        'Suggestions_repeated': MessageLookupByLibrary.simpleMessage(
+            'Evitas palabras y letras repetidas.'),
+        'Suggestions_reverseWords': MessageLookupByLibrary.simpleMessage(
+            'Evita palabras comunes escritas al revés.'),
+        'Suggestions_sequences': MessageLookupByLibrary.simpleMessage(
+            'Evita secuencias de letras comunes.'),
+        'Suggestions_useWords': MessageLookupByLibrary.simpleMessage(
+            'Usa varias palabras, pero evita frases comunes.'),
+        'TimeEstimations_centuries':
+            MessageLookupByLibrary.simpleMessage('siglos'),
+        'TimeEstimations_days': m0,
+        'TimeEstimations_hours': m1,
+        'TimeEstimations_ltSecond':
+            MessageLookupByLibrary.simpleMessage('menos de un segundo'),
+        'TimeEstimations_minutes': m2,
+        'TimeEstimations_months': m3,
+        'TimeEstimations_seconds': m4,
+        'TimeEstimations_years': m5,
+        'Warnings_common': MessageLookupByLibrary.simpleMessage(
+            'Es una contraseña usada comúnmente.'),
+        'Warnings_commonNames': MessageLookupByLibrary.simpleMessage(
+            'Nombre y apellidos comunes son fáciles de adivinar.'),
+        'Warnings_dates': MessageLookupByLibrary.simpleMessage(
+            'Las fechas son fáciles de adivinar.'),
+        'Warnings_extendedRepeat': MessageLookupByLibrary.simpleMessage(
+            'Patrones repetidos como \"abcabcabc\" son fáciles de adivinar.'),
+        'Warnings_keyPattern': MessageLookupByLibrary.simpleMessage(
+            'Patrones cortos son fáciles de adivinar.'),
+        'Warnings_namesByThemselves': MessageLookupByLibrary.simpleMessage(
+            'Nombres o apellidos a solas son fáciles de adivinar.'),
+        'Warnings_recentYears': MessageLookupByLibrary.simpleMessage(
+            'Los años recientes son fáciles de adivinar.'),
+        'Warnings_sequences': MessageLookupByLibrary.simpleMessage(
+            'Patrones comunes como \"abc\" son fáciles de adivinar.'),
+        'Warnings_similarToCommon': MessageLookupByLibrary.simpleMessage(
+            'Es similar a una contraseña usada habitualmente.'),
+        'Warnings_simpleRepeat': MessageLookupByLibrary.simpleMessage(
+            'Caracteres repetidos como \"aaa\" son fáciles de adivinar.'),
+        'Warnings_straightRow': MessageLookupByLibrary.simpleMessage(
+            'Teclas consecutivas en tu teclado son fáciles de adivinar.'),
+        'Warnings_topHundred': MessageLookupByLibrary.simpleMessage(
+            'Es una contraseña usada con mucha frecuencia.'),
+        'Warnings_topTen': MessageLookupByLibrary.simpleMessage(
+            'Es de las contraseñas más usadas.'),
+        'Warnings_userInputs': MessageLookupByLibrary.simpleMessage(
+            'No debería haber datos personales o relacionados con esta página.'),
+        'Warnings_wordByItself': MessageLookupByLibrary.simpleMessage(
+            'Palabras únicas son fáciles de adivinar.')
+      };
 }
