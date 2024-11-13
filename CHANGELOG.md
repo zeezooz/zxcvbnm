@@ -1,3 +1,8 @@
+## 1.1.1
+
+- Support [intl](https://pub.dev/packages/intl) 0.20.0
+- Matches [@zxcvbn-ts/core@3.0.4](https://github.com/zxcvbn-ts/zxcvbn/tree/%40zxcvbn-ts/core%403.0.4).
+
 ## 1.1.0
 
 - Updated name dictionaries for Spanish and Portuguese.
