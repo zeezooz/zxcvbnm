@@ -66,4 +66,16 @@ void main() {
       ),
     );
   });
+
+  group('Utils: factorial.', () {
+    test(
+      'factorial should not overflow.',
+      () {
+        expect(
+          factorial(21),
+          greaterThan(factorial(20)),
+        );
+      },
+    );
+  });
 }

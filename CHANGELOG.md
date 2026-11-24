@@ -1,3 +1,8 @@
+## 1.1.2
+
+- Fixed integer overflow in score calculation on native platforms. Thanks to [Nikolaos Grammatikopoulos](https://github.com/grammatn) for [the detailed report](https://github.com/zeezooz/zxcvbnm/issues/3).
+- Matches [@zxcvbn-ts/core@3.0.4](https://github.com/zxcvbn-ts/zxcvbn/tree/%40zxcvbn-ts/core%403.0.4).
+
 ## 1.1.1
 
 - Support [intl](https://pub.dev/packages/intl) 0.20.0

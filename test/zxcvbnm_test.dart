@@ -337,4 +337,71 @@ void main() {
       );
     }
   });
+
+  group('Overflow.', () {
+    final Zxcvbnm zxcvbnm = Zxcvbnm(dictionaries: dictionaries);
+    const List<String> words = <String>[
+      'apple',
+      'river',
+      'stone',
+      'cloud',
+      'music',
+      'table',
+      'green',
+      'house',
+      'paper',
+      'light',
+      'water',
+      'horse',
+      'bread',
+      'chair',
+      'smile',
+      'dream',
+      'glass',
+      'money',
+      'night',
+      'plant',
+      'storm',
+      'sugar',
+      'train',
+      'voice',
+      'world',
+    ];
+    for (final int n in <int>[8, 10, 12, 16, 20, 25]) {
+      final String password = words.take(n).join(' ');
+      test('should not overflow on "$password"', () {
+        final Result result = zxcvbnm(password);
+        expect(
+          result.guesses,
+          greaterThan(0),
+        );
+        expect(
+          result.guessesLog10,
+          greaterThan(0),
+        );
+        expect(
+          result.score,
+          greaterThan(0),
+        );
+      });
+    }
+    for (final int k in <int>[10, 11, 80]) {
+      final String password = 'ab1!' * k;
+      test('should not overflow on "$password"', () {
+        final Result result = zxcvbnm(password);
+        expect(
+          result.guesses,
+          greaterThan(0),
+        );
+        expect(
+          result.guessesLog10,
+          greaterThan(0),
+        );
+        expect(
+          result.score,
+          greaterThan(0),
+        );
+      });
+    }
+  });
 }

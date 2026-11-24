@@ -7,8 +7,8 @@ double log10(num n) {
 }
 
 /// Returns the factorial of [n].
-int factorial(int n) {
-  int result = 1;
+double factorial(int n) {
+  double result = 1;
   for (int i = 2; i <= n; i++) {
     result *= i;
   }
